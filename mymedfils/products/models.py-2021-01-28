@@ -1,0 +1,135 @@
+from django.db import models
+from products.validators import image_extension
+from django.db.models.signals import pre_save
+from mymedfils.helpers import unique_slug_generator, get_percent
+
+# Create your models here.
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, blank=True, unique=True)
+    description = models.TextField(blank=True)
+    image = models.FileField(upload_to='category_images/', blank=True, validators=[image_extension])
+    order = models.IntegerField(default=0) 
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, blank=True, unique=True)
+    description = models.TextField(blank=True)
+    image = models.FileField(upload_to='brand_images/', blank=True, validators=[image_extension]) 
+    order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.name
+
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, blank=True, unique=True)
+    description = models.TextField(blank=True)
+    price = models.FloatField()
+    sale_price = models.DecimalField(max_digits=50, decimal_places=2, default=0.00)
+    quantity = models.IntegerField()
+    sku = models.CharField(max_length=100)
+    product_type = models.CharField(max_length=250, default='simple')
+    #category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True )
+    category = models.ManyToManyField(Category)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.name
+
+
+    @property
+    def discount(self):
+        price = self.price
+        sale_price = float(self.sale_price)
+        diff = price - sale_price
+        return round((diff/price) * 100)
+
+    @property
+    def yousave(self):
+        price = self.price
+        sale_price = float(self.sale_price)
+        diff = price - sale_price
+        #return round(diff)
+        return diff
+        
+    @property
+    def actual_price(self):
+        if self.sale_price > 0 and self.price > self.sale_price:
+            return self.sale_price
+        return self.price
+        
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.FileField(upload_to='product_images/', blank=True, validators=[image_extension])
+
+    def __str__(self):
+        return self.product.name
+
+
+class ProductTab(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    uses = models.TextField(blank=True)
+    warnings = models.TextField(blank=True)
+    interactions = models.TextField(blank=True)
+    directions = models.TextField(blank=True)
+    side_effects = models.TextField(blank=True)
+    more_information = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.product.name 
+
+
+
+
+
+
+
+# Generate unique slug for categpry
+def category_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(category_pre_save_receiver, sender=Category)
+
+
+# Generate unique slug for brand
+def brand_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(brand_pre_save_receiver, sender=Brand)
+
+
+# Generate unique slug for product
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(product_pre_save_receiver, sender=Product)
+
+
+#Get products by category
+def get_products_by_category(slug, **kwargs):
+    cat_obj = Category.objects.get(slug=slug)
+    limit = kwargs.get('limit', '')
+    if limit != '':
+        products = cat_obj.product_set.all()[:limit]
+    else:
+        products = cat_obj.product_set.all()
+    return products

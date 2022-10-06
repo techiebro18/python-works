@@ -1,0 +1,597 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+{% get_cities as cities %}
+{% get_states as states %}
+{% get_countries as countries %}
+<style type="text/css">
+    .cart-rightside .sticky-top{padding: 10px;}
+</style>
+<div class="container">
+    <section class="section-content padding-y bg">
+        <div class="container">
+            <div class="row">
+                <div class="productListPage">
+                    
+                    <div class="bodyMain contentBox">
+                        <div _ngcontent-kfe-c6="" class="cart-container ng-star-inserted"><!---->
+                            <div _ngcontent-kfe-c6="" class="ng-star-inserted"><!---->
+                                <h3 _ngcontent-gud-c9="" class="cart-count d-none d-sm-block">
+                                    <div _ngcontent-gud-c9="" class="row">
+                                        <span _ngcontent-gud-c9="" class="title col-md-4" style="color:#000;">
+                                            Checkout
+                                        </span>
+                                        
+                                    </div>
+                                </h3>
+
+                            <div _ngcontent-kfe-c6="" class="row">
+                                <div _ngcontent-kfe-c6="" class="cart-leftside col-md-12 pr-lg-2" style="display: none;">
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                        <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <div style="display: none;">
+                                        <div _ngcontent-kfe-c6="" class="discountcol mobicpnmain  d-sm-block">
+                                            <div _ngcontent-kfe-c6="" class="applypromocode ">
+                                                <h5 _ngcontent-kfe-c6=""class="applypromotitle applypromocode_slide">
+                                                    Do you have promocode?
+                                                </h5><!---->
+                                                
+                                                <div _ngcontent-kfe-c6="" class="applypromo ng-star-inserted" style="display: none;">
+                                                    <span _ngcontent-kfe-c6="" class="cpn_desc" style="color:#82b641;padding-bottom:7px; padding-top: 7px; font-size:16px;margin-left: -30px;">PROMOCODE</span>
+                                                    <form id="coupon-form" action="{% url 'ecommerce:apply_coupon' %}" method="post" role="form">
+                                                        {% csrf_token %}
+                                                        <span style="display: flex;" _ngcontent-kfe-c6="">
+                                                        <input type="text" name="coupon_code" id="coupon_code" tabindex="1" class="" placeholder="Enter your coupon code" value="" style="height: 35px;width: 200px;border-radius: 13px;" required>
+                                                        <input type="submit" name="submit" id="submit" tabindex="4" class="submit" value="Apply" style="background-color: #007bff;margin-left:5px;color: #fff;height: 34px;width: 90px;padding: 0px;font-size: 13px;">                       
+                                                        </span>
+                                                    </form>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <form id="checkout_shipping_form" action="{% url 'ecommerce:ajax_shipping_checkout' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cart_id" value="{{cart_object.id}}">
+                                    <input type="hidden" name="shipping_method" class="frm_shipping_method" value="{{default_shipping.id}}">
+                                    <input type="submit"class="ship_change" name="submit" value="Submit" style="display: none;" />
+                                </form>
+
+                            </div>
+                                <form method="POST" action="{% url 'ecommerce:place_order' %}" class="checkout" id="checkout">
+                                    {% csrf_token %}
+                                    <div _ngcontent-kfe-c6="" class="row">
+
+                                        <div _ngcontent-kfe-c6="" class="cart-leftside col-md-8 pr-lg-2"><!----><!---->
+                                            <div _ngcontent-kfe-c6="" class="cart-product card">
+                                                <div _ngcontent-kfe-c6="" class="product-details"><!---->
+                                                    <div class="col-sm-12">
+                                                        <!-- Billing/Shipping address -->
+                                                        <div class="address-form" id="billing" style="padding: 10px 0px;">
+                                                            <h4>Billing Address</h4>
+                                                            <div class="form-group">
+                                                                <input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Billing Name" value="{{current_user.profile.billing_name}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Billing Email Address" value="{{current_user.profile.billing_email}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="mobile" id="mobile" tabindex="1" class="form-control" placeholder="Billing Mobile" value="{{current_user.profile.billing_mobile}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="address" id="address" tabindex="2" class="form-control" placeholder="Billing Address" value="{{current_user.profile.billing_address}}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="postcode" id="postcode" tabindex="2" class="form-control" placeholder="Billing Postcode" value="{{current_user.profile.billing_postcode}}" maxlength="6">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                
+                                                                <select class="form-control" name="city">
+                                                                    <option value="">Choose City</option>
+                                                                    {% for city in cities %}
+                                                                        {% if current_user.profile.billing_city == city.name %}
+                                                                            <option value="{{city.name}}" selected="selected">{{city.name}}</option>
+                                                                        {% else %}    
+                                                                        <option value="{{city.name}}">{{city.name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                        
+                                                            </div>
+                                        
+                                                            
+                                                            <div class="form-group">
+                                                                <select class="form-control" name="state">
+                                                                    <option value="">Choose State</option>
+                                                                    {% for state in states %}
+                                                                    {% if current_user.profile.billing_state == state.name %}
+                                                                    <option value="{{state.name}}" selected="selected">{{state.name}}</option>
+                                                                    {% else %}    
+                                                                    <option value="{{state.name}}">{{state.name}}</option>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                        
+                                                            <div class="form-group">
+                                                                
+                                                                <select class="form-control" name="country">
+                                                                    <option value="">Choose Country</option>
+                                                                    {% for country in countries %}
+                                                                        {% if current_user.profile.billing_country == country.name %}
+                                                                        <option value="{{country.name}}" selected="selected">{{country.name}}</option>
+                                                                        {% else %}    
+                                                                        <option value="{{country.name}}">{{country.name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                        
+                                                            <div class="form-group">
+                                                                <input type="checkbox" tabindex="3" class="" name="same_as_billing" id="same_as_billing" checked="checkbox" value="1">
+                                                                <label for="same_as_billing" style="display: inline; cursor: pointer;"> Is shipping address same as billing?</label>
+                                                            </div>
+                                                        </div>    
+                                        
+                                                        <div class="address-form" id="shipping" style="padding: 10px 0px; display: none;">
+                                                            <h4>Shipping Address</h4>
+                                                            <div class="form-group">
+                                                                <input type="text" name="shipping_name" id="shipping_name" tabindex="1" class="form-control ignore" placeholder="Shipping Name" value="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="email" name="shipping_email" id="shipping_email" tabindex="1" class="form-control ignore" placeholder="Shipping Email Address" value="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="shipping_mobile" id="shipping_mobile" tabindex="1" class="form-control ignore" placeholder="Shipping Mobile" value="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="shipping_address" id="shipping_address" tabindex="2" class="form-control ignore" placeholder="Shipping Address">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="text" name="shipping_postcode" id="shipping_postcode" tabindex="2" class="form-control ignore" placeholder="Shipping Postcode" maxlength="6">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select class="form-control ignore" name="shipping_city">
+                                                                    <option value="">Choose City</option>
+                                                                    {% for city in cities %}
+                                                                        {% if current_user.profile.billing_city == city.name %}
+                                                                            <option value="{{city.name}}" selected="selected">{{city.name}}</option>
+                                                                        {% else %}    
+                                                                        <option value="{{city.name}}">{{city.name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select class="form-control ignore" name="shipping_state">
+                                                                    <option value="">Choose State</option>
+                                                                    {% for state in states %}
+                                                                    {% if current_user.profile.billing_state == state.name %}
+                                                                    <option value="{{state.name}}" selected="selected">{{state.name}}</option>
+                                                                    {% else %}    
+                                                                    <option value="{{state.name}}">{{state.name}}</option>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <select class="form-control ignore" name="shipping_country">
+                                                                    <option value="">Choose Country</option>
+                                                                    {% for country in countries %}
+                                                                        {% if current_user.profile.billing_country == country.name %}
+                                                                        <option value="{{country.name}}" selected="selected">{{country.name}}</option>
+                                                                        {% else %}    
+                                                                        <option value="{{country.name}}">{{country.name}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>    
+                                                        
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div _ngcontent-kfe-c6="" class="cart-rightside col-md-4"><!----><!----><!---->
+                                            
+                                            <div _ngcontent-kfe-c6="" class="sticky-top card">
+                                                <div _ngcontent-kfe-c6="" class="totalamt-col">
+                                                    <h4 _ngcontent-kfe-c6="" class="paymentdetails-title">PAYMENT DETAILS</h4>
+                                                    <div _ngcontent-kfe-c6="" class="allcalculation">
+                                                        
+                                                        <!-- Shipping methods/Payment methods -->
+                                                        <div class="shipping-methods-form" id="shipping" style="padding: 10px 0px;">
+                                                            <h4>Review Your Order</h4>
+                                                            <ul class="form-group">
+                                                                <li style="list-style: none; font-weight: bold;">Name x Quantity</li>
+                                                                {% for item in products %}
+                                                                    <li>{{item.product.name}} x {{item.quantity}}</li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                            
+                                                            <div class="form-group">
+                                                                Sub Total: <span class="total-price">Rs. {{cart_dict.sub_total}}</span>
+                                                            </div>
+                                                            {% if cart_object.coupon is not none %}
+                                                            <div class="form-group">
+                                                                Coupon Applied: <span class="checkout-coupon">{{cart_object.coupon.name}}</span>
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>   
+                                                        
+                                                        <div class="shipping-methods-form" id="shipping" style="padding: 10px 0px;">
+                                                            <h4>Shipping Methods</h4>
+                                                            <div class="shipping_methods_list">
+                                                                {% for shipping in shipping_methods %}
+                                                                <div class="form-group">
+                                                                    {% if default_shipping.id == shipping.id %} 
+                                                                    <!-- <input type="radio" name="shipping_method" tabindex="1" id="shipping_method_{{forloop.counter}}" class="control shipping_method" value="{{shipping.id}}" checked="checked"> 
+                                                                    <label for="shipping_method_{{forloop.counter}}" style="display: inline; cursor: pointer;"> {{shipping.name}} - Rs. {{shipping.charge}}</label> -->
+                                                                    {% else %}
+                                                                    <!-- <input type="radio" name="shipping_method" tabindex="1" id="shipping_method_{{forloop.counter}}" class="control shipping_method" value="{{shipping.id}}"> 
+                                                                    <label for="shipping_method_{{forloop.counter}}" style="display: inline; cursor: pointer;"> {{shipping.name}} - Rs. {{shipping.charge}}</label> -->
+                                                                    {% endif %}
+                                                                    <input type="radio" name="shipping_method" tabindex="1" id="shipping_method_{{forloop.counter}}" class="control shipping_method" value="{{shipping.id}}" checked="checked"> 
+                                                                    <label for="shipping_method_{{forloop.counter}}" style="display: inline; cursor: pointer;"> {{shipping.name}} - Rs. {{shipping.charge}}</label>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                Total: <span class="total-price ajax_total">Rs. {{cart_dict.total}}</span>
+                                                            </div>
+                                                        </div>   
+                                        
+                                        
+                                                        <div class="payment-methods-form" id="shipping" style="padding: 10px 0px;">
+                                                            <h4>Payment Methods</h4>
+                                                            <div class="payment_methods_list">
+                                                            {% for payment in payment_methods %}
+                                                            {% if payment.id == default_payment.id %}
+                                                            <div class="form-group">
+                                                                <input type="radio" name="payment_method" tabindex="1" id="payment_method_{{forloop.counter}}" class="control" value="{{payment.id}}" checked="checked"> 
+                                                                <label for="payment_method_{{forloop.counter}}" style="display: inline; cursor: pointer;"> {{payment.name}}</label>
+                                                                <br />
+                                                                <p>{{payment.description}}</p>
+                                                            </div>
+                                                            {% else %}
+                                                            <div class="form-group">
+                                                                <input type="radio" name="payment_method" tabindex="1" id="payment_method_{{forloop.counter}}" class="control" value="{{payment.id}}"> 
+                                                                <label for="payment_method_{{forloop.counter}}" style="display: inline; cursor: pointer;"> {{payment.name}}</label>
+                                                                <br />
+                                                                <p>{{payment.description}}</p>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="checkbox" name="terms_and_conditions" id="terms_and_conditions" tabindex="1" class="control" value="terms_and_conditions"> 
+                                                                <label for="terms_and_conditions" style="display: inline; cursor: pointer;"> Terms and Conditions</label>
+                                                            </div>
+                                                            <div _ngcontent-kfe-c6="" class="taxes-txt">
+                                                                <div _ngcontent-kfe-c6="">Medsbuy is a technology platform to facilitate transaction
+                                                                    of business. The products and services are offered for sale by the sellers. The
+                                                                    user authorizes the delivery personnel to be his agent for delivery of the
+                                                                    goods. For details read <a href="/" id="netmeds_tech_msg"
+                                                                                            target="_blank" rel="noopener">Terms &
+                                                                        Conditions</a></div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="submit" name="place_order" id="place_order" tabindex="1" class="form-control" value="Place Order" style="background-color: #007bff;margin-left:5px;color: #fff;height: 34px;width: 120px;padding: 0px;font-size: 13px;">
+                                                            </div>
+                                                        </div>  
+
+                                                    </div>
+                                                    
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div><!---->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="{% static 'js/jquery.growl.js' %}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" type="text/javascript"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/additional-methods.min.js" type="text/javascript"></script> -->
+<link href="{% static 'css/jquery.growl.css' %}" rel="stylesheet" type="text/css" />
+<script>
+    $(function() {
+
+        /* $('#login-form-link').click(function(e) {
+            $("#login-form").delay(100).fadeIn(100);
+            $("#register-form").fadeOut(100);
+            $('#register-form-link').removeClass('active');
+            $(this).addClass('active');
+            e.preventDefault();
+        });
+        $('#register-form-link').click(function(e) {
+            $("#register-form").delay(100).fadeIn(100);
+            $("#login-form").fadeOut(100);
+            $('#login-form-link').removeClass('active');
+            $(this).addClass('active');
+            e.preventDefault();
+        }); */
+
+        $('.login-register').click(function(){
+            $('.login_register').slideToggle();
+        });
+        $('.applypromocode_slide').click(function(){
+            $('.applypromo').slideToggle();
+        });
+
+        //Auto select city, state and country
+        $('#postcode').blur(function(){
+            var zipcode = $.trim($(this).val());
+            var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
+            if(zipcode.length == 6){
+                $.ajax({
+                    url: "{% url 'ecommerce:get_city_by_zipcode' %}",
+                    type: "POST",
+                    data: {zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken},
+                    //async: false,
+                    success: function(data, textStatus, jqXHR) {
+                        if(data.message != 'Success')
+                        {
+                            alert(data.message);
+                        }else{
+                            $('select[name="city"]').val(data.obj.city);
+                            $('select[name="state"]').val(data.obj.state);
+                            $('select[name="country"]').val(data.obj.country);
+
+                            //Display payment gateways
+                            get_payment_methods_by_zipcode({zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken});
+
+                            //Display shipping methods
+                            get_shipping_methods_by_zipcode({zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken});
+                        }
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error occurred!');
+                    }
+                });
+
+            }
+        });
+
+        //Trigger zipcode on city, state, change
+        $('select[name="city"], select[name="state"]').change(function(){
+            $('#postcode').trigger('blur');
+        });
+
+        //Get payment methods by zipcode
+        function get_shipping_methods_by_zipcode(obj){
+            $.ajax({
+                url: "{% url 'ecommerce:ajax_shipping_methods' %}",
+                type:"POST",
+                data: {zipcode:obj.zipcode, csrfmiddlewaretoken:obj.csrfmiddlewaretoken},
+                success: function(data){
+                    //console.log(data);
+                    $('.shipping_methods_list').html(data.html);
+                    $('.ajax_total').html('Rs. '+data.shipping.total.toFixed(2));
+                    //$('.payment_methods_list').html(data.html)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error occurred!');
+                }
+            });
+        }
+
+
+        //Get payment methods by zipcode
+        function get_payment_methods_by_zipcode(obj){
+            $.ajax({
+                url: "{% url 'ecommerce:ajax_payment_methods' %}",
+                type:"POST",
+                data: {zipcode:obj.zipcode, csrfmiddlewaretoken:obj.csrfmiddlewaretoken},
+                success: function(data){
+                    $('.payment_methods_list').html(data.html)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error occurred!');
+                }
+            });
+        }
+
+        //Auto select city, state and country
+        $('#shipping_postcode').blur(function(){
+            var zipcode = $.trim($(this).val());
+            var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
+            if(zipcode.length == 6){
+                $.ajax({
+                    url: "{% url 'ecommerce:get_city_by_zipcode' %}",
+                    type: "POST",
+                    data: {zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken},
+                    //async: false,
+                    success: function(data, textStatus, jqXHR) {
+                        if(data.message != 'Success')
+                        {
+                            alert(data.message);
+                        }else{
+                            $('select[name="shipping_city"]').val(data.obj.city);
+                            $('select[name="shipping_state"]').val(data.obj.state);
+                            $('select[name="shipping_country"]').val(data.obj.country);
+                        }
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error occurred!');
+                    }
+                });
+
+            }
+        });
+
+        
+
+        //Trigger zipcode on city, state, change
+        $('select[name="shipping_city"], select[name="shipping_state"]').change(function(){
+            $('#shipping_postcode').trigger('blur');
+        });
+
+        $('#same_as_billing').click(function(){
+            if(!$(this).is(':checked')){
+                $('#shipping input').removeClass('ignore');
+                $('#shipping select').removeClass('ignore');
+            }else{
+                $('#shipping input').addClass('ignore');
+                $('#shipping select').addClass('ignore');
+            }
+            $('#shipping').slideToggle();
+        });
+
+        $('.shipping_method').change(function(){
+            id = $(this).val();
+            $('.frm_shipping_method').val(id);
+            $('.ship_change').trigger('click');
+        });
+
+        $('.ship_change').click(function(e){
+            e.preventDefault();
+            var serialized_form = $('#checkout_shipping_form').serialize();
+            var url = $('#checkout_shipping_form').attr('action');
+            $.ajax({
+                type:'POST',
+                url: url,
+                data: serialized_form,
+                success: function(res){
+                    //var parsedRes = JSON.parse(res);
+                    //console.log(res);
+                    /* console.log(res.data.sub_total);
+                    console.log(res.data.total); */
+                    let total = res.data.total;
+                    total = total.toFixed(2);
+                    $('.ajax_total').text('Rs. '+total);
+
+                },
+                error: function(res){
+                    alert("Something went wrong!");
+                }
+
+            });
+        });
+
+
+        //Checkout form validation
+        $("#checkout").validate({
+            ignore: ".ignore",
+            rules: {
+                    name: "required",
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    mobile: {
+                        required: true,
+                        maxlength: 12,
+                        number: true
+                    },
+                    address: "required",
+                    //postcode: "required",
+                    postcode:{
+                        required: true,
+                        minlength:6,
+                        number:true
+                    },
+                    city: "required",
+                    state: "required",
+                    country: "required",
+                    shipping_name: "required",
+                    shipping_email: {
+                        required: true,
+                        email: true
+                    },
+                    shipping_mobile: {
+                        required: true,
+                        maxlength: 12,
+                        number: true
+                    },
+                    shipping_address: "required",
+                    //shipping_postcode: "required",
+                    shipping_postcode:{
+                        required: true,
+                        minlength:6,
+                        number:true
+                    },
+                    shipping_city: "required",
+                    shipping_state: "required",
+                    shipping_country: "required"
+                },
+                messages: {
+                    name: "Please enter your name",
+                    email: {
+                        required: "Please enter your email",
+                        email: "Your email address is not correct"
+                    },
+                    mobile: {
+                        required: "Please enter your mobile",
+                        maxlength: "Mobile can not exceed 12 digits",
+                        number: "Mobile must be numbers only"
+                    },
+                    address: "Please enter your address",
+                    //postcode: "Please enter your postcode",
+                    postcode:{
+                        required: "Please enter your postcode",
+                        minlength:"Should be 6 digits only",
+                        number:"Should be numeric only"
+                    },
+                    city: "Please enter your city",
+                    state: "Please enter your state",
+                    country: "Please enter your country",
+                    shipping_name: "Please enter your shipping name",
+                    shipping_email: {
+                        required: "Please enter your shipping email",
+                        email: "Your shipping email address is not correct"
+                    },
+                    shipping_mobile: {
+                        required: "Please enter your shipping mobile",
+                        maxlength: "Mobile can not exceed 12 digits",
+                        number: "Mobile must be numbers only"
+                    },
+                    shipping_address: "Please enter your shipping address",
+                    //shipping_postcode: "Please enter your shipping postcode",
+                    shipping_postcode:{
+                        required: "Please enter your postcode",
+                        minlength:"Should be 6 digits only",
+                        number:"Should be numeric only"
+                    },
+                    shipping_city: "Please enter your shipping city",
+                    shipping_state: "Please enter your shipping state",
+                    shipping_country: "Please enter your shipping country"
+                }/* ,
+                submitHandler: function(form) {
+                    form.submit();
+                } */
+        });
+
+
+        $('#checkout').submit(function(){
+            if(!$('#terms_and_conditions').is(':checked')){
+                //alert("hi");
+                $.growl.warning({ message: "Please check the terms and conditions!" });
+                return false;
+            }
+        });
+
+    });
+</script>
+
+{% endblock %}

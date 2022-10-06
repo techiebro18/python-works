@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block breadcrumb %}
+<li><a href=""><i class="icon-home2 position-left"></i> Home</a></li>
+<li class="active">Consultation Requests</li>
+{% endblock %}
+{% block content %} 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+            
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">NEW REQUESTS</div>
+            <div class="panel-body">{{new_requests}}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">TOTAL REQUESTS</div>
+            <div class="panel-body">{{total}}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">ANSWERED</div>
+            <div class="panel-body">{{answered}}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-danger">
+            <div class="panel-heading">REJECTED</div>
+            <div class="panel-body">{{rejected}}</div>
+        </div>
+    </div>
+</div>
+    
+                
+
+                
+                            
+            
+
+            <!-- Basic datatable -->
+                    <div class="panel panel-flat">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">New Requests</h5>
+                        </div>
+
+                        
+
+                        <table class="table datatable-basic">
+                            <thead>
+                                <tr>
+                                    <th style="display:none;"></th>
+                                    <th class="col-md-2">Name</th>
+                                    <th class="col-md-5">Problem</th>
+                                    <th class="col-md-1">Date Time</th>
+                                    <!-- <th class="col-md-1">Status</th> -->
+                                    <th class="text-center" style="width: 20px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                            {% for obj in obj_list %}
+
+                                <tr>
+                                    <td style="display:none;"></td>
+                                    <td>
+                                        <div class="media-left">
+                                            <div class="">
+                                                <a href="{% url 'consultation:consultation_page' obj.id %}" class="text-default text-semibold">{{obj.name}}</a>
+                                            </div>
+                                        </div>
+                                    </td> 
+                                    
+                                    <td>{{obj.problem|truncatechars:50}}</td>
+                                    
+                                    <td>{{obj.date_created|date:'d M, Y  h:i'}}</td>
+                                    
+                                    <td class="text-center">
+                                        <ul class="icons-list">
+                                            <li class="dropdown">
+                                                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-menu7"></i></a>
+                                                
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="{% url 'consultation:consultation_page' obj.id %}"><i class="icon-file-stats"></i> Answer</a></li>
+                                                    <li><a href="{% url 'consultation:reject_page' obj.id %}"><i class="icon-file-stats"></i> Reject</a></li>
+                                                    <!-- <li>
+                                                        <form method="post" class="form-horizontal dropdown-menu-custom" action="" enctype="multipart/form-data">
+                                                            {% csrf_token %}
+                                                            <a class="link_delete" href="javascript:void(0)"><i class="icon-file-text2"></i> Delete</a>
+                                                            <input type="hidden" name="id" value="" />
+                                                        </form>
+
+                                                    </li> -->
+                                                    
+                                                    
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>  
+
+{% endfor %}                                                                                            
+                                </tbody>
+                        </table>
+                    
+                    
+                    
+                    </div>
+                    <!-- /basic datatable -->
+
+
+
+
+<script type="text/javascript" src="{% static 'front/js/plugins/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript">
+// CKEDITOR.replace( 'description',
+// {
+//     customConfig : '{% static "front/js/plugins/ckeditor/config_custom.js" %}',
+//     toolbar : 'simple'
+// })
+
+CKEDITOR.replace( 'description',{
+        allowedContent: true
+    });
+
+</script>
+
+
+{% endblock %}

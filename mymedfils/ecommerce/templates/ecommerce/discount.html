@@ -1,0 +1,6 @@
+{% if product.sale_price < product.price %}        
+<span class="badge discount discount" style="color: green;"> 
+    {{product.discount}}% <span class="text-off">OFF</span>
+    {#<img src="{% static 'img/50-percent-off.png' %}" alt="{{product.discount}}% OFF">#}
+</span>                            
+{% endif %}

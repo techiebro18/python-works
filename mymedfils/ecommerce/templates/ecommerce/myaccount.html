@@ -1,0 +1,108 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main padding-y">
+        <main class="">
+            <div class="">
+                <h6 class="title-category">Your Account</h6>
+                <div class="row">
+                    <aside class="col-lg col-md-3">
+                        {% include 'ecommerce/myaccount-leftmenu-new.html' %}
+                    </aside> <!-- col.// -->
+                    <div class="col-md-9 col-xl-9 col-lg-9">
+                    
+                        {% if messages %}
+                        <ul class="messages" style="text-align: center;">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        
+                        <form action="{% url 'ecommerce:myaccount_form' %}" method="POST">
+                            {% csrf_token %}
+                        <div class="card right-box edit-profile">
+                            <h3><!-- <img src="images/mp-logo.png"> -->
+                                <span>Profile Name : </span>{{current_user.first_name}} {{current_user.last_name}}
+                            </h3>
+                            <div class="profile-form">
+                                <div class="form-group form-row" style="display: none;">
+                                    <label class="col-md-5">USERNAME :</label>
+                                    <div class="col-md-7">
+                                        {{form.username.errors}}
+                                        {{form.username}}
+                                    </div>
+                                </div>
+                                <div class="form-group form-row">
+                                    <label class="col-md-5">FIRST NAME :</label>
+                                    <div class="col-md-7">
+                                        {{form.first_name.errors}}
+                                        {{form.first_name}}
+                                    </div>
+                                </div>
+                                <div class="form-group form-row">
+                                    <label class="col-md-5">LAST NAME :</label>
+                                    <div class="col-md-7">
+                                        {{form.last_name.errors}}
+                                        {{form.last_name}}
+                                    </div>
+                                </div>
+                                <div class="form-group form-row">
+                                    <label class="col-md-5">EMAIL :</label>
+                                    <div class="col-md-7">
+                                        {{form.email.errors}}
+                                        {{form.email}}
+                                    </div>
+                                </div>
+                                <div class="form-group form-row">
+                                    <label class="col-md-5">MOBILE :</label>
+                                    <div class="col-md-7">
+                                        {{form.mobile.errors}}
+                                        {{form.mobile}}
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-primary" type="submit">SAVE PROFILE</button>
+                                </div>							
+                            </div>
+                            
+                            <div class="profile-form">
+                                <div class="form-group form-row">
+                                    <label class="col-md-5">ADDRESS :</label>
+                                    <div class="col-md-7">
+                                        {{current_user.profile.billing_name}} <br />
+                                        {{current_user.profile.billing_address}} <br />
+                                        PIN - {{current_user.profile.billing_postcode}}, {{current_user.profile.billing_city}}. <br />
+                                        +91 - {{current_user.profile.billing_mobile}}
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{% url 'ecommerce:my_address' %}" class="btn btn-primary">EDIT</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        </form>
+
+                    </div> <!-- col.// -->
+
+                </div> <!-- row.// -->
+
+            </div> <!-- card-body.// -->
+        </main> <!-- card.// -->
+
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+    <!-- =============== SECTION REGION =============== -->
+    <!-- =============== SECTION REGION .//END =============== -->		
+</div>
+<!-- container end.// -->
+<article class="">
+    <img src="{% static 'img/new-info.png' %}" class="w-100">
+</article>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main id="main">
+
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="{% url 'shop:home' %}">Home</a></li>
+        <li>Team</li>
+      </ol>
+      <h2>Team</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <!-- ======= Team Section ======= -->
+  <section id="team" class="team">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="member">
+            <img src="{% static 'assets/img/team/Capture.jpeg' %}" alt="">
+            <h4>Naushad Ahmad</h4>
+            <span>Shop Owner</span>
+            <!-- <p>
+              Magni qui quod omnis unde et eos fuga et exercitationem. Odio veritatis perspiciatis quaerat qui aut aut aut
+            </p>
+            <div class="social">
+              <a href=""><i class="icofont-twitter"></i></a>
+              <a href=""><i class="icofont-facebook"></i></a>
+              <a href=""><i class="icofont-instagram"></i></a>
+              <a href=""><i class="icofont-linkedin"></i></a>
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Team Section -->
+
+</main><!-- End #main -->
+{% endblock %}

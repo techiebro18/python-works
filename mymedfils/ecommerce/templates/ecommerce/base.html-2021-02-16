@@ -1,0 +1,293 @@
+{% load static %}
+{% load common %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    {% if title %}
+    <title>{{title}}</title>
+    {% else %}
+    <title>Medsbuy</title>
+    {% endif %}
+    <link href="{% static 'css/healthmug-combined-eba31cc4d9.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" type="text/css" rel="stylesheet">
+    <script src="{% static 'js/healthmug-combined-59d77d8095.js' %}" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://kit.fontawesome.com/8eaff967ad.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/slick.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.matchHeight.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    
+</head>
+
+<body data-new-gr-c-s-check-loaded="8.867.0" class="">
+<div class="wrapper">
+<div class="top-main">
+    <div class="top w-100 float-left">
+        <div class="">
+            <div class="row align-items-center">
+                <div class="col-xl-3 col-lg-3 d-nd d-lg-block">
+                    <a href="{% url 'ecommerce:home' %}" class="logo float-left" style="padding-left: 20px;"><img
+                            src="{% static 'img/medsbuy-logo.png' %}" style="width: 260px;" alt="medsbuy-logo"></a>
+                </div>
+                <div class="col-xl-9 col-lg-9">
+                    <div class="top-search float-left kjl" style="padding-top: 10px;">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <div class="header-search-wrap">
+                                <form action="{% url 'ecommerce:search' %}" method="POST" class="kol">
+                                    {% csrf_token %}
+                                    <input type="text" name="keyword" value="{{request.GET.keyword}}" placeholder="Search for your item's type.....">
+                                    <select class="custom-select" name="cat_id">
+                                        <option value="">All Categories</option>
+                                        <option value="1">Homeopathy</option>
+                                        <option value="2">Ayurvedic</option>
+                                        <option value="7">Unani</option>
+                                        <!-- <option value="6">Health &amp; Wellness</option> -->
+                                        <option value="5">Beauty &amp; Personal Care</option>
+                                        <option value="4">Baby Care</option>
+                                        <option value="3">Mother Care</option>
+                                    </select>
+                                    <button class="kls" type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="top-right float-right text-center klf">
+                        <a href="javascript:void(0)" class="search_list top-contact top-rlink d-inline-block">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        <a href="{% url 'ecommerce:products_by_category' 'deals' %}" class="top-contact top-rlink d-inline-block">
+                            <img src="{% static 'img/offers1.png' %}" style="width: 24px;">
+                            <span class="d-block">Offers</span>
+                        </a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'ecommerce:myaccount_form' %}" class="top-signIn top-rlink d-inline-block">
+                            <i class="fa fa-user-alt"></i>
+                            <span class="d-block">My Account</span>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'ecommerce:signin_form' %}" class="top-signIn top-rlink d-inline-block">
+                            <i class="fa fa-user-alt"></i>
+                            <span class="d-block">Sign In</span>
+                        </a>
+                        {% endif %}
+                        <a href="#" style="display: none;" class="top-contact top-rlink d-inline-block-1">
+                            <img src="{% static 'img/sell_us.png' %}" style="width: 24px;">
+                            <span class="d-block">Sell with us</span>
+                        </a>
+                        <a href="{% url 'ecommerce:cart' %}" class="top-cart d-inline-block">
+                            <i class="fa fa-shopping-cart"></i>
+                            <span>{% get_cartcount request %}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-search-wrap rpls" style="display: none;">
+        <form action="{% url 'ecommerce:search' %}" method="POST" class="sol">
+            {% csrf_token %}
+            <input type="text" class="rkl" name="keyword" value="{{request.GET.keyword}}" placeholder="Search for your item's type.....">
+            <select class="custom-select">
+                <option value="">All Categories</option>
+                <option value="1">Homeopathy</option>
+                <option value="2">Ayurvedic</option>
+                <option value="7">Unani</option>
+                <!-- <option value="6">Health &amp; Wellness</option> -->
+                <option value="5">Beauty &amp; Personal Care</option>
+                <option value="4">Baby Care</option>
+                <option value="3">Mother Care</option>
+            </select>
+            <button class="kls" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    <!--container end-->
+</div>
+<!--top end-->
+<div class="mainmenu float-left w-100">
+    <div class="container">
+        <span class="menulinks"><i></i></span>
+        <ul>
+            <li><a href="{% url 'ecommerce:products_by_category' 'homeopathy' %}">Homeopathy</a></li>
+            <li><a href="{% url 'ecommerce:products_by_category' 'ayurveda' %}">Ayurvedic</a></li>
+            <li><a href="{% url 'ecommerce:products_by_category' 'unani' %}">Unani</a></li>
+            <!-- <li><a href="{% url 'ecommerce:products_by_category' 'health-wellness' %}">Health &amp; Wellness</a></li> -->
+            <li><a href="{% url 'ecommerce:products_by_category' 'beauty-personal-care' %}">Beauty &amp; Personal Care</a></li>
+            <li><a href="{% url 'ecommerce:products_by_category' 'baby-care' %}">Baby Care</a></li>
+            <li><a href="{% url 'ecommerce:products_by_category' 'mother-care' %}">Mother Care</a></li>
+            <!-- <li class="more-link"><a href="#">More</a></li> -->
+        </ul>
+    </div>
+    <!--container end-->
+</div>
+<!--mainmenu end-->
+
+{% block content %}
+{% endblock %}
+</div>
+<div class="trust-section float-left w-100 text-center">
+    <img src="{% static 'img/new-info.png' %}">
+    <!--container end-->
+    <footer class="footer-area">
+        <div class="footer-top">
+            <div class="containers">
+                <div class="rows">
+                    <!-- footer single wedget -->
+                    <div class="col-md-6s col-lg-4s">
+                        <!-- footer logo -->
+                        <div class="footer-logo">
+                            <a href="{% url 'ecommerce:home' %}"><img src="{% static 'img/medsbuy-logo.png' %}" style="float: left;width: 300px;"
+                                                      alt="Medsbuy logo"/></a>
+                        </div>
+                        <!-- footer logo -->
+                        <div class="about-footer" style="float: left;">
+                            <h1 class="text-info" style="text-align: left !important;">Medsbuy offering  online genuine medicine at best price in India, PAN India free home delivery , Cash on delivery(cod) facility available and free online doctor consultation </h1>
+                            <div class="need-help">
+                                <p class="phone-info">
+                                    NEED HELP?
+                                    <span>
+                                                (+800) 345 678 <br/>
+                                                (+800) 123 456
+                                            </span>
+                                </p>
+                            </div>
+                            <div class="social-info">
+                                <ul>
+                                    <li>
+                                        <a target="_blank" href="https://www.facebook.com/medsbuyOfficial"><i class="fa fa-facebook"></i></a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="#"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="#"><i class="fa fa-youtube"></i></a>
+                                    </li>
+                                    <!-- <li>
+                                        <a  href="#"><i class="fa fa-google"></i></a>
+                                    </li> -->
+                                    <li>
+                                        <a target="_blank" href="#"><i class="fa fa-instagram"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer single wedget -->
+                    <div class="col-md-6s col-lg-2s mt-res-sx-30px mt-res-md-30px">
+                        <div class="single-wedge">
+                            <h4 class="footer-herading">Information</h4>
+                            <div class="footer-links">
+                                <ul>
+                                    <li><a href="{% url 'ecommerce:my_orders' %}">Track Delivery</a></li>
+                                    <li><a href="{% url 'ecommerce:page' 'about-us' %}">About Us</a></li>
+                                    <!-- <li><a href="#">Secure Payment</a></li> -->
+                                    <li><a href="{% url 'ecommerce:contact_us' %}">Contact Us</a></li>
+                                    <!-- <li><a href="#">Sitemap</a></li> -->
+                                    <!-- <li><a href="#">Stores</a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer single wedget -->
+                    <div class="col-md-6s col-lg-2s mt-res-md-50px mt-res-sx-30px mt-res-md-30px">
+                        <div class="single-wedge">
+                            <h4 class="footer-herading">Custom Links</h4>
+                            <div class="footer-links">
+                                <ul>
+                                    <li><a href="{% url 'ecommerce:page' 'terms-and-conditions' %}">Terms and Conditions</a></li>
+                                    <!-- <li><a href="#">Prices Drop</a></li> -->
+                                    <!-- <li><a href="#">New Products</a></li> -->
+                                    <!-- <li><a href="#">Best Sales</a></li> -->
+                                    <li><a href="{% url 'ecommerce:signin_form' %}">Login</a></li>
+                                    <!-- <li><a href="my-account.html">My Account</a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer single wedget -->
+                    <div class="col-md-6s col-lg-4s mt-res-md-50px mt-res-sx-30px mt-res-md-30px">
+                        <div class="single-wedge">
+                            <h4 class="footer-herading">Newsletter</h4>
+                            <div class="subscrib-text">
+                                <p>You may unsubscribe at any moment. For that purpose, please find our contact info in the legal notice.</p>
+                            </div>
+                            {% if messages %}
+                            <ul class="messages" style="text-align: center;">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            <div id="mc_embed_signup" class="subscribe-form">
+                                <form id="mc-embedded-subscribe-form" class="validate"  name="mc-embedded-subscribe-form" method="post" action="{% url 'ecommerce:subscribe' %}">
+                                    {% csrf_token %}
+                                    <div id="mc_embed_signup_scroll" class="mc-form">
+                                        <input class="email subscribe_text" type="email" required=""
+                                               placeholder="Enter your email here.." name="email" value=""/>
+                                        
+                                        <div class="clear">
+                                            <input id="mc-embedded-subscribe" class="button" type="submit" name="subscribe" value="Sign Up"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="img_app">
+                                <a href="#"><img
+                                        src="https://htmldemo.hasthemes.com/ecolife-preview/ecolife/assets/{% static 'img/icons/app_store.png"
+                                        alt=""/></a>
+                                <a href="#"><img
+                                        src="https://htmldemo.hasthemes.com/ecolife-preview/ecolife/assets/{% static 'img/icons/google_play.png"
+                                        alt=""/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- footer single wedget -->
+                </div>
+            </div>
+        </div>
+        <!--  Footer Bottom Area start -->
+        <div class="footer-bottom">
+            <div class="containers">
+                <div class="rows">
+                    <div class="col-md-6s col-lg-4s">
+                        <p class="copy-text">Copyright © 2021 All Rights Reserved</p>
+                    </div>
+                    <div class="col-md-6s col-lg-8s">
+                       <!---Payment option display Bar-------------------->
+                        <!-- <img class="payment-img"
+                             src="https://htmldemo.hasthemes.com/ecolife-preview/ecolife/assets/{% static 'img/icons/payment.png' %}"
+                             style="margin-right: 300px;" alt=""/> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Footer Bottom Area End-->
+    </footer>
+</div>
+<!--trust section end-->
+
+<script>
+    $(".search_list").on("click", function() {
+        $('.rpls').slideToggle('medium');
+    });
+
+    $(document).ready(function(){
+        $('#mc-embedded-subscribe-form').submit(function(){
+            $('.c-error').remove();
+            if( $.trim($('#mc-embedded-subscribe-form .email').val()) == ''){
+                $('#mc-embedded-subscribe-form').prepend('<span class="c-error">Please Enter Your Email.</span>');
+                return false;
+            }
+            return true;
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% if product.sale_price < product.price %}
+<div class="price-wrap mt-2">
+    <span class="price">Price: &#8377; {{product.sale_price}}</span>
+    <del class="price-old">&#8377; {{product.price}}</del>
+</div> <!-- price-wrap.// -->
+{%else%}
+<span class="price">Price: &#8377; {{product.price}}</span>
+{%endif%}

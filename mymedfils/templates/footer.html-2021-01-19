@@ -1,0 +1,20 @@
+<div class="footer text-muted">
+    &copy; 2020. <a href="javascript:void(0)">Medfils</a> 
+</div>
+
+<script>
+    $(document).ready(function(){
+
+        //Update status
+        $('.link_sub').click(function(){
+            $(this).parent().submit();
+        });
+        $('.link_delete').click(function(){
+            if(confirm('Are you sure, want to delete the record?'))
+            {
+                $(this).parent().submit();
+            }
+        });
+        
+    });
+</script>

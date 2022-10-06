@@ -1,0 +1,296 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<!-- It is necessary to load after block starts -->
+{% get_categories_list count=15 as category_list %}
+{% get_brands_list count=15 as brand_list %}
+<section class="section-pagetop pt-2 pb-0">
+    <div class="container">
+        <nav>
+        <ol class="breadcrumb text-white">
+            <li class="breadcrumb-item"><a href="{% url 'ecommerce:home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{brand.name}}</li>
+        </ol>  
+        </nav>
+    </div> <!-- container //  -->
+    </section>
+    <section class="section-content padding-y">
+        <div class="container">
+        
+        <div class="row">
+            <aside class="col-md-3">
+                <div class="card">				
+                    <article class="filter-group">
+                        <header class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" class="">
+                                <i class="icon-control fa fa-chevron-down"></i>
+                                <h6 class="title">Categories </h6>
+                            </a>
+                        </header>
+                        <div class="filter-content collapse show" id="collapse_2" style="">
+                            <div class="card-body">
+                                {% for obj in category_list %}
+                                {% if request.resolver_match.kwargs.slug == obj.slug %}
+                                    <label class="custom-control custom-checkbox">
+                                    <input type="checkbox"  class="custom-control-input" checked="checked">
+                                    <div class="custom-control-label"><a href="{% url 'ecommerce:products_by_category' obj.slug %}" class="active" >{{obj.name}}</a></div>
+                                    </label>
+                                {% else %}
+                                    <label class="custom-control custom-checkbox">
+                                    <input type="checkbox"  class="custom-control-input">
+                                    <div class="custom-control-label"><a href="{% url 'ecommerce:products_by_category' obj.slug %}" class="active" >{{obj.name}}</a></div>
+                                    </label>
+                                {% endif %}
+                                {% endfor %}
+                            </div> 
+                        </div>
+                    </article> 
+
+                    <form action="" name="filter" id="filter">
+                        {% csrf_token %}
+                        <input type="hidden" name="sortby" class="frm_sortby" value=""/>
+                        <input type="hidden" name="page" class="frm_page" value=""/>
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Price filter </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_5" style="">
+                                <div class="card-body">
+                                    {% if request.GET.price == 'below200' %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price1" name="price" checked="checked" value="below200" class="custom-control-input">
+                                    <div class="custom-control-label">Below 200</div>
+                                    </label>
+                                    {% else %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price1" name="price"  value="below200" class="custom-control-input">
+                                    <div class="custom-control-label">Below 200</div>
+                                    </label>
+                                    {% endif %}
+                    
+                                    {% if request.GET.price == '200-500' %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price2" name="price" checked="checked" value="200-500" class="custom-control-input">
+                                    <div class="custom-control-label">200-500</div>
+                                    </label>
+                                    {% else %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price2" name="price"  value="200-500" class="custom-control-input">
+                                    <div class="custom-control-label">200-500</div>
+                                    </label>
+                                    {% endif %}
+
+                                    {% if request.GET.price == '500-1000' %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price3" name="price" checked="checked" value="500-1000" class="custom-control-input">
+                                    <div class="custom-control-label">500-1000</div>
+                                    </label>
+                                    {% else %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price3" name="price"  value="500-1000" class="custom-control-input">
+                                    <div class="custom-control-label">500-1000</div>
+                                    </label>
+                                    {% endif %}
+
+                                    {% if request.GET.price == 'above1000' %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price4" name="price" checked="checked" value="above1000" class="custom-control-input">
+                                    <div class="custom-control-label">Above 1000</div>
+                                    </label>
+                                    {% else %}
+                                    <label class="custom-control custom-radio">
+                                    <input type="radio" id="price4" name="price"  value="above1000" class="custom-control-input">
+                                    <div class="custom-control-label">Above 1000</div>
+                                    </label>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </article> 
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Brands </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_3" style="">
+                                <div class="card-body">
+                                    {% for obj in brand_list %}
+                                    {% if obj.id|stringformat:"i" in request.GET|get_list:'brands[]' %}
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" id="brand_{{obj.id}}" name="brands[]"  class="custom-control-input" value="{{obj.id}}" checked="checked">
+                                        <div class="custom-control-label">{{obj.name}}</div>
+                                        </label>
+                                    {% else %}
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" id="brand_{{obj.id}}" name="brands[]"  class="custom-control-input" value="{{obj.id}}">
+                                        <div class="custom-control-label">{{obj.name}}</div>
+                                        </label>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </article>
+                        <input type="submit" name="filterSubmit" id="filterSubmit" style="display: none;"> 
+                    </form>
+                </div> <!-- card.// -->
+            </aside> <!-- col.// -->
+            <main class="col-md-9">
+        <div class="banner mb-4">
+            <img src="{% static 'img/product-banner-1.jpg' %}" alt="{{brand.name}}">
+        </div>
+        <header class="border-bottom mb-4 pb-3">
+                <div class="form-inline">
+                    <span class="mr-md-auto">{{brand.product_set.count}} Items found </span>
+                    {% with sortby=request.GET.sortby %}
+                    <select class="mr-2 form-control sortby">
+                        <option value="name" {% if sortby == 'name' or sortby == '' %}selected="selected"{% endif %}>Name</option>
+                        <option value="price_asc" {% if sortby == 'price_asc' %}selected="selected"{% endif %}>Price Low</option>
+                        <option value="price_desc" {% if sortby == 'price_desc' %}selected="selected"{% endif %}>Price High to Low</option>
+                        <option value="discount" {% if sortby == 'discount' %}selected="selected"{% endif %}>Discounted</option>
+                        <option value="date" {% if sortby == 'date' %}selected="selected"{% endif %}>New Arrivals</option>
+                    </select>
+                    {% endwith %}
+                    <!-- <div class="btn-group">
+                        <a href="#" class="btn btn-outline-secondary" data-toggle="tooltip" title="" data-original-title="List view"> 
+                            <i class="fa fa-bars"></i></a>
+                        <a href="#" class="btn  btn-outline-secondary active" data-toggle="tooltip" title="" data-original-title="Grid view"> 
+                            <i class="fa fa-th"></i></a>
+                    </div> -->
+                </div>
+        </header><!-- sect-heading -->
+        
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap"> 
+                        <span class="badge discount discount"> 
+                            {% if product.discount > 0 %}
+                            <span class="badge discount discount" style="color: green;"> 
+                                {{product.discount}}% OFF
+                            </span>
+                            {% endif %}
+                        </span>
+                        {% with product.productimage_set.all|first as img %}
+                        {% if img.image %}
+                        <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                            <img src="{{ img.image.url }}" alt="{{product.name}}">
+                        </a>
+                        {% endif %}
+                        {% endwith %}
+                        
+                    </div> 
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                            <p>{{product.description|truncatechars:70}}</p>
+                            <div class="price-wrap mt-2">
+                                {% if product.sale_price < product.price %}
+                                <span class="price">Price: ₹ {{product.sale_price}}</span>
+                                <del class="price-old">Price: ₹ {{product.price}}</del>
+                                {%else%}
+                                <span class="price">Price: ₹ {{product.price}}</span>
+                                {%endif%}
+                            </div> 
+                        </div>
+                        <form action="{% url 'ecommerce:add_to_cart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{product.id}}" name="pid" />
+                            <input type="hidden" value="1" name="quantity" />
+                            <button type="submit" title="Add to Cart" class="btn btn-block btn-primary">
+                                ADD TO CART
+                            </button>
+                        </form>
+
+                    </figcaption>
+                </figure>
+            </div> 
+            {% endfor %}
+        </div> <!-- row end.// -->
+
+        <!-- <div class="col-md-12">
+            <figure class="card card-product-grid show-more-prod">
+                <p class="show-result">Showing <span>100</span> out of <span>2000</span> items</p>
+                <a href="#" class="btn btn-primary">Show More Product </a>	
+            </figure>
+        </div> -->
+        
+        <nav class="mt-4" aria-label="Page navigation sample">
+        {% if products.has_other_pages %}
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    {% if '?' in request.get_full_path %}
+                        <li class="page-item"><a class="page-link" href="{{request.get_full_path}}&page={{ products.previous_page_number }}">Previous</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                {% endif %}
+                {% for i in products.paginator.page_range %}
+                {% if products.number == i %}
+                    <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+                {% else %}
+                    {% if '?' in request.get_full_path %}
+                        <li class="page-item"><a class="page-link" href="{{request.get_full_path}}&page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                
+                    {% if '?' in request.get_full_path %}
+                        <li class="page-item"><a class="page-link" href="{{request.get_full_path}}&page={{ products.next_page_number }}">Next</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                    {% endif %}                
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+
+            </main> <!-- col.// -->
+        
+        </div>
+        
+        </div> <!-- container .//  -->
+        </section>
+    <!-- container end.// -->
+    <article class="">
+        <img src="{% static 'img/new-info.png' %}" class="w-100">
+    </article>
+
+
+<script>
+    $(document).ready(function(){
+        $('#filter input').change(function(){
+            $("#filter").submit();
+        });
+
+        $('.sortby').change(function(){
+            let sortby = $(this).val();
+            //alert(sortby);
+            $('.frm_sortby').val(sortby);
+            $("#filter").submit();
+        });
+
+        $('.page-link').click(function(e){
+            e.preventDefault();
+            let page = $.trim($(this).text());
+            $('.frm_page').val(page);
+            $("#filter").submit();
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main padding-y">
+        <main class="">
+            <div class="">
+                <h6 class="title-category">My Order</h6>
+                <div class="row">
+                    <aside class="col-lg col-md-3">
+                        {% include 'ecommerce/myaccount-leftmenu-new.html' %}
+                    </aside> <!-- col.// -->
+                    <div class="col-md-9 col-xl-9 col-lg-9">
+                        <article class="card mb-4">
+                            <div class="card-body yr-csh-title yr-order">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                                        <h5 class="text-blue">Order Info</h5>
+                                    </div>	
+                                </div> <!-- row.// -->
+                                
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="yr-order-box">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Order Id no.</div>
+                                                {{order.order_id}}
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Order Amount</div>
+                                                Rs. {{order.total}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Total items.</div>
+                                                {{order.cart.cartitem_set.all|length}}
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Payment Mode</div>
+                                                {{order.payment_method.name}}
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Net Qty</div>
+                                                {{order.quantity}}
+                                            </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="title-green">Status</div>
+                                                {{order.status|title}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div class="yr-order-box">
+                                        <address>
+                                            <div class="title-green">Shipping Addrss</div>
+                                            <p>{{order.shipping_name}}</p>
+                                            <p>{{order.shipping_address}} <br>PIN - {{order.shipping_postcode}}, {{order.shipping_city}}.<br>
+                                                +91 {{order.shipping_mobile}}, {{order.shipping_email}}.</p>
+                                        </address>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 text-center">
+                                    <form action="{% url 'ecommerce:order_details' order.order_id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary btn-default cancel_order"> Cancel order</button>
+                                        <!-- <button type="submit" class="btn btn-warning"> Need Help? </button> -->
+                                    </form>
+                                </div>
+                                </div>
+
+                            </div> <!-- card-body .// -->
+                            </article>
+
+                            <article class="card mb-4">
+                                {% for item in order.cart.cartitem_set.all %}
+                                <div class="card-body">
+                                    <table class="table table-borderless table-shopping-cart">										
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <figure class="itemside align-items-center">
+                                                <div class="aside">
+                                                    {% with item.product.productimage_set.all|first as img  %}
+                                                    <img class="img-sm" src="{{img.image.url}}">
+                                                    {% endwith %}
+                                                </div>
+                                                <figcaption class="info">
+                                                    <a href="{% url 'ecommerce:product_details' item.product.slug %}" class="text-bolder">{{item.product.name}}</a>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td> 
+                                            <div class="qty-section">
+                                                QTY: {{item.quantity}}
+                                            </div> 
+                                        </td>
+                                        <td> 
+                                            <div class="price-wrap text-center"> 
+                                                <!-- <var class="old-price">Rs. 1156.00</var>
+                                                <div class="discount-price">50%</div> -->
+                                                <var class="price">Rs. {{item.product.actual_price}}</var> 
+                                                <!-- <small class="price">Sub total 1156.00 </small> --> 
+                                            </div> <!-- price-wrap .// -->
+                                        </td>
+                                    </tr>										
+                                    </tbody>
+                                    </table>
+                                    <!-- <div class="tracking-wrap">
+                                        <div class="step active">
+                                            <span class="icon"> <i class="fa fa-check"></i> </span>
+                                            <span class="text">Order Placed</span>
+                                            <small>24 March 2020 </small>
+                                        </div> 
+                                        <div class="step active">
+                                            <span class="icon"> <i class="fa fa-user"></i> </span>
+                                            <span class="text"> Packed</span>
+                                            <small>24 March 2020 </small>
+                                        </div>
+                                        <div class="step">
+                                            <span class="icon"> <i class="fa fa-truck"></i> </span>
+                                            <span class="text"> Shipped </span>
+                                            <small>25 March 2020 </small>
+                                        </div>
+                                        <div class="step">
+                                            <span class="icon"> <i class="fa fa-box"></i> </span>
+                                            <span class="text">Delivery</span>
+                                            <small>26 March 2020 </small>
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <hr>
+                                {% endfor %}
+                            </article>
+                    </div>
+
+                </div> <!-- row.// -->
+
+            </div> <!-- card-body.// -->
+        </main> <!-- card.// -->
+
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+    <!-- =============== SECTION REGION =============== -->
+    <!-- =============== SECTION REGION .//END =============== -->		
+</div>
+<!-- container end.// -->
+<article class="">
+    <img src="{% static 'img/new-info.png' %}" class="w-100">
+</article>
+
+
+<script>
+    $(document).ready(function(){
+        $('.cancel_order').click(function(){
+            if(confirm("Do you want to cancel order?")){
+                return true;
+            }
+            return false;
+        });
+    });
+</script>
+{% endblock %}

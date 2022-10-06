@@ -1,0 +1,19 @@
+{% load static %}
+
+{{obj.name}}<br/><br/>
+{{obj.description}}<br/><br/>
+{{obj.price}}<br/><br/>
+{{obj.quantity}}<br/><br/>
+
+{% for img in product_images %}
+<img src="{{ img.image.url }}" width="100" />
+{% endfor %}
+
+<br/>
+<br/>
+<form action="{% url 'ecommerce:add_to_cart' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" value="{{obj.id}}" name="pid" />
+    <input type="hidden" value="1" name="quantity" />
+    <button type="submit">Add To Cart</button>
+</form>

@@ -1,0 +1,124 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load helpers_tag %}
+{% block content %}
+	<div class="bgded">
+		<div id="slider" class="clear"> 
+		  <img src="{% static 'front-images/banner-1.jpg' %}" alt="" >
+		</div>
+	  </div>
+		<!-- ========================= SECTION MAIN  ========================= -->
+		<section class="section-main">
+			<div class="wrapper row2 shd services">
+				<section class="hoc clear"> 
+				  <!-- ################################################################################################ -->
+				  <ul class="nospace group overview ">
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon01.png' %}"></a>
+						<h6 class="heading"><a href="#">Best<br><strong>treatment</strong></a></h6>
+						<p>Experincethe power of natural remidies</p>
+					  </article>
+					</li>
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon02.png' %}"></a>
+						<h6 class="heading"><a href="#">Qualified<br><strong>Doctors</strong></a></h6>
+						<p>Take advice from our experienced doctor's team</p>
+					  </article>
+					</li>
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon03.png' %}"></a>
+						<h6 class="heading"><a href="#">Free<br><strong>Consultation</strong></a></h6>
+						<p>For anyone, anywhere and anytime</p>
+					  </article>
+					</li>
+				  </ul>
+				  <!-- <footer class="center"><a class="btn" href="#">Vestibulum molestie</a></footer> -->
+				  <!-- ################################################################################################ -->
+				</section>
+			  </div>
+			  <!-- ################################################################################################ -->
+			  <div class="wrapper row3 shd yr-service">
+				<main class="clear"> 
+				  <!-- main body -->
+				  <!-- ################################################################################################ -->
+				  <!-- <div class="sectiontitle">
+					<h6 class="heading">Donec tortor eget mauris sagittis</h6>
+					<p>Convallis morbi eget leo elit praesent at libero et arcu</p>
+				  </div> -->
+				  <div class="group">
+					<div class="one_quarter first bg_green">
+					  <div class="sectiontitle ">
+						<h6 class="heading">Our Services</h6>
+						<p>Medfils offers free online consultation and best medicine to make you fit & healthy</p>
+					  </div>
+					</div>
+					<div class="three_quarter yr-our-services mgl">
+					  <ul class="nospace group inspace-15">
+						<li class="">
+						  <img src="{% static 'front-images/service-icon01.png' %}" alt="">
+						  <div>
+							<h5>Ayurveda</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'ayurvedic' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon02.png' %}" alt="">
+						  <div>
+							<h5>Unani</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'unani' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon03.png' %}" alt="">
+						  <div>
+							<h5>Homeopathy</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'homeopathic' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon04.png' %}" alt="">
+						  <div>
+							<h5>Diet & Nutritions</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'diet_nutritions' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+					  </ul>
+					</div>
+				  </div>
+				  <!-- ################################################################################################ -->
+				  <!-- / main body -->
+				  <div class="clear"></div>
+				</main>
+			  </div>
+			  <!-- ################################################################################################ -->
+			  <div class="wrapper row4">
+				<section class="clear yr-specialist"> 
+				  <!-- ################################################################################################ -->
+				  <div class="sectiontitle">
+					<h2 class="heading">OUR SPECIALIST</h2>
+				  </div>
+				  <div class="group">
+					{% for doc in specialists %}
+						
+							<article class="one_half shd {% if forloop.counter0|divisibleby:2 %}first{% endif %}">
+								<a href="#">
+									{% if doc.image %}
+									<img src="{{ doc.image.url }}" alt="{{doc.name}}">
+									{% endif %}
+								</a>
+								<div class="excerpt">
+								<h6 class="heading">{{doc.name}}
+									<span>{{doc.experience}}</span></h6>
+								<p>{{doc.description}}</p>
+								</div>
+							</article>
+						
+					{% endfor %}
+					
+
+				  </div>
+					</section>    
+				</div>     
+				  <!-- ################################################################################################ -->
+			</section>		
+		<!-- ========================= SECTION MAIN END// ========================= -->
+{% endblock %}

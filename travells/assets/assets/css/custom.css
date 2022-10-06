@@ -1,0 +1,12 @@
+#home-banner {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-header{background:#e96b56;}
+.card-header .btn{color: #ffffff;width: 100%;text-align: left;}

@@ -1,0 +1,40 @@
+{% load static %}
+<div class="sidebar sidebar-main">
+    <div class="sidebar-content">
+
+        <!-- User menu -->
+        <div class="sidebar-user" style="display: none;">
+            <div class="category-content">
+                <div class="media">
+                    <img src="{% static 'admin/images/placeholder.jpg' %}" class="img-circle img-sm" alt=""> 
+                </div>
+
+            </div>
+        </div>
+        <!-- /user menu -->
+
+
+        <!-- Main navigation -->
+        <div class="sidebar-category sidebar-category-visible">
+            <div class="category-content no-padding">
+                <ul class="navigation navigation-main navigation-accordion">
+
+                    <!-- Main -->
+                    <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
+                    
+                    <li>
+                        <a href="{% url 'consultation:requests' %}"><i class="icon-blog"></i> <span>Consultation Requests</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'consultation:requests_history' %}"><i class="icon-blog"></i> <span>Requests History</span></a>
+                    </li>
+                    
+                    <!-- /page kits -->
+
+                </ul>
+            </div>
+        </div>
+        <!-- /main navigation -->
+
+    </div>
+</div>

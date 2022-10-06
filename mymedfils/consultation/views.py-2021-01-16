@@ -1,0 +1,241 @@
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from .forms import ConsultationForm, ConsultationImageForm, LoginForm
+from .models import Consultation, ConsultationImage, ConsultationResponse
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+from django.db.models import Q
+from django.contrib import messages
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.templatetags.static import static
+from django.conf import settings
+from mymedfils import helpers
+
+# Create your views here.
+def home(request):
+    #Encode string
+    enstr = helpers.encode_str('diet_nutritions')
+    #Decode string
+    destr = helpers.decode_str(enstr)
+
+
+    context = {
+        'str': destr,
+        'snstr':enstr
+    }
+    return render(request, 'consultation/home.html', context)
+
+
+def consultation(request):
+    
+    if request.method == 'POST':
+        consultation_form = ConsultationForm(request.POST, request.FILES or None)
+        consultation_image_form = ConsultationImageForm(request.POST, request.FILES or None)
+        treatment_type = request.POST['treatment_type']
+        #return HttpResponse('Consultation')
+        #return render(request, "consultation/welcome.html", {})
+
+        if consultation_form.is_valid() and consultation_image_form.is_valid():
+            """ print(request.FILES.getlist('file'))
+            print(consultation_form.cleaned_data) """
+            
+            instance = consultation_form.save()
+            if request.FILES:
+                for f in request.FILES.getlist('file'):
+                    obj = ConsultationImage(consultation=instance, file=f)
+                    obj.save()
+            
+            data = request.POST.copy()
+            data['toEmails'] = ['atifahmad911@gmail.com']
+            data['subject'] = 'New Enquiry: Medfils'
+            #Send email to admin
+            send_email(data, 'enquiry-mail.html', request.FILES.getlist('file'))            
+            messages.add_message(request, messages.INFO, 'Request Submitted Successfully!')
+            return HttpResponseRedirect(reverse('consultation:index')+"?type="+helpers.encode_str(treatment_type))
+    else:
+        #initial_value = {'treatment_type': 'homeopathic'}
+        #Decode string
+        if request.GET.get('type') != '' and request.GET.get('type') is not None:
+            decoded_type = helpers.decode_str(request.GET.get('type'))
+            initial_value = {'treatment_type': decoded_type}
+        else:
+            return HttpResponseRedirect(reverse('consultation:home'))
+
+        consultation_form = ConsultationForm(initial=initial_value)
+        consultation_image_form = ConsultationImageForm()
+    
+    #print(reverse('consultation:index')+"?type="+"abc")
+    context = {
+        'form': consultation_form,
+        'image_form': consultation_image_form
+    }
+    return render(request, "consultation/consultation_form.html", context)
+
+
+def login_page(request):
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        #print(user)
+        if user is not None:
+            login(request, user)
+            #info, success, warning, error
+            messages.success(request, 'You have logged in successfully!')
+            return HttpResponseRedirect(reverse('consultation:requests'))
+        else:
+            messages.error(request, 'Credentials are not correct')
+            return HttpResponseRedirect(reverse('consultation:login'))
+
+    else:    
+        login_form = LoginForm()
+        context = {
+            'form': login_form
+        }
+        return render(request, "consultation/login.html", context)
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You have logged out successfully!')
+    return HttpResponseRedirect(reverse('consultation:login'))
+
+
+def requests_list(request):
+    if request.user.is_authenticated:
+        user_type = request.user.profile.user_type
+        results = Consultation.objects.filter(treatment_type=user_type, status='1').order_by('-id')
+        #print(results)
+        context = {
+            'obj_list': results
+        }
+        return render(request, "consultation/requests_list.html", context)
+    else:
+        return HttpResponseRedirect(reverse('consultation:login'))
+
+
+def consultation_page(request, id):
+    consultation = Consultation.objects.get(pk=id)
+    previous_requests = Consultation.objects.filter(email=consultation.email).exclude(pk=consultation.id).order_by('-id')
+    consultation_images = consultation.consultationimage_set.all()
+    context = {
+        'obj': consultation,
+        'previous_requests': previous_requests,
+        'images': consultation_images
+    }
+    return render(request, "consultation/consultation_page.html", context)
+
+
+def consultation_response(request):
+    consultation_id = request.POST['id']
+    doctor_response = request.POST['doctor_response']
+    
+    consultation_obj = Consultation.objects.get(pk=consultation_id)
+    consultation_obj.status = '0'
+    consultation_obj.save()
+
+    consultation_response_obj = ConsultationResponse(consultation=consultation_obj, response=doctor_response, user=request.user)
+    consultation_response_obj.save()
+
+    #Send email to user
+    data = {}
+    data['name'] = consultation_obj.name
+    data['response'] = doctor_response
+    data['toEmails'] = ['atifahmad911@gmail.com', consultation_obj.email]
+    data['subject'] = 'Request answered from Medfils'
+    send_email(data, 'response-mail.html')
+    messages.success(request, 'You have responded successfully!')
+    return HttpResponseRedirect(reverse('consultation:requests'))
+
+
+def consultation_reject(request):
+    consultation_id = request.POST['id']
+    doctor_response = request.POST['doctor_response']
+    
+    consultation_obj = Consultation.objects.get(pk=consultation_id)
+    consultation_obj.status = '0'
+    consultation_obj.save()
+
+    consultation_response_obj = ConsultationResponse(consultation=consultation_obj, response=doctor_response, user=request.user, response_type='rejected')
+    consultation_response_obj.save()
+
+    #Send email to user
+    data = {}
+    data['name'] = consultation_obj.name
+    data['response'] = doctor_response
+    data['toEmails'] = ['atifahmad911@gmail.com', consultation_obj.email]
+    data['subject'] = 'Request rejected from Medfils'
+    send_email(data, 'response-mail.html')
+
+    messages.success(request, 'You have rejected successfully!')
+    return HttpResponseRedirect(reverse('consultation:requests'))
+
+
+def consultation_reject_page(request, id):
+    consultation = Consultation.objects.get(pk=id)
+    context = {
+        'obj': consultation
+    }
+    return render(request, "consultation/consultation_reject_page.html", context)
+
+
+def consultation_response_details(request, id):
+    consultation_obj = Consultation.objects.get(pk=id)
+    consultation_images = consultation_obj.consultationimage_set.all()
+    context = {
+        'obj': consultation_obj,
+        'response_obj': consultation_obj.consultationresponse,
+        'images': consultation_images
+    }
+    return render(request, "consultation/consultation_response_details.html", context)
+
+
+def test_email(request):
+    #return HttpResponse("Test")
+    params = {}
+    params['name'] = 'Atif'
+    params['number'] = '54657657'
+    params['email'] = 'atif@gmail.com'
+    params['address'] = 'test address'
+    params['message'] = 'Testing message'
+    context = {
+        'params': params
+    }
+    msg = render_to_string('enquiry-mail.html', context)
+    print(msg)
+    email = EmailMessage(
+        'New Enquiry',
+        msg,
+        'abc@gmail.com',
+        ['atifahmad911@gmail.com']
+    )
+    email.content_subtype = "html"
+    filePath = settings.BASE_DIR / 'static/consultation_files/Appointment_Letter_Atif_Ahmad.pdf'
+    print(filePath)
+    email.attach_file(filePath)
+    email.send()
+    return HttpResponse("Mail Sent Successfully")
+
+
+def send_email(data, template_name='enquiry-mail.html', files={}):
+    
+    context = {
+        'params': data
+    }
+    msg = render_to_string('emails/' + template_name, context)
+    email = EmailMessage(
+        data['subject'],
+        msg,
+        'abc@gmail.com',
+        data['toEmails']
+    )
+    email.content_subtype = "html"
+    #filePath = settings.BASE_DIR / 'static/consultation_files/Appointment_Letter_Atif_Ahmad.pdf'
+    
+    if files:
+        for f in files:
+            email.attach(f.name, f.read(), f.content_type)
+
+    email.send(fail_silently=True)

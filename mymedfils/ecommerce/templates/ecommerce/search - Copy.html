@@ -1,0 +1,38 @@
+<h1>Search</h1>
+
+<form action="{% url 'ecommerce:search' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="keyword" />
+    <button type="submit">Search</button>
+</form>
+
+<div class="search-result">
+    <p>Keyword: {{keyword}}</p>
+    <ul class="list">
+        {% for obj in results %}
+            <li><a href="{% url 'ecommerce:product_details' obj.slug %}">{{obj.name}} - {{obj.description}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<div class="search-result">
+    <p>Top Categories:</p>
+    <ul class="list">
+        {% for obj in top_categories %}
+            <li><a href="{% url 'ecommerce:products_by_category' obj.slug %}">{{obj.name}} </a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<div class="search-result">
+    <p>Top Brands:</p>
+    <ul class="list">
+        {% for obj in top_brands %}
+            <li><a href="{% url 'ecommerce:products_by_brand' obj.slug %}">{{obj.name}} </a></li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block breadcrumb %}
+<li><a href=""><i class="icon-home2 position-left"></i> Home</a></li>
+<li class="active">Consultation Reject</li>
+{% endblock %}
+{% block content %} 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+            <form method="POST" class="form-horizontal" action="{% url 'consultation:reject_save' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="panel panel-flat">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Reject</h5>
+                        <div class="heading-elements">
+                            
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        
+                            <fieldset class="content-group">
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2">Name</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control">{{obj.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2">Problem</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control">{{obj.problem}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2">History</label>
+                                    <div class="col-lg-10">
+                                        <p class="form-control">{{obj.history}}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2">Reason</label>
+                                    <div class="col-lg-10">
+                                        <select name="doctor_response" class="form-control">
+                                        <option value="">Please Choose a Reason</option>
+                                        <option value="reason1">Reason 1</option>
+                                        <option value="reason2">Reason 2</option>
+                                        <option value="reason3">Reason 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" value="{{obj.pk}}" />
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary">Submit <i class="icon-arrow-right14 position-right"></i></button>
+                                </div>
+                                
+                            </fieldset>  
+                    </div>
+                </div>
+            </form>
+            
+
+
+
+
+<script type="text/javascript" src="{% static 'front/js/plugins/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript">
+// CKEDITOR.replace( 'description',
+// {
+//     customConfig : '{% static "front/js/plugins/ckeditor/config_custom.js" %}',
+//     toolbar : 'simple'
+// })
+
+/* CKEDITOR.replace( 'description',{
+        allowedContent: true
+    }); */
+
+</script>
+
+
+{% endblock %}

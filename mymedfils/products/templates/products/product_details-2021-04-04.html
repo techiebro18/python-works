@@ -1,0 +1,2697 @@
+{% extends 'ecommerce/base.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+
+<style type="text/css" class="drift-base-styles">
+    @keyframes noop {
+    }
+
+    .drift-zoom-pane.drift-open {
+        display: block;
+    }
+
+    .drift-zoom-pane.drift-opening, .drift-zoom-pane.drift-closing {
+        animation: noop;
+    }
+
+    .drift-zoom-pane {
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    .drift-zoom-pane-loader {
+        display: none;
+    }
+
+    .drift-zoom-pane img {
+        position: absolute;
+        display: block;
+    }
+</style>
+<style type="text/css" id="nanobarcss">.nanobar {
+    width: 100%;
+    height: 4px;
+    z-index: 9999;
+    top: 0
+}
+
+.bar {
+    width: 0;
+    height: 100%;
+    transition: height .3s;
+    background: #000
+}
+
+@media all {
+    *, ::after, ::before {
+        box-sizing: border-box;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    label {
+        display: inline-block;
+        margin-bottom: .5rem;
+    }
+
+    input {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    input {
+        overflow: visible;
+    }
+
+    input[type=checkbox] {
+        box-sizing: border-box;
+        padding: 0;
+    }
+
+    .clearfix::after {
+        display: block;
+        clear: both;
+        content: "";
+    }
+
+    @media print {
+        *, ::after, ::before {
+            text-shadow: none !important;
+            box-shadow: none !important;
+        }
+
+        p {
+            orphans: 3;
+            widows: 3;
+        }
+    }
+}
+
+/*! CSS Used from: https://www.netmeds.com/assets/version1586245399/gloryweb/css/style.min.css ; media=all */
+@media all {
+    :focus {
+        outline: 0;
+    }
+
+    .clearfix {
+        height: 0;
+        clear: both;
+        display: flex;
+    }
+
+    input:focus {
+        outline: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .disc_offer {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .disc_offer p {
+        color: #6f7284;
+    }
+
+    .disc_offer .heading {
+        display: initial !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+    }
+}
+
+@media all {
+    .pro_offer_details {
+        background: #fff;
+        margin: 0 0 16px;
+        border-radius: 8px;
+        padding: 16px 12px;
+    }
+
+    .pro_offer_details .title {
+
+        font-size: 12px;
+        float: left;
+        color: #6f7284;
+        margin: 0 0 20px;
+        text-transform: uppercase;
+    }
+
+    .pro_offer_details .btnView {
+        float: right;
+        font-size: 11px;
+
+        color: #6f7284;
+        cursor: pointer;
+    }
+
+    .pro_offer_details #view_offers {
+        display: none;
+    }
+
+    .pro_offer_details .offer-cont {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .pro_offer_details .offer-cont .off-checkbox input[type=checkbox] {
+        display: none;
+    }
+
+    .pro_offer_details .offer-cont .off-checkbox label {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        padding-left: 32px;
+        margin: 0;
+        height: 23px;
+    }
+
+    .pro_offer_details .offer-cont .off-checkbox label:before {
+        content: "";
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        left: 0;
+        background: url(https://www.netmeds.com/assets/version1586245399/gloryweb/images/icons/offer_blue_outline.svg) left center no-repeat;
+    }
+
+    .pro_offer_details .offer-cont .offer-text {
+        font-size: 12px;
+
+        color: #6f7284;
+    }
+
+    .pro_offer_details .offer-cont .offer-text .offer-code {
+        font-size: 14px;
+        color: #151b39;
+
+        line-height: 24px;
+        padding-right: 5px;
+    }
+
+    .pro_offer_details .offer-cont .offer-text .save {
+        font-size: 12px;
+        color: #378f30;
+
+        line-height: 18px;
+    }
+
+    .pro_offer_details .offer-cont.show_offers {
+        display: none;
+    }
+
+    .disclaimer {
+        background: #fff;
+        margin: 0;
+        border-radius: 0 0 8px 8px;
+        padding: 16px 24px;
+    }
+
+    .disclaimer .heading {
+
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        color: #6f7284;
+        display: block;
+    }
+
+    .disclaimer p {
+        margin: 0;
+    }
+}
+
+/*! CSS Used from: Embedded */
+:focus {
+    outline: none;
+}
+
+.clearfix {
+    height: 0px;
+    clear: both;
+    display: flex;
+}
+
+@media all {
+
+    button {
+        border-radius: 0;
+    }
+
+    button:focus {
+        outline: 0 dotted;
+        outline: 0 auto -webkit-focus-ring-color;
+    }
+
+    button, input {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    button, input {
+        overflow: visible;
+    }
+
+    button {
+        text-transform: none;
+    }
+
+    [type=submit], button {
+        -webkit-appearance: button;
+    }
+
+    [type=submit]::-moz-focus-inner, button::-moz-focus-inner {
+        padding: 0;
+        border-style: none;
+    }
+
+    .clearfix::after {
+        display: block;
+        clear: both;
+        content: "";
+    }
+
+    .swiper-container {
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .swiper-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-transition-property: -webkit-transform;
+        -moz-transition-property: -moz-transform;
+        -o-transition-property: -o-transform;
+        -ms-transition-property: -ms-transform;
+        transition-property: transform;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+    .swiper-wrapper {
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -o-transform: translate(0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .swiper-container-free-mode > .swiper-wrapper {
+        -webkit-transition-timing-function: ease-out;
+        -moz-transition-timing-function: ease-out;
+        -ms-transition-timing-function: ease-out;
+        -o-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+        margin: 0 auto;
+    }
+
+    .swiper-slide {
+        -webkit-flex-shrink: 0;
+        -ms-flex: 0 0 auto;
+        flex-shrink: 0;
+        height: 100%;
+        position: relative;
+    }
+
+    .swiper-container .swiper-notification {
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        opacity: 0;
+        z-index: -1000;
+    }
+}
+
+/*! CSS Used from: https://www.netmeds.com/assets/version1586245399/gloryweb/css/style.min.css ; media=all */
+@media all {
+    :focus {
+        outline: 0;
+    }
+
+    .clearfix {
+        height: 0;
+        clear: both;
+        display: flex;
+    }
+
+    input:focus {
+        outline: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+@media all {
+    .bundle_products .popular-swipe .swiper-slide {
+        -ms-flex-align: center;
+        -ms-flex-pack: center;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        align-items: center;
+        background: #fff;
+        border-radius: 8px;
+        border: #c4c4c4 1px solid;
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        height: 156px !important;
+        justify-content: left;
+        width: 50%;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list {
+        margin: 0;
+        padding: 16px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .save-div {
+        height: 23px;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .save-div .save-badge {
+        background: #84be52;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 9px;
+        max-width: max-content;
+
+        padding: 6px 8px;
+        line-height: 11px;
+        overflow: hidden;
+        height: 23px;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .cat-img {
+        float: left;
+        height: 40px;
+        margin: 0 16px 0 0;
+        width: 40px;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .cat-img img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .drug-var {
+        color: #151b39;
+        float: left;
+
+        font-size: 16px;
+        letter-spacing: .15px;
+        line-height: 24px;
+        margin: 7px 0;
+
+        text-align: left;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .price-box {
+        color: rgba(21, 27, 57, .4);
+        float: right;
+
+        font-size: 12px;
+        height: 40px;
+        line-height: 16px;
+        margin: 0 0 16px;
+        text-align: right;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .price-box .final_price {
+        color: #ef4281;
+
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .price-box .save_price {
+        color: #378f30;
+        float: right;
+        font-size: 11px;
+        margin-right: 0;
+        margin-top: 0;
+        padding: 1px 0 0;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .price-box .price {
+        float: right;
+        padding-left: 6px;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .addcartbox {
+        display: block;
+        width: 100%;
+    }
+
+    .bundle_products .popular-swipe .swiper-slide .drug-list .cart-btn {
+        background: #007bff;
+        border-radius: 5px;
+        border: 0;
+        box-shadow: none;
+        color: #fff !important;
+        display: block;
+
+        font-size: 12px;
+        height: 40px;
+        outline: #02b7c2;
+        padding: 12px 0;
+        text-transform: uppercase;
+        width: 100%;
+        cursor: pointer;
+    }
+}
+
+:focus {
+    outline: none;
+}
+
+.clearfix {
+    height: 0px;
+    clear: both;
+    display: flex;
+}
+
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    -ms-transition-property: -ms-transform;
+    transition-property: transform;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.mainmenu {
+    background: #4fb68d;
+}
+</style>
+<style>
+
+
+    .custom-select {
+        display: inline-block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem 1.75rem .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        vertical-align: middle;
+        background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .custom-select:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+    }
+
+    .custom-select:disabled {
+        color: #6c757d;
+        background-color: #e9ecef;
+    }
+
+    .custom-select::-ms-expand {
+        display: none;
+    }
+
+    .custom-select:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #495057;
+    }
+
+    .custom-select {
+        transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .d-flex {
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+
+    .justify-content-end {
+        -ms-flex-pack: end !important;
+        justify-content: flex-end !important;
+    }
+
+    .align-items-center {
+        -ms-flex-align: center !important;
+        align-items: center !important;
+    }
+
+    .header-top-action ul li a:hover {
+        color: #0163d2;
+    }
+
+    .header-search-wrap form button {
+        background: #4fb68d;
+    }
+
+    .header-top-action ul {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-search-wrap form {
+        display: flex;
+        align-items: center;
+        width: 450px;
+    }
+
+    .kls {
+        border-bottom-right-radius: 30px !important;
+        border-top-right-radius: 30px !important;
+    }
+
+    .kol {
+
+        border: 2px solid #4fb68d;
+        border-bottom-left-radius: 27px;
+        border-bottom-right-radius: 27px;
+        border-top-left-radius: 27px;
+        border-top-right-radius: 27px;
+
+    }
+
+    .sol {
+
+        border: 2px solid #4fb68d;
+        border-bottom-left-radius: 27px;
+        border-bottom-right-radius: 27px;
+        border-top-left-radius: 27px;
+        border-top-right-radius: 27px;
+
+    }
+
+    .header-search-wrap form input {
+        border-bottom-left-radius: 30px !important;
+        border-top-left-radius: 30px !important;
+        width: 250px;
+        padding: 13px 20px;
+        border-radius: 5px 0 0 5px;
+        font-size: 12px;
+        height: 47px;
+    }
+
+    .header-search-wrap form input::placeholder {
+        font-size: 12px;
+        color: #8b8b8b;
+    }
+
+    .header-search-wrap form .custom-select {
+        display: inline-block;
+        padding: 10px 42px 10px 16px;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #818181;
+        vertical-align: middle;
+        background: url("https://themebeyond.com/html/venam/img/icon/nw_selarw.png") no-repeat scroll 97.5% center;
+        background-color: #fff;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        transition: .3s ease-in-out;
+        font-family: 'Rubik', sans-serif;
+        width: 140px;
+        height: 47px;
+        border-top: 1.5px solid #dfdfdf;
+        border-bottom: 1.5px solid #dfdfdf;
+    }
+
+    .header-search-wrap form button {
+        flex-grow: 1;
+        border: none;
+        padding: 0;
+        font-size: 16px;
+        color: #fff;
+        height: 47px;
+        line-height: 46px;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+
+    .header-search-wrap form .custom-select option {
+        color: #252525;
+    }
+
+    .header-top-action ul li {
+        display: block;
+        margin-left: 40px;
+    }
+
+    .header-top-action ul li a {
+        display: block;
+        text-align: center;
+        font-size: 12px;
+        color: #818181;
+    }
+
+    .header-top-action ul li a i {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 7px;
+    }
+
+    /*! CSS Used from: https://themebeyond.com/html/venam/css/responsive.css */
+    @media (max-width: 1199.98px) {
+        .header-search-wrap form {
+            width: 440px;
+        }
+
+        .header-search-wrap form input {
+            width: 240px;
+        }
+
+        .header-search-wrap form .custom-select {
+            width: 150px;
+        }
+
+        .header-top-action ul li {
+            margin-left: 30px;
+        }
+    }
+
+    *, ::after, ::before {
+        box-sizing: border-box;
+    }
+
+    footer {
+        display: block;
+    }
+
+    h4 {
+        margin-top: 0;
+        margin-bottom: .5rem;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    ul {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent;
+    }
+
+    a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    img {
+        vertical-align: middle;
+        border-style: none;
+    }
+
+    input {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    input {
+        overflow: visible;
+    }
+
+    [type=submit] {
+        -webkit-appearance: button;
+    }
+
+    [type=submit]::-moz-focus-inner {
+        padding: 0;
+        border-style: none;
+    }
+
+    h4 {
+        margin-bottom: .5rem;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+    h4 {
+        font-size: 1.5rem;
+    }
+
+    .containers {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    @media (min-width: 576px) {
+        .containers {
+            max-width: 540px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .containers {
+            max-width: 720px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .containers {
+            max-width: 960px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .containers {
+            max-width: 1140px;
+        }
+    }
+
+    @media (min-width: 576px) {
+        .containers {
+            max-width: 540px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .containers {
+            max-width: 720px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .containers {
+            max-width: 960px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .containers {
+            max-width: 1140px;
+        }
+    }
+
+    .rows {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .col-lg-2s, .col-lg-4s, .col-lg-8s, .col-md-6s {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    @media (min-width: 768px) {
+        .col-md-6s {
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .col-lg-2s {
+            -ms-flex: 0 0 16.666667%;
+            flex: 0 0 16.666667%;
+            max-width: 16.666667%;
+        }
+
+        .col-lg-4s {
+            -ms-flex: 0 0 33.333333%;
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+
+        .col-lg-8s {
+            -ms-flex: 0 0 66.666667%;
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+        }
+    }
+
+    .text-info {
+        color: #17a2b8 !important;
+    }
+
+    @media print {
+        *, ::after, ::before {
+            text-shadow: none !important;
+            box-shadow: none !important;
+        }
+
+        a:not(.btn) {
+            text-decoration: underline;
+        }
+
+        img {
+            page-break-inside: avoid;
+        }
+
+        p {
+            orphans: 3;
+            widows: 3;
+        }
+
+        .containers {
+            min-width: 992px !important;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    h4 {
+        margin: 0;
+    }
+
+    a {
+        text-decoration: none;
+        transition: .3s;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    @media (min-width: 1200px) {
+        .containers {
+            max-width: 1440px;
+        }
+    }
+
+    .footer-top {
+        padding: 60px 0 30px 0;
+    }
+
+    .text-info {
+        line-height: 24px;
+        color: #666 !important;
+        font-size: 14px;
+        margin: 36px 0;
+    }
+
+    .need-help {
+        position: absolute;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAvCAYAAAClgknJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjZCNTI0NTg0RTJGMTFFQUI3NTVDMEIxQUU4RTgyNkYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjZCNTI0NTk0RTJGMTFFQUI3NTVDMEIxQUU4RTgyNkYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCNkI1MjQ1NjRFMkYxMUVBQjc1NUMwQjFBRThFODI2RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCNkI1MjQ1NzRFMkYxMUVBQjc1NUMwQjFBRThFODI2RiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiCIJiwAAAXySURBVHjaxJkJbBVFGMe321rKYRW1eAKKcogxiBotCCiFUkVQlEM5yukdvFMlhmgU7ysgwajRlkKBgge10HrSVkVBoRH6IjEcBgsVFPHA0mhpi/8J/zHjOPve7uxWvuSXvs7u29n/zDfffPO9pGvLX3A8bAB4HvQFe8AC8CJoduzsTHAKOAh2gd+cCMz1aJ8IPgEdwFzwNXgGrAJpln0Vg3WgBvwK9oJScDfobCsgxdCWBfLBajAO/MX2SWAhWAmuA38G7Ot6cC5oz9kQnweCEZzZCvAc+DCMgFPBUpBKVzmsXCsCLWCRpYgfiG6ngxvATPAB+Iyfa2xcaD5H6BEwitOeqlwX4iaDbIpIi8CN6zgDPcBUcA6oBg/FcXGjgCFgNJgNHgM3+RBREpEIYU2gEPTkLD/BNdLer4CHwQ7wMv/PV0QsN4jIBUMDiCjk87/k9+8E3Qz3/QFmgGlgGFgDjksk4AIwiIvokHJdirjGIGJZQBEVfJkfwcXgJbCd0W644f6FHDwRxt/R+v6PgFzG56WGe4SImyMQIWbgFj6nBxfvvQwcZaDcEE7LGQkvp2BPAVeBjzh9TggRy/0sPCUqzQO9wK2gH/ebLO2+d8Ec3jPGJOBkxuQ1CTpU3WmFQYQUODrg4hWh+TW6yi6Oeo52z+NgLQWn6wLO4+dqH50VUMRIg4gC+vcwj++OY3SbzlCp2066yib6fB/lWjMXfSeQpwuQkeA7nyMmRYzQRCSxo5Y4Ah4Ab4BtTCt0sQc4OHvpjm2Va5vYNlOdBSGgIz/vCzDtBXQZVYRYkKfRBUw2hotcjP5dIIM77wItI9jHNSUW+iztGSJKHg9uVAUkK77oWIpYx8y1mJtPPNvBHb83eBbczllR7QtGxHv4wtI2cyYmqAJkPtPWYvcUIl4HF9Jvp2j5UzxrBA8yG51M11DtSbrKJK39TXAZOFYK2M8LnSwE9OaOWcpRabR4xnyGSvHCJyjtW8BXYKx2/6d0uf5SwFZe6GnR+f2gniNo8/LSZvHsMVFrfx9kGhazI6OnEBBj+pBp0fFgnht+D5nIfQs2gKu19moGiO5KWz03we5SQAO/nGPRsUiyfoooG93MDVW1Wv49Q2vfLxM8ue2/za28a8BOa7kOorBaQ9b5M/+mGtrTVAHFdKM7AnYqIs+VzC7D2ly5MBXbzWev1tqncWf+R4DwqSWMyRkBOp3HHbyEG08Yq2fkcQzroElr+54nuX9ljiJhOobVB792gJmssMoIRIQqq4iRfJrn0pEBnrGdKfDhoyHCNex+63kaCvIiW4+WCF3AIWaNDTwfdA4oYrAiIujGKM4lF4GTwlbmdvOMKsJUVUAR2xQRFT5FiJxmMQPJRqbSr/rNzbyOfzEeEdMpoouFiBYfItKZLsjDznBGthnMr9rZCpA741COUKWFiCxFRC/DPSJNfo+xXwh4lP+L/Go8uIJJXjtbAVJEdkgRTTwv5HHX7sbkbwPT8GZWK1K1lHmCHxF+KghhRWSy9iMOL9/wQFPIPWQgz8g5LFV6ifB0p5QAiVY2Sy9VfGitz+/uYYGqC9OCNK6xGK9vVKoesmjcqIiQlcBSVj0abASoa+JjCxEyWfO6fxEjVwHTklF+RbgBY3UNRXSwiE6JbLFSDy0xuNN4ll1Wqe7kWnT0f4poo1x7iyIGqSJcy450EV0jFjGVIlbGEVEURoAUMYQiKiMWUZRARB4Xez83ZEexVhYxxUNEPv9e6kbQUWuKWKKIUNfE2fJs7EbUkSpCrImzWkGE/ElLnBhfcY78VFvmRthRjElcG5YGMyMWIX+XE8fJ81mx+yVKAQ5Thf4cnSoWrFIifL7YwA7SpcrDRiEv2wku4c75FHfwsZZ9JXFWKzkLIu0Qv+etDbOR+a0wTGfn4pS3gondHJ66khN8X5Tg72OVooKLNpfrrM42F7Ix4UZ9eVC5zTnyA8dsZqJbWEioZx4kFueJTLkz2PY594NljkfttbUFOHyRMtKR+cwAlhH7MCVIpn/XMe9Zz5GvS/TwvwUYAE8NkXLTBH8KAAAAAElFTkSuQmCC) 0 5px no-repeat;
+    }
+
+    .phone-info {
+        font-size: 16px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        margin-left: 55px;
+    }
+
+    .phone-info span {
+        font-size: 22px;
+        font-weight: 600;
+        color: #253237;
+        margin: 0;
+        display: block;
+        margin-top: 5px;
+        line-height: 30px;
+    }
+
+    .social-info li a:hover {
+        color: #4fb68d;
+    }
+
+    .social-info li a {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        color: #666;
+        font-size: 24px;
+        padding: 0;
+        line-height: 36px;
+        border-radius: 100%;
+        text-align: center;
+        border: none;
+        z-index: 1;
+        -webkit-transition: all 300ms linear;
+        -moz-transition: all 300ms linear;
+        -ms-transition: all 300ms linear;
+        -o-transition: all 300ms linear;
+        transition: all 300ms linear;
+        margin-right: 25px;
+    }
+
+    .social-info {
+        margin-top: 30px;
+    }
+
+    .social-info li {
+        display: inline-block;
+    }
+
+    .footer-herading {
+        font-size: 16px;
+        text-transform: capitalize;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+        position: relative;
+        color: #253237;
+        border-bottom: 1px solid #e3e3e3;
+        font-weight: 700;
+        line-height: 24px;
+    }
+
+    .footer-herading:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 60px;
+        height: 2px;
+        background: #4fb68d;
+    }
+
+    .footer-links > ul > li a {
+        font-size: 14px;
+        line-height: 24px;
+        padding: 0;
+        display: block;
+        text-transform: capitalize;
+        color: #666;
+        margin-bottom: 0;
+        display: block;
+        position: relative;
+        -webkit-transition: all 300ms linear;
+        -moz-transition: all 300ms linear;
+        -ms-transition: all 300ms linear;
+        -o-transition: all 300ms linear;
+        transition: all 300ms linear;
+    }
+
+    .footer-links > ul > li {
+        display: block;
+        margin: 0;
+        line-height: 1;
+        border: 0;
+        padding: 0;
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+
+    .footer-links > ul > li a:hover {
+        padding-left: 10px;
+        -webkit-transition: all 300ms linear;
+        -moz-transition: all 300ms linear;
+        -ms-transition: all 300ms linear;
+        -o-transition: all 300ms linear;
+        transition: all 300ms linear;
+        color: #4fb68d;
+    }
+
+    .subscribe-form {
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+
+    .subscribe-form form input {
+        height: 47px;
+        background: #fff;
+        border: 0;
+        color: #b1b1b1;
+        padding: 10px 120px 10px 20px;
+        display: inline-block;
+        width: 100%;
+        font-size: 14px;
+        border: none;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        -ms-border-radius: 30px;
+        -o-border-radius: 30px;
+        border-radius: 30px;
+        outline: none;
+    }
+
+    .clear input.button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        text-transform: capitalize;
+        font-weight: 400;
+        font-size: 14px;
+        color: #fff;
+        background: #253237;
+        border: 0;
+        box-shadow: none;
+        padding: 0 20px;
+        line-height: 47px;
+        height: 47px;
+        border-radius: 0 30px 30px 0;
+        -webkit-transition: all 300ms linear;
+        -moz-transition: all 300ms linear;
+        -ms-transition: all 300ms linear;
+        -o-transition: all 300ms linear;
+        transition: all 300ms linear;
+        width: 90px;
+        outline: none;
+    }
+
+    .footer-area {
+        padding: 0;
+        color: #666;
+        position: relative;
+        z-index: 1;
+        background: #efefef;
+        overflow: hidden;
+    }
+
+    .img_app {
+        margin-top: 40px;
+    }
+
+    .img_app a {
+        margin-right: 15px;
+    }
+
+    .clear input.button:hover {
+        background: #4fb68d;
+    }
+
+    .about-footer {
+        max-width: 400px;
+    }
+
+    .footer-area .rows .col-lg-4s:first-child:before {
+        content: "";
+        position: absolute;
+        left: -9999em;
+        top: -9999em;
+        bottom: -9999em;
+        right: 15px;
+        background: #f6f6f6;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .footer-bottom {
+        padding-bottom: 20px;
+    }
+
+    .copy-text a {
+        color: #666;
+    }
+
+    .copy-text a:hover {
+        color: #4fb68d;
+    }
+
+    .search_list {
+        display: none !important;
+    }
+
+    @media only screen and (max-width: 767px) {
+        .footer-area .rows .col-lg-4s:first-child:before {
+            background: #efefef;
+        }
+
+        .r-none {
+            display: none;
+        }
+
+        .img_app a img {
+            width: 120px;
+        }
+
+        .mt-res-sx-30px {
+            margin-top: 30px;
+        }
+
+        .copy-text {
+            margin-bottom: 25px;
+        }
+
+        .phone-info span {
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        .kol {
+            display: none !important;
+        }
+
+        .home-header {
+            margin-top: -110px;
+        }
+
+        ._3v98p {
+            display: none;
+        }
+
+        .mOnrt {
+            width: 80px !important;
+        }
+
+        .home-header {
+            padding: 20px 5px 0;
+        }
+
+        .search_list {
+            display: inline !important;
+        }
+
+    }
+
+    @media only screen and (max-width: 575px) {
+        .footer-area .rows .col-lg-4s:first-child:before {
+            background: #efefef;
+        }
+
+        .img_app a img {
+            width: 120px;
+        }
+
+        .mt-res-sx-30px {
+            margin-top: 30px;
+        }
+    }
+
+    @media only screen and (max-width: 479px) {
+        .footer-area .rows .col-lg-4s:first-child:before {
+            background: #efefef;
+        }
+
+        .img_app a img {
+            width: 120px;
+        }
+
+        .mt-res-sx-30px {
+            margin-top: 30px;
+        }
+    }
+
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+        .mt-res-md-30px {
+            margin-top: 30px;
+        }
+
+        .footer-area .rows .col-lg-4s:first-child:before {
+            background: #efefef;
+        }
+
+        .img_app a img {
+            width: 120px;
+        }
+
+        .mt-res-md-50px {
+            margin-top: 50px;
+        }
+
+        .mt-res-md-30px {
+            margin-top: 30px;
+        }
+    }
+
+    @media only screen and (min-width: 992px) and (max-width: 1169px) {
+        p.copy-text {
+            width: 80%;
+        }
+
+        .img_app a img {
+            width: 125px;
+        }
+    }
+
+    @media (min-width: 1170px) and (max-width: 1366px) {
+        .containers {
+            max-width: 1310px;
+        }
+
+        .img_app img {
+            max-width: 150px;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+    }
+
+    .footer-area .row .col-lg-4s:first-child::before {
+        content: "";
+        position: absolute;
+        left: -9999em;
+        top: -9999em;
+        bottom: -9999em;
+        right: 15px;
+        background: #f6f6f6;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .footer-herading::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 60px;
+        height: 2px;
+        background: #4fb68d;
+    }
+
+    .social-info {
+        margin-top: 130px;
+        float: left;
+        margin-left: 20px;
+    }
+
+    .cat-box {
+        border-right: 1px solid #F4F4F4;
+        border-bottom: 1px solid #F4F4F4;
+        padding-bottom: 30px;
+        border-top: 1px solid #F4F4F4;
+        padding-top: 20px;
+        margin-bottom: -26px;
+    }
+
+    .rpls {
+        z-index: 10000;
+        position: absolute;
+        top: 70px;
+    }
+
+    .rkl {
+        width: 180px !important;
+    }
+
+    .sol {
+        width: 370px !important;
+    }
+
+    .tabs {
+        list-style: none;
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        margin: 0;
+        border: 1px solid #efefef;
+        padding-top: 20px;
+    }
+
+    .tabs li {
+        text-align: center;
+        background-color: #fcfcfc;
+        padding: 1rem;
+        cursor: pointer;
+        transition: background-color 0.45s ease-in-out;
+    }
+
+    .tabs li.active {
+        background-color: #eee;
+    }
+
+    .tabs li > a {
+        text-decoration: none;
+        color: #0f0f0f;
+    }
+
+    .tabs-content {
+        border: 1px solid #eee;
+        border-top: 0;
+    }
+
+    .tabs-panel {
+        padding: 2rem 1rem;
+        display: none;
+    }
+
+    .tabs-panel.active {
+        display: block;
+        background-color: #fff;
+    }
+
+    @media (max-width: 480px) {
+        .tabs {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .kdl {
+            padding-top: 80px;
+
+        }
+
+        .klf {
+            margin-right: 60px;
+        }
+
+        .klp {
+            font-size: 16px !important;
+            color: #000 !important;
+            margin-top: 6px !important;
+            margin-left: -17px !important;
+        }
+
+        .jkp {
+            margin-top: -42px;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .logo {
+            padding-top: 20px;
+        }
+
+        .jkl {
+            display: list-item !important;
+        }
+
+        .logo {
+            width: 100% !important;
+        }
+
+        .klp {
+            font-size: 16px;
+            color: #000;
+            margin-top: 30px;
+            margin-left: 1px;
+        }
+
+        .jkp {
+            margin-top: 1px;
+        }
+
+        .nhj {
+            margin-left: 130px;
+        }
+
+        .similarProductWrap .productBox {
+            width: 100% !important;
+        }
+    }
+
+    .kjl {
+        padding-top: 10px;
+        left: 100px;
+        position: relative;
+    }
+
+    @media (min-width: 1600px) {
+
+        .klf {
+            margin-right: 120px;
+        }
+
+        .kjl {
+            margin-left: 10%;
+        }
+    }
+
+    .btn:hover {
+        color: #fff !important;
+        text-decoration: none;
+    }
+    .btn-healthmug{
+        background-color:#007bff !important;
+    }
+
+    .btn-healthmug:hover {
+        box-shadow: 0 0 7px 0 rgba(55, 176, 141, .63) !important;
+        border-color: rgba(55, 176, 141, .63) !important;
+        background-color: #fff !important;
+        color: #51c9a6 !important;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-top: 15px;
+    }
+
+    .pagination-container {
+        padding: 10px 0;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        display: inline-flex;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pagination-hover-overlay {
+        background-color: #00c1dd;
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition-duration: 0.5s;
+        left: 60px;
+        opacity: 0;
+    }
+
+    .pagination .icon-pagination {
+        color: rgba(51, 61, 69, 0.5);
+        font-size: 11px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 3;
+        background-color: #fff;
+    }
+
+    .pagination-prev {
+        margin-right: 15px;
+        margin-left: 10px;
+    }
+
+    .pagination-prev .icon-pagination-prev {
+        transform: rotate(0deg);
+    }
+
+    .pagination-next {
+        margin-left: 15px;
+        margin-right: 10px;
+    }
+
+    .pagination-page-number {
+        border-radius: 5px;
+        color: #333d45;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition-duration: 0.5s;
+        position: relative;
+        z-index: 2;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .pagination-page-number:hover {
+        color: #4fb68d;
+    }
+
+    .pagination-page-number.active {
+        color: #4fb68d;
+    }
+
+    .a-text-normal {
+        font-weight: 400 !important;
+        font-style: normal !important;
+        text-transform: none !important;
+        text-decoration: none !important;
+    }
+
+    .a-size-base {
+        font-size: 14px !important;
+        line-height: 20px !important;
+    }
+
+    .a-icon {
+        background-image: url(https://m.media-amazon.com/images/G/01/AUIClients/AmazonUIIcon-sprite_1x-e9434610f810a3a99b3f0e49c1b938c9d76628b8._V2_.png);
+        -webkit-background-size: 400px 900px;
+        background-size: 400px 900px;
+        background-repeat: no-repeat;
+    }
+
+    .a-icon {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .a-icon-text-separator {
+        display: inline-block;
+        margin: -2px .67375em 0;
+        width: 1px;
+        background-color: #ddd;
+        line-height: 0;
+        height: 14px;
+        vertical-align: middle;
+    }
+
+    * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    a:focus {
+        outline: thin dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+        outline-offset: -2px;
+    }
+
+    a:active, a:hover {
+        outline: 0;
+    }
+
+    .a-color-secondary, .a-color-tertiary {
+        color: #565959 !important;
+    }
+
+    .a-row {
+        width: 100%;
+    }
+
+    .a-row:after, .a-row:before {
+        display: table;
+        content: "";
+        line-height: 0;
+        font-size: 0;
+    }
+
+    .a-row:after {
+        clear: both;
+    }
+
+    .a-spacing-small {
+        margin-bottom: 8px !important;
+    }
+
+    .a-button {
+        background: #e7e9ec;
+        border-radius: 3px;
+        border-color: #ADB1B8 #A2A6AC #8D9096;
+        border-style: solid;
+        border-width: 1px;
+        cursor: pointer;
+        display: inline-block;
+        padding: 0;
+        text-align: center;
+        text-decoration: none !important;
+        vertical-align: middle;
+    }
+
+    .a-button .a-button-inner {
+        background: #eff1f3;
+        background: -webkit-linear-gradient(top, #f7f8fa, #e7e9ec);
+        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+    }
+
+    .a-button:hover .a-button-inner {
+        background: #e0e3e8;
+        background: -webkit-linear-gradient(top, #e7eaf0, #d9dce1);
+        background: linear-gradient(to bottom, #e7eaf0, #d9dce1);
+    }
+
+    .a-button:active .a-button-inner {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .2) inset;
+        background-color: #e7e9ec;
+        background-image: none;
+    }
+
+    .a-button:active .a-button-inner {
+        background-color: #dcdfe3;
+    }
+
+    .a-button:active, .a-button:active:hover {
+        border-color: #adb1b8 #a2a6ac #a2a6ac;
+    }
+
+    .a-button:hover {
+        border-color: #a2a6ac #979aa1 #82858a;
+    }
+
+    .a-button:focus {
+        outline: 0;
+        border-color: #e77600;
+        box-shadow: 0 0 3px 2px rgba(228, 121, 17, .5);
+    }
+
+    .a-button .a-button-text {
+        color: #111;
+    }
+
+    .a-button-text {
+        background-color: transparent;
+        border: 0;
+        display: block;
+        font-size: 13px;
+        line-height: 29px;
+        margin: 0;
+        outline: 0;
+        padding: 0 10px 0 11px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .a-button-text:focus {
+        outline: 0;
+    }
+
+    a.a-button-text {
+        width: 100%;
+        height: 100%;
+    }
+
+    .a-button-inner {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        height: 29px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
+        border-radius: 2px;
+    }
+
+    .a-button a, .a-button:hover a {
+        color: #111;
+        text-decoration: none !important;
+    }
+
+
+    .aok-float-left {
+        float: left !important;
+    }
+
+    .cr-helpful-button {
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .cr-helpful-text {
+        width: 77px;
+    }
+
+    .cr-footer-line-height {
+        line-height: 30px;
+    }
+
+    .priceOfferWrap .productDetailPrice .productBoxMRP {
+        font-size: 16px !important;
+        text-decoration: none;
+        color: #000 !important;
+    }
+
+    .gray-txt {
+        color: #9d9b9b;
+
+        font-size: 14px;
+        margin-left: 20px;
+
+    }
+
+    .sale {
+        background-color: #f63440;
+    }
+
+    .new {
+        font-size: 18px;
+        line-height: 35px;
+        width: 87px;
+        text-align: center;
+        background-color: red;
+        color: #ffffff;
+        display: block;
+        position: absolute;
+        top: 1px;
+        left: 55px;
+    }
+
+    .newf {
+        font-size: 16px;
+        /* line-height: 35px; */
+        width: 55px;
+        text-align: center;
+        background-color: red;
+        color: #ffffff;
+        display: block;
+        position: absolute;
+        bottom: 7px;
+        left: 175px;
+    }
+
+    .newj {
+        font-size: 16px;
+        /* line-height: 35px; */
+        width: 55px;
+        text-align: center;
+        background-color: red;
+        color: #ffffff;
+        display: block;
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .jewj {
+        font-size: 16px;
+        width: 55px;
+        text-align: center;
+        background-color: red;
+        color: #ffffff;
+        display: block;
+        position: absolute;
+        bottom: 65px;
+        right: 25px;
+    }
+
+    input:-moz-placeholder {
+        opacity: 1;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    }
+
+    input::-webkit-input-placeholder {
+        opacity: 1;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    }
+
+    input::-moz-placeholder {
+        opacity: 1;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    }
+
+    input:-ms-input-placeholder {
+        opacity: 1;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    }
+
+    /*! CSS Used from: Embedded */
+    input::-ms-clear {
+        display: none;
+    }
+
+    ::-webkit-input-placeholder {
+        color: #777;
+    }
+
+    ::-moz-placeholder {
+        color: #777;
+    }
+
+    :-moz-placeholder {
+        color: #777;
+    }
+
+    :-ms-input-placeholder {
+        color: #777;
+    }
+
+    input:not(.tt-search-input):focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus:-moz-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus::-moz-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus:-ms-input-placeholder {
+        color: transparent;
+    }
+
+    input:invalid {
+        box-shadow: none !important;
+    }
+
+    input {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    input {
+        overflow: visible;
+    }
+
+    input::-ms-clear {
+        display: none;
+    }
+
+    ::-webkit-input-placeholder {
+        color: #777;
+    }
+
+    ::-moz-placeholder {
+        color: #777;
+    }
+
+    :-moz-placeholder {
+        color: #777;
+    }
+
+    :-ms-input-placeholder {
+        color: #777;
+    }
+
+    input:not(.tt-search-input):focus::-webkit-input-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus:-moz-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus::-moz-placeholder {
+        color: transparent;
+    }
+
+    input:not(.tt-search-input):focus:-ms-input-placeholder {
+        color: transparent;
+    }
+
+    .selection-box-v2 {
+        margin-bottom: 15px;
+    }
+
+    .selection-box-v2 .selection-item {
+        background: #fff;
+        border: solid;
+        border-width: 1px;
+        border-color: #9c9c9c;
+        border-radius: 3px;
+        padding: 5px;
+        display: block;
+    }
+
+    .selection-box-v2 input:checked ~ span.selection-item {
+        background: #f5f5f5;
+        border-width: 2px;
+        padding: 5px;
+        border-color: #3071a9;
+        box-shadow: 0 0 4px #3071a9;
+    }
+
+    .selection-box-v2 .selection-item:hover {
+        background: #f5f5f5;
+        cursor: pointer;
+    }
+
+    .selection-box-v2 input:focus ~ span.selection-item {
+        background: #f5f5f5;
+        border-width: 2px;
+        padding: 10px;
+        border-color: #3071a9;
+        box-shadow: 0 0 4px #3071a9;
+    }
+
+    .selection-box-v2 label {
+        margin-bottom: 0;
+        display: block;
+    }
+
+    .selection-box-v2 {
+        padding: 5px;
+    }
+
+    .selection-item {
+        font-size: 12px;
+    }
+    .nmk {
+        transition: transform .2s;
+    }
+    .nmk:hover {
+        transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+    .btn-healthmugBorder .badge, .btn-healthmugBorder:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .progress.good {
+        background-color: #007bff;
+    }
+</style>
+<div id="ProductPageBlock" class="wrapper bottomFixButton">
+    <div class="hm-container" data-reactroot="" data-reactid="1">
+        <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList" data-reactid="2">
+            <div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" data-reactid="3">
+                <a itemprop="item" href="{% url 'ecommerce:home' %}" data-reactid="4">
+                    <span itemprop="name" data-reactid="5">Home</span>
+                &nbsp;<meta itemprop="position" content="1" data-reactid="7">
+                </a>
+            </div>
+            {% with product.category.all|first as category %}
+            <div data-reactid="8">
+                {% if category %}
+                <i class="fa fa-angle-right" data-reactid="9"></i>&nbsp;
+                <div itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" data-reactid="11">
+                    
+                    <a itemprop="item" href="{% url 'ecommerce:products_by_category' category.slug %}" data-reactid="12">
+                        <span itemprop="name" data-reactid="13">{{category.name}}</span>
+                        <meta itemprop="position" content="2" data-reactid="14">
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <i class="fa fa-angle-right" data-reactid="22"></i>&nbsp;
+            {% endwith %}
+            <div class="active" data-reactid="24">
+                <span data-reactid="25">{{product.name}}</span>
+            </div>
+        </div>
+        <div class="displayTable productInfo" data-reactid="26">
+            <div class="cellLeft" data-reactid="27">
+                <div class="displayTable" data-reactid="28">
+                    <div class="productDetailImg" data-reactid="29">
+                        <div class="imgMain drift-demo-trigger kdl">
+                            {% with product_images|first as img %}
+                            <div id="m_0" class="typeImage imgMainItem currentImg"
+                                 data-large="{{img.image.url}}"
+                                 data-zoom="{{img.image.url}}"
+                                 data-reactid="31">
+                                 <img src="{{img.image.url}}" class="imgMainSmall loaded" alt="Ekyure Herbals Testro Plus Capsule (30caps)" data-reactid="32">
+                                 
+                                 <img src="{{img.image.url}}" data-zoom="{{img.image.url}}" class="loaded dtrigger">
+                            </div>
+                            {% endwith %}
+                        </div>
+                        <div class="thumbImgWrap" data-reactid="33">
+                            {% with product_images|first as img %}
+                            <!-- <img src="{{img.image.url}}" data-zoom="{{img.image.url}}" class="loaded dtrigger">
+                            <img src="{{img.image.url}}" data-zoom="{{img.image.url}}" class="loaded dtrigger">
+                            <img src="{{img.image.url}}" data-zoom="{{img.image.url}}" class="loaded dtrigger"> -->
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="productDetailTopContent detail" data-reactid="34">
+                        <div class="prodcutDetailTitle" data-reactid="35">
+                            <h1 data-reactid="36">
+                                <span data-reactid="37">{{product.name}}</span>
+                            </h1>
+                            <h2 data-reactid="38">{{product.description|truncatechars:150}}</h2>
+                            <!-- <span class="productDetailShare" data-reactid="39">
+                                <a class="fa fa-facebook socialIcon" data-reactid="40"></a>
+                                <a class="fa fa-twitter socialIcon" data-reactid="42"></a>    
+                            </span> -->
+                        </div>
+
+                        <div class="priceOfferWrap" data-reactid="65">
+                            <div class="productDetailPrice" data-reactid="66">
+                                {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                <span class="productBoxMRP" data-reactid="67">
+                                    M.R.P &nbsp; 
+                                    <span data-reactid="69">
+                                        <i class="fa fa-rupee" data-reactid="70"></i>
+                                        {{product.price}}
+                                    </span>
+                                </span>
+                                <span class="productBoxSellingPrice" id="productSP" data-reactid="73">Price: <i class="fa fa-rupee" data-reactid="74"></i>
+                                    {{product.sale_price}}
+                                </span>
+                                {% else %}
+                                <span class="productBoxSellingPrice" id="productSP" data-reactid="73">Price: <i class="fa fa-rupee" data-reactid="74"></i>
+                                    {{product.price}}
+                                    </span>
+                                {% endif %}
+
+                                <span class="productBoxDiscount" style="background-color: #fff !important;margin-top: -30px;position: absolute;left: 135px;" data-reactid="77">
+                                    <span class="new sale">{{product.discount}}%</span>
+                                </span>
+
+                                <span class="productTaxInfo" data-reactid="80">(Inclusive of all taxes)</span>
+                                <div class="offerDetail" style="width: 90%;" data-reactid="81">
+                                    <div class="offerContent">
+                                        <p class="klp">
+                                            You Save: ₹ {{product.yousave}} Inclusive of all taxes
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="priceOfferWrap">
+                            <!-- <fieldset style="display: flex;">
+                                <legend id="variantLegend" class="sr-only">
+                                    Choose
+                                </legend>
+                                <span role="radiogroup" class="variant-v2 selection-box-v2 " tabindex="0">   
+                                    <label>
+                                        <input aria-hidden="true" type="radio" class="hidden" name="productOption00" value="15 caps" checked="">
+                                        <span class="selection-item" role="radio" aria-checked="checked"> 15 Caps </span>
+                                    </label>
+                                </span>
+                                <span role="radiogroup" class="variant-v2 selection-box-v2"
+                                      tabindex="0"> <label> <input aria-hidden="true" type="radio" class="hidden"
+                                                                   name="productOption00" value="60 caps">
+                                            <span class="selection-item" role="radio"> 60 Caps </span>   </label>  </span>
+
+                                <span role="radiogroup" class="variant-v2 selection-box-v2"
+                                      tabindex="0"> <label> <input aria-hidden="true" type="radio" class="hidden"
+                                                                   name="productOption00" value="200 caps">
+                                            <span class="selection-item" role="radio"> 200 Caps </span>   </label>  </span>
+
+                            </fieldset> -->
+                            <div class="productDetailPrice">
+                                <!-- <button class="btn btn-default btn-healthmugBorder size-lg openCart" style="font-size: 18px;border:1px solid #999;" data-reactid="93">
+                                    <i class="fa fa-shopping-cart" data-reactid="94"></i> &nbsp;
+                                    Buy Now
+                                </button> -->
+                                <form action="{% url 'ecommerce:add_to_cart' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{product.id}}" name="pid" />
+                                    <input type="hidden" value="1" name="quantity" />
+                                    <button type="submit" class="btn btn-default btn-healthmugBorder size-lg openCart" style="font-size: 18px;border:1px solid #999;">&nbsp;Add to Cart &nbsp;</button>
+                                </form>
+                            </div>
+                            
+                            {% if product.brand.name is not None %}
+                            <div class="offerDetail jkp">
+                                {% if product.brand.image %}
+                                <img src="{{product.brand.image.url}}" alt="{{product.brand.name}}"><br data-reactid="117">
+                                {% endif %}
+                                <a href="{% url 'ecommerce:products_by_brand' product.brand.slug %}" class="brandtxtColor">{{product.brand.name}}
+                                <i class="fa fa-angle-right" data-reactid="122" aria-hidden="true"></i></a>
+                            </div>
+                            {% endif %}
+                            <br />
+                            <br />
+                            <div class="zipcode_section" style="width: 100%;height: auto;">
+                                {% csrf_token %}
+                                <p style="font-size: 16px;">Check for Delivery information: </p>
+                                <input type="text" class="form-control form-control-sm ziptext" name="zipcode" value="" placeholder="Enter Zipcode" style="width: 50%;float: left;margin-right: 10px;height: 35px;"/>
+                                <button type="button" class="btn btn-primary mb-3 zipbtn" style="width: 80px;height: 34px;font-size: 16px;">Check</button>
+                                <div class="delivery_info" style="display: none;">
+                                    
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="mobileDeliverCheck" data-reactid="97">
+                            <div class="row availabilityWrap show" data-reactid="98">
+                                <!-- <div class="" style="padding-left: 20px; font-size: 18px; font-weight: 600;" data-reactid="99">
+                                    <span class="label" data-reactid="100">
+                                        <i class="fa fa-map-marker" data-reactid="101"></i>
+                                        Delivery
+                                    </span>
+                                </div>
+                                <div class="col-xs-12 col-lg-10" data-reactid="103">
+                                    <div class="checkAvailability" data-reactid="104">
+                                        <input type="number"
+                                               placeholder="Enter Pincode"
+                                               aria-label="Enter pincode to check availability"
+                                               class="noOutline"
+                                               required="">
+                                        <button data-reactid="106">Check</button>
+                                    </div>
+                                    <span class="availabilityResult" data-reactid="108"> Generally delivered in 3 - 7 days</span>
+                                    <p style="margin-top: -18px;">Enter pincode to check estimated delivery time and COD availability</p>
+                                </div> -->
+
+                            </div>
+                        </div>
+                        <div data-reactid="112"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cellRight" style="background-color:#fafafa;">
+                <div class="productDetailSpecial">
+                    <div id="offers_applicable">
+                        <div class="pro_offer_details" style="padding-left: 30px;">
+                            <span class="title" style="font-size: 18px;color: #000;font-weight: 500;">OFFERS APPLICABLE</span>
+                            <div class="clearfix"></div>
+                            <div class="offer-cont">
+                                <div class="off-checkbox"><input id="check1" type="checkbox" checked="" name="off-check" class="coupon_id" value="20">
+                                    <label for="check1"></label></div>
+                                <span class="offer-text" style="line-height: 1.6;"> <span class="offer-code">NMSNEW28</span><span class="save save1">Save 20% </span> <br> <span style="font-size: 16px;">Flat 18% off on medicines<br>
+order over Rs. 500. Applicable for <br>new customer only.<br>‘T & C’ Apply.</span></span>
+                            </div>
+
+                            <!-- <div class="offer-cont show_offers">
+                                <div class="off-checkbox">
+                                    <input id="check2" type="checkbox" checked="" name="off-check" class="coupon_id" value="18">
+                                    <label for="check2"></label>
+                                </div>
+                                <span class="offer-text"> <span class="offer-code">NMSNEW28</span><span class="save save2">Save 18% </span> <br> Flat 18% off on medicines + 10% NMS SuperCash* on orders over Rs. 500. Applicable for New customers only. *T &amp; C Apply </span>
+                            </div>
+
+                            <div class="offer-cont show_offers">
+                                <div class="off-checkbox"><input id="check3" type="checkbox" checked="" name="off-check" class="coupon_id" value="10">
+                                    <label for="check3"></label>
+                                </div>
+                                <span class="offer-text"> 
+                                    <span class="offer-code">NMSSUPER25</span><span class="save save3">Save 10% </span> <br> Flat 10% off on medicines + Max Rs. 3000 NMS SuperCash* (Flat 15%). T&amp;C Apply* 
+                                </span>
+                            </div>
+                            <div class="offer-cont show_offers">
+                                <div class="off-checkbox"><input id="check4" type="checkbox" checked="" name="off-check" class="coupon_id" value="15">
+                                    <label for="check4"></label>
+                                </div>
+                                <span class="offer-text"> 
+                                        <span class="offer-code">NMSSUPER30</span><span class="save save4">Save 15% </span> <br> Flat 15% off on medicines + Max Rs. 3000 NMS SuperCash* (Flat 15%) on orders above Rs. 750. T&amp;C Apply* 
+                                </span>
+                            </div>
+                            <div class="offer-cont show_offers">
+                                <div class="off-checkbox"><input id="check5" type="checkbox" checked=""
+                                                                 name="off-check" class="coupon_id" value="15">
+                                    <label for="check5"></label></div>
+                                <span class="offer-text"> <span class="offer-code">SAVENMS</span><span
+                                        class="save save5">Save 15% </span> <br> Flat 15% off on medicines + 25% NMS SuperCash on orders above Rs. 1250. T&amp;C Apply* </span>
+                            </div>
+                            <div class="disclaimer disc_offer" style="display:none;"><p><span
+                                    class="heading">NOTE: </span>Only up to 10% discount can be availed on applying
+                                any coupon code for this medicine/product.</p>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="" data-reactid="123">
+                        <div class="white_bg bundle_products" id="brand_products_1">
+                            <!-- <span class="gray-txt">COMBO PACKS
+                            FOR THIS PRODUCT</span>
+                            <div class="swiper-container popular-swipe swiper-container-initialized swiper-container-horizontal swiper-container-free-mode"
+                                 style="padding: 20px;">
+                                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                                    <div class="swiper-slide swiper-slide-active" style="width: 291px;">
+                                        <div class="drug-list">
+                                            <div class="save-div">
+                                                <div class="save-badge badge_two" id="save_badge_two"
+                                                     style="display:none;"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="cat-img"><img class="product-image-photo"
+                                                                      src="https://www.netmeds.com/images/product-v1/75x75/406044/ensure_powder_vanilla_flavour_200_gm_refill_pack_0_2.jpg">
+                                            </div>
+                                            <div class="drug-var">Pack of 2</div>
+                                            <div class="price-box"><span class="final_price">Rs.572.30</span>
+                                                <div class="clearfix"></div>
+                                                <strike class="price">Rs.590.00</strike> <span class="save_price">3% off </span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="addcartbox">
+                                                <form class="cart-form"><input type="hidden" name="qty" value="2">
+                                                    <input type="hidden" name="sku" value="406044">
+                                                    <button type="submit" title="Add to Cart" data-change="no"
+                                                            class="action tocart primary cart-btn pack-btn"
+                                                            onclick="location.href = 'product.html';"> BUY
+                                                        PACK
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                                    <div class="swiper-slide swiper-slide-active" style="width: 291px;">
+                                        <div class="drug-list">
+                                            <div class="save-div">
+                                                <div class="save-badge badge_two" id="save_badge_two"
+                                                     style="display:none;"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="cat-img"><img class="product-image-photo"
+                                                                      src="https://www.netmeds.com/images/product-v1/75x75/406044/ensure_powder_vanilla_flavour_200_gm_refill_pack_0_2.jpg">
+                                            </div>
+                                            <div class="drug-var">Pack of 2</div>
+                                            <div class="price-box"><span class="final_price">Rs.572.30</span>
+                                                <div class="clearfix"></div>
+                                                <strike class="price">Rs.590.00</strike> <span class="save_price">3% off </span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="addcartbox">
+                                                <form class="cart-form"><input type="hidden" name="qty" value="2">
+                                                    <input type="hidden" name="sku" value="406044">
+                                                    <button type="submit" title="Add to Cart" data-change="no"
+                                                            class="action tocart primary cart-btn pack-btn"
+                                                            onclick="location.href = 'product.html';"> BUY
+                                                        PACK
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <span class="swiper-notification" aria-live="assertive"
+                                      aria-atomic="true"></span><span class="swiper-notification"
+                                                                      aria-live="assertive"
+                                                                      aria-atomic="true"></span><span
+                                    class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                            </div> -->
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="similarProductComboOption" data-reactid="144">
+            <div class="similarProductComboProductWrap" data-reactid="145">
+                <div class="similarProductComboProduct" data-reactid="146">
+                    <!-- <div data-reactid="147"><h2 class="groupTitle" id="comboProductListTitle" data-reactid="148">
+                        Frequently Bought Together</h2>
+                        <div class="similarProductWrap" data-reactid="149">
+                            <div class="productRow comboProductWrap" id="comboProducts" data-reactid="150">
+                                <div class="productBox" data-reactid="151" style="margin-right: 10px;"><span
+                                        class="imgMainSoldOut"
+                                        data-reactid="152">Sold Out</span>
+                                    <div data-reactid="154">
+                                        <div class="productImg" data-reactid="155">
+                                            <div data-reactid="156"><img src="images/product/111549-1-200.jpg"
+                                                                         srcset="images/product/111549-1-200.jpg 2x"
+                                                                         alt="Ekyure Herbals Testro Plus Capsule (30caps)"
+                                                                         data-reactid="157" class="loaded nmk"></div>
+                                        </div>
+                                        <p class="productTitle" data-reactid="158">Ekyure Herbals Testro Plus
+                                            Capsule (30caps)</p></div>
+                                    <div class="productData">
+                                        <div class="productBoxPrice"><p><span class="productBoxMRP"><i
+                                                class="fa fa-rupee"></i>&nbsp;
+                                            115.00
+                                            </span><span class="productBoxSellingPrice"><i
+                                                class="fa fa-rupee"></i>
+                                            88.00</span><span
+                                                class="productBoxDiscount"><span class="newj sale">50%</span></span>
+                                        </p></div>
+                                    </div>
+                                </div>
+                                <div class="productBox smoothScroll" data-target="#comboProductListTitle"
+                                     data-reactid="159">
+                                    <div class="chkWrap" data-reactid="160">
+                                        <div class="chk checked" data-reactid="161">
+                                            <svg data-reactid="162">
+                                                <use xlink:href="css/svgsprite.svg#chk-check"
+                                                     data-reactid="163"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <a href="product.html"
+                                       target="_blank" data-reactid="164">
+                                        <div class="productImg" data-reactid="165">
+                                            <div data-reactid="166"><img src="images/product/129830-1-200.jpg"
+                                                                         srcset="images/product/129830-1-200.jpg 2x"
+                                                                         alt="Ekyure Herbals Laboob Kabir (125g)"
+                                                                         data-reactid="167" class="loaded nmk"></div>
+                                        </div>
+                                        <p class="productTitle" data-reactid="168">Ekyure Herbals Laboob Kabir
+                                            (125g)</p></a>
+                                    <div class="productData" data-reactid="169" style="margin-top: 10px;">
+                                        <div class="productBoxPrice" data-reactid="170"><span class="productBoxMRP"
+                                                                                              data-reactid="171"><i
+                                                class="fa fa-rupee" data-reactid="172"></i>&nbsp;
+                                            405
+                                            </span><span class="productBoxSellingPrice"
+                                                                             data-reactid="175"><i
+                                                class="fa fa-rupee" data-reactid="176"></i>390
+                                            </span><span class="productBoxDiscount"
+                                                                             data-reactid="179"><span
+                                                class="newj sale" style="left: 145px;">50%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="productBox smoothScroll" data-target="#comboProductListTitle"
+                                     data-reactid="159">
+                                    <div class="chkWrap" data-reactid="160">
+                                        <div class="chk checked" data-reactid="161">
+                                            <svg data-reactid="162">
+                                                <use xlink:href="css/svgsprite.svg#chk-check"
+                                                     data-reactid="163"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <a href="product.html"
+                                       target="_blank" data-reactid="164">
+                                        <div class="productImg" data-reactid="165">
+                                            <div data-reactid="166"><img
+                                                    src="images/product/Himalaya Shatavari Tablet (60tab).jpg"
+                                                    srcset="images/product/Himalaya Shatavari Tablet (60tab).jpg 2x"
+                                                    alt="Ekyure Herbals Laboob Kabir (125g)"
+                                                    data-reactid="167" class="loaded nmk"></div>
+                                        </div>
+                                        <p class="productTitle" data-reactid="168">Ekyure Herbals Laboob Kabir
+                                            (125g)</p></a>
+                                    <div class="productData" data-reactid="169" style="margin-top: 10px;">
+                                        <div class="productBoxPrice" data-reactid="170"><span class="productBoxMRP"
+                                                                                              data-reactid="171"><i
+                                                class="fa fa-rupee" data-reactid="172"></i>&nbsp;405
+                                            </span><span class="productBoxSellingPrice"
+                                                                             data-reactid="175"><i
+                                                class="fa fa-rupee" data-reactid="176"></i>390
+                                            </span><span class="productBoxDiscount"
+                                                                             data-reactid="179"><span
+                                                class="newj sale" style="left: 145px;">50%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="productBox smoothScroll" data-target="#comboProductListTitle"
+                                     data-reactid="159">
+                                    <div class="chkWrap" data-reactid="160">
+                                        <div class="chk checked" data-reactid="161">
+                                            <svg data-reactid="162">
+                                                <use xlink:href="css/svgsprite.svg#chk-check"
+                                                     data-reactid="163"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <a href="product.html"
+                                       target="_blank" data-reactid="164">
+                                        <div class="productImg" data-reactid="165">
+                                            <div data-reactid="166"><img
+                                                    src="images/product/Himalaya Rumalaya Forte Tablet (60tab).jpg"
+                                                    srcset="images/product/Himalaya Rumalaya Forte Tablet (60tab).jpg 2x"
+                                                    alt="Ekyure Herbals Laboob Kabir (125g)"
+                                                    data-reactid="167" class="loaded nmk"></div>
+                                        </div>
+                                        <p class="productTitle" data-reactid="168">Ekyure Herbals Laboob Kabir
+                                            (125g)</p></a>
+                                    <div class="productData" data-reactid="169" style="margin-top: 10px;">
+                                        <div class="productBoxPrice" data-reactid="170"><span class="productBoxMRP"
+                                                                                              data-reactid="171"><i
+                                                class="fa fa-rupee" data-reactid="172"></i>&nbsp;
+                                            405</span><span class="productBoxSellingPrice"
+                                                                             data-reactid="175"><i
+                                                class="fa fa-rupee" data-reactid="176"></i>390
+                                            </span><span class="productBoxDiscount"
+                                                                             data-reactid="179"><span
+                                                class="newj sale" style="left: 145px;">50%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comboPriceBoxWrap" data-reactid="180">
+                            <div class="comboPriceBox" data-reactid="181"><label data-reactid="182">1
+                                Item</label><span data-reactid="183"><i class="fa fa-rupee" data-reactid="184"></i>
+                                447
+                                </span></div>
+                            <div class="comboPriceBox addons" data-reactid="187"><label data-reactid="188">
+                                1Addons
+                                </label><span data-reactid="191"><i class="fa fa-rupee"
+                                                                                        data-reactid="192"></i>
+                                390
+                                </span></div>
+                            <div class="comboPriceBox combolTotal nhj" data-reactid="195"><label data-reactid="196">Total</label><span
+                                    data-reactid="197"><i class="fa fa-rupee" data-reactid="198"></i>
+                                837
+                                </span></div>
+                            <button class="btn btn-healthmug size-lg"
+                                    style="background-color: #51c9a6;color: #fff;height: 40px;font-size: 18px;">Add
+                                Combo to Cart
+                            </button>
+                        </div>
+                    </div> -->
+                    {% with product.producttab_set.all|first as tabs %}
+                    
+                    {% if tabs %}
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="panels-tab" data-toggle="tab" href="#panels" role="tab"
+                            aria-controls="panels" aria-selected="true">Therapeutic Uses</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="generators-tab" data-toggle="tab" href="#generators" role="tab"
+                            aria-controls="generators" aria-selected="false">Warning & Precautions</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="batteries-tab" data-toggle="tab" href="#batteries" role="tab" aria-controls="batteries"
+                              aria-selected="false">Interactions</a>
+                          </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="adders-tab" data-toggle="tab" href="#adders" role="tab" aria-controls="adders"
+                            aria-selected="false">Direction and for Use</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="side-effects" data-toggle="tab" href="#side_effects" role="tab" aria-controls="side-effects"
+                              aria-selected="false">Side Effects</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="more-information" data-toggle="tab" href="#more_information" role="tab" aria-controls="more-information"
+                              aria-selected="false">More Information </a>
+                          </li>
+                      </ul>
+                      <!-- tab content -->
+                      <div class="tab-content col-xl-12 mb-20" id="myTabContent" style="padding-right: 0px; padding-left: 0px; padding-top: 0px;">
+                        <!-- tab 1 -->
+                        <div class="tab-pane fade show active" id="panels" role="tabpanel" aria-labelledby="panels-tab">
+                            {% autoescape off %}
+                                {{tabs.uses}}
+                            {% endautoescape %}
+                        </div>
+                        <!-- tab 2 -->
+                        <div class="tab-pane fade" id="generators" role="tabpanel" aria-labelledby="generators-tab">
+                            {% autoescape off %}
+                                {{tabs.warnings}}
+                            {% endautoescape %}
+                        </div>
+                        <!-- tab 3 -->
+                        <div class="tab-pane fade" id="batteries" role="tabpanel" aria-labelledby="batteries-tab">
+                            {% autoescape off %}
+                                {{tabs.interactions}}
+                            {% endautoescape %}
+                        </div>
+                        <!-- tab 4 -->
+                        <div class="tab-pane fade" id="adders" role="tabpanel" aria-labelledby="adders-tab">
+                            {% autoescape off %}
+                                {{tabs.directions}}
+                            {% endautoescape %}
+                        </div>
+                        <!-- tab 5 -->
+                        <div class="tab-pane fade" id="side_effects" role="tabpanel" aria-labelledby="side-effects">
+                            {% autoescape off %}
+                                {{tabs.side_effects}}
+                            {% endautoescape %}
+
+                          </div>
+                          <!-- tab 6 -->
+                        <div class="tab-pane fade" id="more_information" role="tabpanel" aria-labelledby="more-information">
+                            {% autoescape off %}
+                                {{tabs.more_information}}
+                            {% endautoescape %}
+
+                        </div>
+
+
+                      </div>
+                      {% endif %}
+                      {% endwith %}
+                    
+                    <div class="">
+                        <div class="_2MjsM _3Tn87">
+                                <div class="_1PmFh">
+                                    <div class="_6LPiO">
+                                        <h2 class="_3v98p">Simmilar Products</h2>
+                                        
+                                    </div>
+                                </div>
+                                <div class="_3PTRn">
+                                    <div class="ZIk7j productlists-slider">
+                                        {% for product in simmilar_products %}
+                                        <div class="productlist-slide">
+                                            <div class="swiper-slide _2MupT" >
+                                                <div tabindex="0" role="button" class="_2tdEn _1pXi6 _1TGr2">
+                                                    <div class="_3D0yz">
+                                                        {% if product.discount > 0 %}
+                                                        <div class="_1fKPr">{{product.discount}} OFF</div>                         
+                                                        {% endif %}           
+                                                        
+                                                        {% with product.productimage_set.all|first as img %}
+                                                        {% if img.image %}
+                                                        <img class="_3r-kp pe-lazy"
+                                                        alt="{{product.name}}"
+                                                        src="{{ img.image.url }}">
+                                                        {% endif %}
+                                                        {% endwith %} 
+                                                        <noscript></noscript>
+                                                    </div>
+                                                    <div class="ZZH4d">
+                                                        <a class="_3WzKo" href="{% url 'ecommerce:product_details' product.slug %}">{{product.name}}</a>
+                                                        <div class="_2kCXM">
+                                                            <div class="bZatA">&#8377;{{product.sale_price}}</div>
+                                                            <div class="_26HyN">&#8377;{{product.price}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+
+
+                    
+                </div>
+            </div>
+            
+            
+            <div class="combosWrap" id="ComboProductBlock" data-reactid="844">
+                <div class="combosWrapInner" data-reactid="845" style="">
+                    <!-- <div class="productBox" data-reactid="846"><span class="imgMainSoldOut" data-reactid="847">Sold Out</span><a
+                            data-reactid="848">
+                        <div class="productImg" data-reactid="849">
+                            <div data-reactid="850"><img src="product_files/73387-1-150.jpg"
+                                                         srcset="product_files/73387-1-400.jpg 2x"
+                                                         title="Ekyure Herbals Testro Plus Capsule (30caps)"
+                                                         alt="Ekyure Herbals Testro Plus Capsule (30caps)"
+                                                         data-reactid="851" class="loaded"></div>
+                        </div>
+                        <div class="productTitleWrap" data-reactid="852"><p class="productTitle" data-reactid="853">
+                            Ekyure Herbals Testro Plus Capsule (30caps)</p>
+
+                        </div>
+                    </a>
+                        <div class="productData" data-reactid="857">
+                            <div class="productBoxPrice" data-reactid="858"><p data-reactid="859"><span
+                                    class="productBoxMRP" data-reactid="860"><i class="fa fa-rupee"
+                                                                                data-reactid="861"></i>
+                                450
+                                </span><span class="productBoxSellingPrice"
+                                                                 data-reactid="864"><i class="fa fa-rupee"
+                                                                                       data-reactid="865"></i>
+                                447
+                                </span><span class="productBoxDiscount" data-reactid="868"><img
+                                    src="product_files/disc.png"
+                                    style="width: 80px;position: absolute;margin-left: -15px;"></span></p></div>
+                        </div>
+                        <p style="margin-bottom:10px;" data-reactid="871">
+                            <button class="btn btn-block btn-healthmug"
+                                    style="background-color: #51c9a6;color: #fff;height: 40px;font-size: 18px;"
+                                    onclick="location.href = 'cart.html';">Buy Now
+                            </button>
+                        </p>
+                    </div> -->
+                </div>
+            </div>
+
+
+        </div>
+        <div class="clearfix" data-reactid="873"></div>
+        <br data-reactid="874">
+        
+    </div>
+</div>
+<a class="scrollup" style="display: none;"><i class="fa fa-angle-up"></i></a>
+
+
+<script src="{% static 'js/drift.js' %}" crossorigin="anonymous"></script>
+<script>
+    $('.zipbtn').click(function(){
+        var zipcode = $('input[name="zipcode"]').val();
+        var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
+        $('.msg').remove();
+        $.ajax({
+            url: "{% url 'ecommerce:check_delivery_by_zipcode' %}",
+            type: "POST",
+            data: {zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken},
+            //async: false,
+            success: function(data, textStatus, jqXHR) {
+                console.log(data.obj);
+                $('.delivery_info').slideDown();
+                if(data.message != 'Success')
+                {
+                    $('.delivery_info').append('<p class="msg" style="font-size: 16px;color:red;">'+data.message+'</p>')
+                }else{
+                    var obj = JSON.parse(data.obj);
+                    obj = obj[0].fields;
+                    
+                    if(obj.cod){
+                        $('.delivery_info').append('<p class="msg" style="font-size: 16px;">Cash on Delivery is Available.</p>')
+                    }else{
+                        $('.delivery_info').append('<p class="msg" style="font-size: 16px;">Cash on Delivery is Not Available.</p>')
+                    }
+                    if(obj.delivery_charge){
+                        $('.delivery_info').append('<p class="msg" style="font-size: 16px;">Shipping Charge is Applicable.</p>')
+                    }else{
+                        $('.delivery_info').append('<p class="msg" style="font-size: 16px;">Free Delivery is Available</p>')
+                    }
+                    $('.delivery_info').append('<p class="msg" style="font-size: 16px;">'+obj.days+'</p>')
+                    
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Error occurred!');
+            }
+        });
+    });
+
+    function zoomImg() {
+        if (typeof (driftinst) !== 'undefined')
+            driftinst.trigger._unbindEvents()
+        driftinst = new Drift(document.querySelector('.drift-demo-trigger .typeImage.currentImg'), {
+            paneContainer: document.querySelector('.detail'),
+            inlinePane: 900,
+            inlineOffsetY: -85,
+            zoomFactor: 2,
+            containInline: false
+        });
+    }
+</script>
+<script defer="defer" src="{% static 'js/cart.js' %}"></script>
+
+<script defer="defer" src="{% static 'js/productpage.js' %}"></script>
+<script defer="defer" src="{% static 'js/product_page_app.js' %}"></script>
+
+{% endblock %}

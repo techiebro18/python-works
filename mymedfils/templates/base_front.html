@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="">
+<!-- To declare your language - read more here: https://www.w3.org/International/questions/qa-html-language-declarations -->
+<head>
+<title>medfils Free Consultation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="{% static 'layout/styles/layout.css' %}" rel="stylesheet" type="text/css" media="all">
+</head>
+<body id="top">
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- <div class="wrapper row0">
+  <div id="topbar" class="hoc clear"> 
+    <ul class="nospace">
+      <li><i class="fa fa-envelope-o"></i> info@domain.com</li>
+      <li><a href="index.html"><i class="fa fa-lg fa-home"></i></a></li>
+      <li><a href="#" title="Help Centre"><i class="fa fa-life-bouy"></i></a></li>
+      <li><a href="#" title="Login"><i class="fa fa-lg fa-sign-in"></i></a></li>
+      <li><a href="#" title="Sign Up"><i class="fa fa-lg fa-edit"></i></a></li>
+    </ul>
+  </div>
+</div> -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row1">
+  <header id="header" class="clear">
+    <section class="hoc"> 
+      <!-- ################################################################################################ -->
+      <div>
+        <h1 id="logo"><a href="index.html"><img src="{% static 'front-images/medfils-logo.png' %}" alt=""> </a></h1>
+      </div>
+      <div>
+        <form class="clear" method="post" action="#">
+          <fieldset>
+            <legend>Search:</legend>
+            <input type="search" value="" placeholder="Search Here&hellip;">
+            <button class="fa fa-search" type="submit" title="Search"><em>Search</em></button>
+          </fieldset>
+        </form>
+      </div>
+      <div id="topbar">
+        <ul class="nospace yr-topIcon">
+          <li><a href="#" title="Upload"><img src="{% static 'front-images/upload_icon.png' %}" alt=""><span>Upload</span></a></li>
+          <li><a href="#" title="Sell with us"><img src="{% static 'front-images/hand_icon.png' %}" alt=""><span>Sell with us</span></a></li>
+          <li><a href="#" title="Sign Up/Login"><img src="{% static 'front-images/user_icon.png' %}" alt=""><span>Sign up/Login</span></a></li>
+          <li><a href="#" title="Cart"><img src="{% static 'front-images/cart_icon.png' %}" alt=""><span>Cart</span></a></li>
+      </ul>
+    </div>
+
+      <!-- ################################################################################################ -->
+    </section>
+    <nav id="mainav"> 
+      <!-- ################################################################################################ -->
+      <ul class="clear hoc">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="#">Pharmacy</a></li>
+        <li><a class="drop" href="#">Homeopathy</a>
+          <ul>
+            <li><a href="#">Level 2</a></li>
+            <li><a class="drop" href="#">Level 2 + Drop</a>
+              <ul>
+                <li><a href="#">Level 3</a></li>
+                <li><a href="#">Level 3</a></li>
+                <li><a href="#">Level 3</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Level 2</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Ayurveda </a></li>
+        <li><a href="#">Unani</a></li>
+        <!-- <li><a href="#">Homeopathy</a></li>
+        <li><a href="#">Diet & Nutritions</a></li>
+        <li><a href="#">Sexual Wellnses</a></li> -->
+        <li><a href="#">Diseases</a></li>
+        <li><a href="#">Consultation</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Need Help?</a></li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </nav>
+  </header>
+</div>
+
+
+{% block content %}
+{% endblock %}
+
+
+<div class="wrapper coloured">
+  <article class="hoc cta clear"> 
+    <!-- ################################################################################################ -->
+    <form method="post" action="#">
+      <div><h3>Subscribe to our newsletter</h3></div>
+      <fieldset>
+        <input class="" type="text" value="" placeholder="Enter Email">
+        <button type="submit" class="btn" value="submit"><i class="fa fa-paper-plane"></i></button>
+      </fieldset>
+    </form>
+    <!-- ################################################################################################ -->
+  </article>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row5">
+  <footer id="footer" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <div class="one_quarter first">
+      <h6 class="heading">Follow Us</h6>
+      <ul class="faico clear">
+        <li><a class="faicon-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a class="faicon-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="faicon-dribble" href="#"><i class="fa fa-instagram"></i></a></li><br>
+        <li><a class="faicon-youtube" href="#"><i class="fa fa-youtube"></i></a></li>
+        <li><a class="faicon-vk" href="#"><i class="fa fa-paper-plane"></i></a></li>
+        <li><a class="faicon-linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+      </ul>
+      <div class="one_quarter first mobile-app">
+        <img src="{% static 'front-images/phone-icon.png' %}">
+      </div>
+      <div class="one_half app-store">
+        <img src="{% static 'front-images/app-store-icon.png' %}">
+        <img src="{% static 'front-images/googlePlay-icon.png' %}">
+      </div>
+    </div>
+    <div class="one_quarter">
+      <h6 class="heading">Quick Links</h6>
+      <ul class="nospace linklist">
+        <li><a href="#">My Account</a></li>
+        <li><a href="#">My Orders</a></li>
+        <li><a href="#">Office Zone</a></li>
+        <li><a href="#">Sell with us</a></li>
+      </ul>
+    </div>
+    <div class="one_quarter">
+      <h6 class="heading">Policies</h6>
+      <ul class="nospace linklist">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Return & Refund Policy</a></li>
+        <li><a href="#">FAQ's</a></li>
+      </ul>
+      
+    </div>
+    <div class="one_quarter">
+      <h6 class="heading">Contact Us</h6>
+      <ul class="nospace btmspace-30 linklist contact">        
+        <li><i class="fa fa-whatsapp"></i>+91 8750632085</li>
+        <li><i class="fa fa-envelope-o"></i>medifilscare@gmail.com</li>
+      </ul>
+    </div>
+    <!-- ################################################################################################ -->
+  </footer>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<div class="wrapper row5">
+  <div id="copyright" class="hoc clear"> 
+    <!-- ################################################################################################ -->
+    <p class="fl_left">Copyright &copy; 2020 - All Rights Reserved - <a href="#">Medfils</a></p>
+    
+    <!-- ################################################################################################ -->
+  </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<a id="backtotop" href="#top"><i class="fa fa-chevron-up"></i></a>
+<!-- JAVASCRIPTS -->
+<script src="{% static 'layout/scripts/jquery.min.js' %}"></script>
+<script src="{% static 'layout/scripts/jquery.backtotop.js' %}"></script>
+<script src="{% static 'layout/scripts/jquery.mobilemenu.js' %}"></script>
+</body>
+</html>

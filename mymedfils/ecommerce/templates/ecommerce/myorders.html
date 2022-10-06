@@ -1,0 +1,64 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main padding-y">
+        <main class="">
+            <div class="">
+                <h6 class="title-category">Order History</h6>
+                <div class="row">
+                    <aside class="col-lg col-md-3">
+                        {% include 'ecommerce/myaccount-leftmenu-new.html' %}
+                    </aside> <!-- col.// -->
+                    <div class="col-md-9 col-xl-9 col-lg-9">
+                        <article class="card mb-4">
+                            <div class="card-body">
+                                <div class="row"> 
+                                    <div class="col-md-12">
+                        <div class="table-responsive yr-order-table">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}    
+                            <tr>
+                                <td class="text-center">
+                                    <a href="{% url 'ecommerce:order_details' order.order_id %}">#{{order.order_id}}</a>
+                                </td>
+                                <td class="text-center">{{order.created_at|date:'d/m/yy'}}</td>
+                                <td class="text-center"><span  style="color:{% status_color order.status %};">{{order.status|title}}</span></td>
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        </div> <!-- table-responsive .end// -->
+                    </div>
+                </div>
+                            </div>
+                        </article>
+                </div> 
+
+                </div> <!-- row.// -->
+
+            </div> <!-- card-body.// -->
+        </main> <!-- card.// -->
+
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+    <!-- =============== SECTION REGION =============== -->
+    <!-- =============== SECTION REGION .//END =============== -->		
+</div>
+<!-- container end.// -->
+<article class="">
+    <img src="{% static 'img/new-info.png' %}" class="w-100">
+</article>
+{% endblock %}

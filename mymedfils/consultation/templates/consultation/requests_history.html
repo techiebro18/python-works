@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block breadcrumb %}
+<li><a href=""><i class="icon-home2 position-left"></i> Home</a></li>
+<li class="active">Requests History</li>
+{% endblock %}
+{% block content %} 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+            
+
+            
+
+            <!-- Basic datatable -->
+                    <div class="panel panel-flat">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">History</h5>
+                        </div>
+
+                        
+
+                        <table class="table datatable-basic">
+                            <thead>
+                                <tr>
+                                    <th style="display:none;"></th>
+                                    <th class="col-md-2">Name</th>
+                                    <th class="col-md-5">Response</th>
+                                    <th class="col-md-1">Status</th>
+                                    <th class="col-md-2">Date Time</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                            {% for obj in obj_list %}
+
+                                <tr>
+                                    <td style="display:none;"></td>
+                                    <td>
+                                        <div class="media-left">
+                                            <div class="">
+                                                <a href="{% url 'consultation:response_details' obj.consultation.id %}" class="text-default text-semibold">{{obj.consultation}}</a>
+                                            </div>
+                                        </div>
+                                    </td> 
+                                    
+                                    <td>{{obj.response|truncatechars:50}}</td>
+                                    
+                                    <td>{{obj.response_type}}</td>
+                                    <td>{{obj.date|date:'d M, Y  h:i'}}</td>
+                                    
+                                    
+                                </tr>  
+
+{% endfor %}                                                                                            
+                                </tbody>
+                        </table>
+                    
+                    
+                    
+                    </div>
+                    <!-- /basic datatable -->
+
+
+
+
+<script type="text/javascript" src="{% static 'front/js/plugins/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript">
+// CKEDITOR.replace( 'description',
+// {
+//     customConfig : '{% static "front/js/plugins/ckeditor/config_custom.js" %}',
+//     toolbar : 'simple'
+// })
+
+CKEDITOR.replace( 'description',{
+        allowedContent: true
+    });
+
+</script>
+
+
+{% endblock %}

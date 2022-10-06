@@ -1,0 +1,64 @@
+{% load static %}
+{% load common %}
+<left-menu _ngcontent-qxr-c6="" _nghost-qxr-c7="">
+    <div _ngcontent-qxr-c7="" class="custome-link">
+        <div _ngcontent-qxr-c7="" class="linkcol">
+            
+            {% if 'my-account' in request.get_full_path %}
+            <a _ngcontent-qxr-c7="" class="account-link d-none d-sm-block active" href="{% url 'ecommerce:myaccount_form' %}"><span _ngcontent-qxr-c7="" ></span>Account Info </a>
+            {% else %}
+            <a _ngcontent-qxr-c7="" class="account-link d-none d-sm-block" href="{% url 'ecommerce:myaccount_form' %}"><span _ngcontent-qxr-c7="" ></span>Account Info </a>
+            {% endif %}
+            <!-- <a
+                _ngcontent-qxr-c7="" class="offers-link ng-star-inserted" href="wallet.html"><span
+                _ngcontent-qxr-c7="" ></span>My Wallet </a> -->
+
+            {%if 'my-orders' in request.get_full_path %}
+            <a _ngcontent-qxr-c7="" class="elite-link ng-star-inserted active" href="{% url 'ecommerce:my_orders' %}"><span
+                _ngcontent-qxr-c7="" ></span>My Orders </a>
+            {%else%}
+            <a _ngcontent-qxr-c7="" class="elite-link ng-star-inserted" href="{% url 'ecommerce:my_orders' %}"><span
+                _ngcontent-qxr-c7="" ></span>My Orders </a>
+            {%endif%}
+
+            <!-- <a _ngcontent-qxr-c7="" class="myprescription-link ng-star-inserted" href="order_history.html"><span
+                _ngcontent-qxr-c7=""></span>Order History </a> -->
+            <!-- <a
+                _ngcontent-qxr-c7="" class="subscription-link d-none d-sm-block ng-star-inserted"
+                href="my_consultation.html"><span
+                _ngcontent-qxr-c7="" ></span>My Consultation </a> -->
+            <!-- <a
+                _ngcontent-qxr-c7="" class="nmswallet-link d-none d-sm-block"
+                href=""><span
+                _ngcontent-qxr-c7="" ></span>My Prescription </a> -->
+            {%if 'change-password' in request.get_full_path %}
+            <a
+                _ngcontent-qxr-c7="" class="referearn-link d-none d-sm-block active"
+                href="{% url 'ecommerce:change_password' %}"><span
+                _ngcontent-qxr-c7="" ></span>Change Password </a>
+            {%else%}
+            <a
+            _ngcontent-qxr-c7="" class="referearn-link d-none d-sm-block"
+            href="{% url 'ecommerce:change_password' %}"><span
+            _ngcontent-qxr-c7="" ></span>Change Password </a>
+            {%endif%}
+            <!-- <a
+                _ngcontent-qxr-c7="" class="help-link" href="asked.html"><span
+                _ngcontent-qxr-c7="" ></span>Ask Question </a> -->
+            <!-- <a _ngcontent-qxr-c7="" class="legal-link" href="refer.html"><span
+                _ngcontent-qxr-c7="" ></span>Refer & Earn </a> -->
+            <!-- <a
+                _ngcontent-qxr-c7="" class="contactus-link" href="rate_us.html"><span
+                _ngcontent-qxr-c7="" ></span>Rate Us </a> -->
+            <!-- <a _ngcontent-qxr-c7="" class="legal-link" href="rate_us.html"><span
+                _ngcontent-qxr-c7="" ></span>Legal Information </a> -->
+
+            <!-- <a _ngcontent-qxr-c7="" class="logout-link ng-star-inserted" href="terms.html"><span
+                _ngcontent-qxr-c7="" ></span>Need help</a> -->
+            <a _ngcontent-qxr-c7="" class="logout-link ng-star-inserted" href="{% url 'ecommerce:contact_us' %}"><span
+                    _ngcontent-qxr-c7="" ></span>Contact us </a>
+            <a _ngcontent-qxr-c7="" class="logout-link ng-star-inserted" href="{% url 'ecommerce:logout' %}"><span
+                    _ngcontent-qxr-c7="" ></span>Logout </a>
+        </div>
+    </div>
+</left-menu>

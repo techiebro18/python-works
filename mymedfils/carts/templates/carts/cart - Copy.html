@@ -1,0 +1,149 @@
+{% load common %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+      .form-coupon{
+          width: 100%;
+          margin: 10px 0px;
+      }
+      .form-control-exception{
+        width: 60%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>CART</h2>        
+  {% if items %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Remove</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td><a href="{% url 'ecommerce:product_details' item.product.slug %}">{{item.product.name}}</a></td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.product.price}}</td>
+            <td>
+                <form action="{% url 'ecommerce:delete_cart' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{item.id}}" />
+                    <input type="submit" name="delete" value="Remove" onclick="return confirmPopup()" />
+                </form>
+            </td>
+            <td>{% multiply item.product.price item.quantity %}</td>
+        </tr>
+        {% endfor %}  
+            <tr>
+                <td> 
+                    <div class="form-coupon">
+                        <form id="coupon-form" action="{% url 'ecommerce:apply_coupon' %}" method="post" role="form">
+                            {% csrf_token %}
+                            <input type="text" name="coupon_code" id="coupon_code" tabindex="1" class="form-control-exception" placeholder="Enter your coupon code" value="" required>
+                            <input type="submit" name="submit" id="submit" tabindex="4" class=" btn btn-login" value="Apply Coupon">                       
+                        </form>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td colspan="2">
+                    <table width="90%">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Sub Total: </b></td>
+                            <td>{{subtotal}}</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        {% if cart.coupon is not none %}
+                        <tr>
+                            <td>Coupon: {{cart.coupon.name}}</td>
+                            <td>Applied: 
+                                <form method="POST" action="{% url 'ecommerce:remove_coupon' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="coupon_id" value="{{cart.coupon.id}}">
+                                    <button type="submit">Remove Coupon</button>
+                                </form> 
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><b>Grand Total: </b></td>
+                            <td>{{total}}</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'ecommerce:checkout' %}">Proceed To Checkout</a></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+    </tbody>
+  </table>
+    {% else %}
+    <p>No items found</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
+
+
+
+<script>
+    function confirmPopup(){
+        if(confirm("Do you want to remove it?")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>

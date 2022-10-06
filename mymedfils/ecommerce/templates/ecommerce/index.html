@@ -1,0 +1,270 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load helpers_tag %}
+{% block content %}
+<div class="bgded">
+    <div id="slider" class="clear" style="margin-bottom: 20px;"> 
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                {% for slide in slides %}                
+              <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+                <img class="d-block w-100" src="{{slide.image.url}}" alt="{{slide.name}}">
+              </div>
+              {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        <!-- ################################################################################################ -->
+    </div>
+  </div>
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main" style="padding-bottom: 10px;">
+        <div class="wrapper">
+            <section class="hoc clear"> 
+              <!-- ################################################################################################ -->
+            <div class="shop-category">
+                <ul>
+                    {% for cat in categories %}   
+                    <li>
+                        <a href="{% url 'ecommerce:products_by_category' cat.slug %}">
+                            {% if cat.image %}
+                            <img src="{{ cat.image.url }}" alt="{{cat.slug}}">
+                            {% endif %}
+                            <span>{{cat.name}}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </section>
+            <section class="hoc clear" style="background-color: #fff;padding-top: 10px;"> 
+                <div class="row">
+                    {% for banner in banners %}
+                    <div class="col-md-4">
+                        <a href="{{banner.url}}"><img src="{{banner.image.url}}" alt="{{banner.name}}"></a>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+            </section>
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <article class="card single-page-slider">
+                    <div class="card-body">
+                        <div><spam class="bold">Deal of the Day</spam> | <span class="deal-time">05:28:05 left</span></div>
+                        <div class="row">
+                            
+                            <div class="col-md-3">
+                                <a href="{% url 'ecommerce:products_by_category' 'deals' %}" class="view-all-img"><img src="{% static 'img/Deal of the day.png' %}" alt=""> </a>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="items">
+                                    {% for product in deals_prods %}    
+                                    <div>
+                                        <figure class="card card-product-grid">
+                                            <div class="img-wrap"> 
+                                                {% include 'ecommerce/discount.html' with product=product %}
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                                                    {% with product.productimage_set.all|first as img %}
+                                                    <img src="{{ img.image.url }}" alt="{{product.name}}">
+                                                    {% endwith %} 
+                                                </a>
+                                                <!-- <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> -->
+                                            </div> <!-- img-wrap.// -->
+                                            <figcaption class="info-wrap">
+                                                <div class="fix-height">
+                                                    <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                                                    <p>{{product.description|truncatechars:70}}</p>
+                                                    
+                                                    {% include 'ecommerce/price.html' with product=product %}
+                                                </div>
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="btn btn-block btn-primary">Add to cart </a>	
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!--  -->
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <article class="card single-page-slider">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12"><h2 style="text-align: center;">POPULAR BRAND</h2></div>
+                            <div class="col-md-12">
+                                <div class="items popular-brand-section">
+                                    {% for obj in brands %}   
+                                    <div>											
+                                        <div class="img-wrap"> 												
+                                            <a href="{% url 'ecommerce:products_by_brand' obj.slug %}" class="title">
+                                                {% if obj.image %}
+                                                <img src="{{ obj.image.url }}" alt="{{obj.slug}}">
+                                                {% else %}
+                                                <img src="" alt="{{obj.slug}}">
+                                                {% endif %}
+                                            </a>
+                                        </div> <!-- img-wrap.// -->	
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            {% if homeopathy_prods %}
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <article class="card single-page-slider">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="{% url 'ecommerce:products_by_category' 'homeopathy' %}" class="view-all-img"><img src="{% static 'img/Homeopathy-new.png' %}" alt=""> </a>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="items">
+                                    {% for product in homeopathy_prods %}    
+                                    <div>
+                                        <figure class="card card-product-grid">
+                                            <div class="img-wrap"> 
+                                                {% include 'ecommerce/discount.html' with product=product %}
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                                                    {% with product.productimage_set.all|first as img %}
+                                                    <img src="{{ img.image.url }}" alt="{{product.name}}">
+                                                    {% endwith %} 
+                                                </a>
+                                                <!-- <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> -->
+                                            </div> <!-- img-wrap.// -->
+                                            <figcaption class="info-wrap">
+                                                <div class="fix-height">
+                                                    <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                                                    <p>{{product.description|truncatechars:70}}</p>
+                                                    {% include 'ecommerce/price.html' with product=product %}
+                                                </div>
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="btn btn-block btn-primary">Add to cart </a>	
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            {% endif %}
+            {% if ayurveda_prods %}
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <article class="card single-page-slider">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="{% url 'ecommerce:products_by_category' 'ayurveda' %}" class="view-all-img"><img src="{% static 'img/Ayurvedic-New.png' %}" alt=""> </a>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="items">
+                                    {% for product in ayurveda_prods %}    
+                                    <div>
+                                        <figure class="card card-product-grid">
+                                            <div class="img-wrap"> 
+                                                {% include 'ecommerce/discount.html' with product=product %}
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                                                    {% with product.productimage_set.all|first as img %}
+                                                    <img src="{{ img.image.url }}" alt="{{product.name}}">
+                                                    {% endwith %} 
+                                                </a>
+                                                <!-- <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> -->
+                                            </div> <!-- img-wrap.// -->
+                                            <figcaption class="info-wrap">
+                                                <div class="fix-height">
+                                                    <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                                                    <p>{{product.description|truncatechars:70}}</p>
+                                                    {% include 'ecommerce/price.html' with product=product %}
+                                                </div>
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="btn btn-block btn-primary">Add to cart </a>	
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            {% endif %}
+            {% if unani_prods %}
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <article class="card single-page-slider">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="{% url 'ecommerce:products_by_category' 'unani' %}" class="view-all-img"><img src="{% static 'img/Unani-New.png' %}" alt=""> </a>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="items">
+                                    {% for product in unani_prods %}    
+                                    <div>
+                                        <figure class="card card-product-grid">
+                                            <div class="img-wrap"> 
+                                                {% include 'ecommerce/discount.html' with product=product %}
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                                                    {% with product.productimage_set.all|first as img %}
+                                                    <img src="{{ img.image.url }}" alt="{{product.name}}">
+                                                    {% endwith %} 
+                                                </a>
+                                                <!-- <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> -->
+                                            </div> <!-- img-wrap.// -->
+                                            <figcaption class="info-wrap">
+                                                <div class="fix-height">
+                                                    <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                                                    <p>{{product.description|truncatechars:70}}</p>
+                                                    {% include 'ecommerce/price.html' with product=product %}
+                                                </div>
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="btn btn-block btn-primary">Add to cart </a>	
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+            {% endif %}
+            <section class="hoc clear" style="margin-top: 20px;"> 
+                <div class="row">
+                    <!-- <div class="col-md-4">
+                        <a href="#"><img src="{% static 'img/discount-img-1.jpg' %}" alt=""></a>
+                    </div> -->
+                    <div class="col-md-4">
+                        <a href="#"><img src="{% static 'img/discount-img-2.jpg' %}" alt=""></a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#"><img src="{% static 'img/discount-img-3.jpg' %}" alt=""></a>
+                    </div>
+                </div>
+            </section>
+          </div>			  
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+    <article class="">
+        <img src="{% static 'img/new-info.png' %}" class="w-100">
+    </article>
+{% endblock %}

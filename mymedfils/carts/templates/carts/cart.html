@@ -1,0 +1,182 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-content padding-y bg">
+        <div class="container">
+        
+        <!-- ============================ COMPONENT 1 ================================= -->
+        
+        <div class="row">
+            <aside class="col-lg-9">
+        <div class="card">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        <table class="table table-borderless table-shopping-cart">
+        <thead class="text-muted">
+        <tr class="small text-uppercase">
+          <th scope="col">Product</th>
+          <th scope="col" width="120">Quantity</th>
+          <th scope="col" width="120">Price</th>
+          <th scope="col" class="text-right" width="200"> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if items %}
+            {% for item in items %}
+            <tr>
+                <td>
+                    <figure class="itemside align-items-center">
+                        <div class="aside">
+                            {% with item.product.productimage_set.all|first as img %}
+                            <img src="{{img.image.url}}" class="img-sm">
+                            {% endwith %}
+                        </div>
+                        <figcaption class="info">
+                            <a href="{% url 'ecommerce:product_details' item.product.slug %}" class="title text-dark">{{item.product.name}}</a>
+                            <!--p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p-->
+                        </figcaption>
+                    </figure>
+                </td>
+                <td>
+                    <form action="{% url 'ecommerce:update_cart' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{item.id}}" />
+                    <select name="quantity" class="form-control cart_quantity">
+                        {% for i in '0123456789'|make_list %}    
+                        {% if item.quantity == forloop.counter %}
+                        <option selected="selected">{{forloop.counter}}</option>
+                        {% else %}
+                        <option>{{forloop.counter}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select> 
+                    </form> 
+                </td>
+                <td> 
+                    <div class="price-wrap"> 
+                        {% if item.product.sale_price > 0 %}
+                        <var class="price">Rs. {{item.product.sale_price}}</var> 
+                        {% else %}
+                        <var class="price">Rs. {{item.product.price}}</var> 
+                        {% endif %}
+                        <!-- <small class="text-muted"> Rs 450 each </small> --> 
+                    </div> <!-- price-wrap .// -->
+                </td>
+                <td class="text-right"> 
+                <!-- <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>  -->
+                
+                <form action="{% url 'ecommerce:delete_cart' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{item.id}}" />
+                    <input class="btn btn-light removeitem" type="submit" name="delete" value="Remove" onclick="return confirmPopup()" />
+                </form>
+                </td>
+            </tr>
+            {% endfor %}  
+        {% else %}
+            <p>No items found</p>
+        {% endif %}
+        </tbody>
+        </table>
+        
+        <div class="card-body border-top">
+            <!-- <p class="icontext"><i class="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p> -->
+        </div>
+        
+        </div>
+        
+            </aside> <!-- col.// -->
+            <aside class="col-lg-3">
+        
+        <div class="card mb-3">
+            <div class="card-body">
+                <form id="coupon-form" action="{% url 'ecommerce:apply_coupon' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Have coupon?</label>
+                        <div class="input-group">
+                            <input type="text" name="coupon_code" id="coupon_code" class="form-control" placeholder="Enter your coupon code" value="" required>
+                            <span class="input-group-append"> 
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary submit">Apply</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div> 
+        
+        <div class="card">
+            <div class="card-body">
+                    <dl class="dlist-align">
+                    <dt>Sub Total:</dt>
+                    <dd class="text-right">Rs. {{subtotal}}</dd>
+                    </dl>
+                    {% if cart.coupon is not none %}
+                    <dl class="dlist-align">
+                    <dt>Coupon: </dt>
+                    <dd class="text-right text-danger">{{cart.coupon.name}}</dd>
+                    </dl>
+                    <form method="POST" action="{% url 'ecommerce:remove_coupon' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="coupon_id" value="{{cart.coupon.id}}">
+                        <button class="btn btn-primary" type="submit">Remove</button>
+                    </form>
+                    {% endif %}
+                    <dl class="dlist-align">
+                    <dt>Total:</dt>
+                    <dd class="text-right text-dark b"><strong>Rs. {{total}}</strong></dd>
+                    </dl>
+                    <hr>
+                    <p class="text-center mb-3">
+                        <img src="{% static 'img/payments.png' %}" height="26">
+                    </p>
+                    <a href="{% url 'ecommerce:checkout' %}" class="btn btn-primary btn-block"> Proceed </a>
+                    <a href="{% url 'ecommerce:home' %}" class="btn btn-light btn-block">Continue Shopping</a>
+            </div>
+        </div> 
+        
+        
+            </aside> <!-- col.// -->
+        
+        
+        </div> <!-- row.// -->
+        <!-- ============================ COMPONENT 1 END .// ================================= -->
+        
+        <br><br>
+    
+    
+        </div> <!-- container .//  -->
+        </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+    <!-- =============== SECTION REGION =============== -->
+    <!-- =============== SECTION REGION .//END =============== -->		
+</div>
+<!-- container end.// -->
+<article class="">
+    <img src="{% static 'img/new-info.png' %}" class="w-100">
+</article>
+
+<script>
+    function confirmPopup(){
+        if(confirm("Do you want to remove it?")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    $(document).ready(function(){
+        $('.cart_quantity').change(function(){
+            $(this).closest('form').submit();
+        });
+    });
+</script>
+{% endblock %}

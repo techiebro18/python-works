@@ -1,0 +1,9 @@
+{
+  "client_id": "",
+  "client_secret": "",
+  "refresh_token": "",
+  "swipe_up_attribution_window": "28_DAY",
+  "view_attribution_window": "7_DAY",
+  "omit_empty": "true",
+  "start_date": "2022-01-01T00:00:00Z"
+}

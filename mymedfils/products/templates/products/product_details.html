@@ -1,0 +1,644 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load common %}
+{% block content %}
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main padding-y">
+        <main>
+            <article class="card single-page-info">
+                <div class="card-body">
+                        <div class="row">
+                            <aside class="col-md-5">
+                                    <article class="gallery-wrap">
+                                        <div class="card img-big-wrap">
+                                            {% with product_images|first as img %}
+                                            <a href="#"> 
+                                                <img src="{{img.image.url}}" class="large-image">
+                                            </a>
+                                            {% endwith %}
+                                        </div> <!-- card img-big-wrap.// -->
+                                        <div class="thumbs-wrap">
+                                            {% for image in product_images %}
+                                            <a href="#" class="item-thumb"> <img src="{{image.image.url}}" class="thumb-image"></a>
+                                            {% endfor %}
+                                            
+                                        </div> <!-- thumbs-wrap .// -->
+                                    </article> <!-- gallery-wrap .end// -->
+                            </aside>
+                            <main class="col-md-7">
+                                <article>
+                                    <h3 class="title">{{product.name}}</h3>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="">
+                                                <p class="small">{{product.description|truncatechars:150}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="logo">
+                                                <img src="{% static 'img/Chat logo.png' %}" alt="">
+                                            </div>			
+                                        </div>
+                                    </div>
+                                    <!-- <div class="mb-3"> 
+                                        <ul class="rating-stars">
+                                            <li style="width:60%" class="stars-active">
+                                                <img src="images/stars-active.svg" alt="">
+                                            </li>
+                                            <li>
+                                                <img src="images/starts-disable.svg" alt="">
+                                            </li>
+                                        </ul>
+                                        <span class="label-rating mr-3 text-muted">3/5</span>
+                                        <a href="#" class="btn-link small mr-3 text-muted"> Rating & Review </a>| &nbsp; 
+                                        <a href="#" class="btn-link small text-muted"> Read Q&amp;A </a>
+                                    </div> --> 
+                                                    
+                                    <!-- <div class="form-group">
+                                        <label class="text-muted">Available sizes</label>
+                                        <div>
+                                            <label class="js-check btn btn-check active">
+                                                <input type="radio" name="option_size" value="option1" checked="">
+                                                <span>15 caps</span>
+                                            </label>
+                                            <label class="js-check btn btn-check">
+                                                <input type="radio" name="option_size" value="option1">
+                                                <span>60 caps</span>
+                                            </label>
+                                            <label class="js-check btn btn-check">
+                                                <input type="radio" name="option_size" value="option1">
+                                                <span>100 caps</span>
+                                            </label>
+                                            <label class="js-check btn btn-check">
+                                                <input type="radio" name="option_size" disabled="" value="option1">
+                                                <span>200 caps</span>
+                                            </label>	
+                                        </div>						
+                                    </div> -->
+            
+                                    <div class="mb-3">
+                                        {% if product.sale_price > 0 and product.sale_price < product.price %}
+                                        <var class="price h4">Price: ₹ {{product.sale_price}}</var> <br>
+                                        <span class="monthly bold">M.R.P: ₹ <var class="old-price">{{product.price}}</var> </span>
+                                        {% else %}
+                                        <var class="price h4">Price: ₹ {{product.price}}</var> <br>
+                                        {% endif %}
+                                        <span class="badge discount">
+                                            <!-- <img src="images/50-percent-off.png" alt="50% off"> -->
+                                            {{product.discount}}%
+                                        </span>	
+                                        <br />
+                                        <var class="price h4">Quantity Available: {{product.quantity}}</var> 
+                                    </div> <!-- price-detail-wrap .// -->
+            
+                                    <div class="mb-4">
+                                        <div class="row">
+                                            <div class="ml-4">
+                                                <div class="qty-section">
+                                                    QTY:
+                                                    <select class="form-control qty-select">
+                                                        {% for i in '0123456789'|make_list %}
+                                                        <option>{{forloop.counter}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <!-- <a href="#" class="btn btn-primary">Buy now</a> -->
+                                                <form action="{% url 'ecommerce:add_to_cart' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" value="{{product.id}}" name="pid" />
+                                                    <input type="hidden" value="1" name="quantity" class="qty-input" />
+                                                    <button type="submit" class="btn btn-light" >Add to card</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <h5 class="card-title mb-2">Check delivery availibility</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">	
+                                           
+                                            <div class="input-group">
+                                                {% csrf_token %}
+                                                <input type="text" class="form-control ziptext" placeholder="Enter pincode..." name="zipcode">
+                                                <span class="input-group-append"><button class="btn btn-primary zipbtn">Check</button></span>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="delivery_info" style="display: none;">
+                                    
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                        
+                                        
+                                </article> <!-- product-info-aside .// -->
+                            </main> <!-- col.// -->
+                        </div> <!-- row.// -->
+                </div> <!-- card-body.// -->
+            </article>
+            <!-- <article class="card single-page-slider">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h2 class="text-center mb-4">Frequently bought together</h2>
+                            <div class="yr-together">
+                                <div>
+                                    <figure class="card-product-grid">
+                                        <div class="img-wrap"> 
+                                            <span class="badge discount discount"> <img src="images/50-percent-off.png" alt="50% off"> </span>
+                                            <a href="#" class="title"><img src="images/65827-1-200.jpg"></a>
+                                        </div> 
+                                        <figcaption class="info-wrap">
+                                            <div class="fix-height">
+                                                <a href="#" class="title">New Shama Rogan Beer Bahuti (25ml)</a>
+                                                <div class="price-wrap mt-2">
+                                                    <span class="price">Price: ₹ 140</span>
+                                                    <del class="price-old">Price: ₹ 280</del>
+                                                </div> 
+                                            </div>
+                                            <hr/>
+                                            a href="#" class="btn btn-block btn-primary">Add to cart </a>	
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                <div class="plus"><i class="fa fa-plus"></i></div>
+                                <div>
+                                    <figure class="card-product-grid">
+                                        <div class="img-wrap"> 
+                                            <span class="badge discount discount"> <img src="images/50-percent-off.png" alt="50% off"> </span>
+                                            <a href="#" class="title"><img src="images/65827-1-200.jpg"></a>
+                                        </div> 
+                                        <figcaption class="info-wrap">
+                                            <div class="fix-height">
+                                                <a href="#" class="title">New Shama Rogan Beer Bahuti (25ml)</a>
+                                                <div class="price-wrap mt-2">
+                                                    <span class="price">Price: ₹ 140</span>
+                                                    <del class="price-old">Price: ₹ 280</del>
+                                                </div> 
+                                            </div>
+                                            <hr/>
+                                            <a href="#" class="btn btn-block btn-primary">Add all 3 to cart </a>	
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                <div class="plus"><i class="fa fa-plus"></i></div>
+                                <div>
+                                    <figure class="card-product-grid">
+                                        <div class="img-wrap"> 
+                                            <span class="badge discount discount"> <img src="images/50-percent-off.png" alt="50% off"> </span>
+                                            <a href="#" class="title"><img src="images/65827-1-200.jpg"></a>
+                                        </div> 
+                                        <figcaption class="info-wrap">
+                                            <div class="fix-height">
+                                                <a href="#" class="title">New Shama Rogan Beer Bahuti (25ml)</a>
+                                                <div class="price-wrap mt-2">
+                                                    <span class="price">Price: ₹ 140</span>
+                                                    <del class="price-old">Price: ₹ 280</del>
+                                                </div> 
+                                            </div>
+                                            <hr/>
+                                            <a href="#" class="btn btn-block btn-primary">Add to cart </a>	
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <h4 class="combo-title mt-5">Combo pack for this item</h4>
+                            <div class="yr-offer-box">
+                                <figure class="itemside align-items-center">
+                                    <div class="aside mt-2">
+                                        <a href="#"><img src="images/testro-img.jpg" class="img-md"></a></div>
+                                    <figcaption class="info">
+                                        <a href="#" class="text-bolder">Ekyure Herbals Testro Plus Capsule (30caps)</a>
+                                        <div class="dis-price mt-2"> 
+                                            
+                                            <var class="price">450X2 = <span class="old-price">900</span> 860</var> 
+                                            <div class="discount-price">50%</div>
+                                        </div>											
+                                    </figcaption>
+                                </figure>
+                                <a href="#" class="btn btn-primary btn-block mt-4"> Buy Combo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article> -->
+            <article class="card single-page-slider">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center">Customer also buys it...</h2>
+                            <div class="items">
+                                {% for product in simmilar_products %}    
+                                <div>
+                                    <figure class="card card-product-grid">
+                                        <div class="img-wrap"> 
+                                            {% include 'ecommerce/discount.html' with product=product %}
+                                            <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">
+                                                {% with product.productimage_set.all|first as img %}
+                                                <img src="{{ img.image.url }}" alt="{{product.name}}">
+                                                {% endwith %} 
+                                            </a>
+                                            <!-- <a class="btn-overlay" href="#"><i class="fa fa-search-plus"></i> Quick view</a> -->
+                                        </div> <!-- img-wrap.// -->
+                                        <figcaption class="info-wrap">
+                                            <div class="fix-height">
+                                                <a href="{% url 'ecommerce:product_details' product.slug %}" class="title">{{product.name}}</a>
+                                                <p>{{product.description|truncatechars:70}}</p>
+                                                {% include 'ecommerce/price.html' with product=product %}
+                                            </div>
+                                            <a href="{% url 'ecommerce:product_details' product.slug %}" class="btn btn-block btn-primary">Add to cart </a>	
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="card single-page-slider">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            
+                            <div class="long-discription">
+                                {% if product.description %}
+                                <h3>Product discription</h3>
+                                <P>{{product.description}}</P>
+                                {% endif %}
+                                {% with product.producttab_set.all|first as tabs %}
+                                {% if tabs %}
+                                <h4>Know more about Testro Plus Capsule</h4>
+                                <P>
+                                    {% autoescape off %}
+                                        {{tabs.more_information}}
+                                    {% endautoescape %}
+                                </P>
+                                <h4>Therapeutic Uses</h4>
+                                <p>
+                                    {% autoescape off %}
+                                        {{tabs.uses}}
+                                    {% endautoescape %}
+                                </p>
+                                <h4>Warning & Precautions</h4>
+                                <p>
+                                    {% autoescape off %}
+                                        {{tabs.warnings}}
+                                    {% endautoescape %}
+                                </p>
+                                <h4>Interactions</h4>
+                                <p>
+                                    {% autoescape off %}
+                                        {{tabs.interactions}}
+                                    {% endautoescape %}
+                                </p>
+                                <h4>Direction and for Use</h4>
+                                <p>
+                                    {% autoescape off %}
+                                        {{tabs.directions}}
+                                    {% endautoescape %}
+                                </p>
+                                <h4>Side Effects</h4>
+                                <p>
+                                    {% autoescape off %}
+                                        {{tabs.side_effects}}
+                                    {% endautoescape %}
+                                </p>
+                                
+                                {% endif %}
+                                {% endwith %}
+                            </div>
+                            
+
+                            <!-- <div class="card mt-4">
+                            <div class="card-body get-question">
+                                <div class="row">
+                                    <div class="col-md-3 text-center">
+                                        <img src="images/Ask-question.png" style="max-height: 220px;">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h4 class="card-title mb-2 mt-5">Questions about this product?</h4>
+                            <p>Write your question to us! Medsbuy.in doctors/pharmacy professionals will answer you shortly.</p>
+                                
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Ask your question....." name="">
+                                        <span class="input-group-append"><button class="btn btn-primary"    data-toggle="modal" data-target="#exampleModal1">Submit</button></span>
+                                    </div>
+                                                                    
+                                    </div>
+                                </div>
+                            
+                            </div> 
+                            <h3 class="p-3">Customer questions & answers</h3>
+                            </div>
+                            <div class="card mt-4">
+                            <div class="card-body">
+                                <ul class="pro-faq">
+                                    <li>
+                                        <div class="faq-que"><span>Question:</span> Can I take this tablet after meal??</div>
+                                        <div class="faq-ans"><span>Answer:</span> Yes You may continue ekyure Herbals Testro Plus capsule after meal.</div>
+                                        <p>by Imdad on Dec 23, 2020</p>
+                                    </li>
+                                    <li>
+                                        <div class="faq-que"><span>Question:</span> Can I take this tablet after meal??</div>
+                                        <div class="faq-ans"><span>Answer:</span> Yes You may continue ekyure Herbals Testro Plus capsule after meal.</div>
+                                        <p>by Imdad on Dec 23, 2020</p>
+                                    </li>
+                                    <li>
+                                        <div class="faq-que"><span>Question:</span> Can I take this tablet after meal??</div>
+                                        <div class="faq-ans"><span>Answer:</span> Yes You may continue ekyure Herbals Testro Plus capsule after meal.</div>
+                                        <p>by Imdad on Dec 23, 2020</p>
+                                    </li>
+                                </ul>
+                                <div class="text-center"><a href="#" class="text-blue bolder">Show more (10)</a></div>
+                            </div>
+                            </div> -->								
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <figure class="card card-product-grid">
+                                <div class="img-wrap"> 										
+                                    <a href="#" class="title"><img src="images/65827-1-200.jpg"></a>										
+                                </div> 
+                                <figcaption class="info-wrap">
+                                    <div class="mb-3">
+                                        <a href="#" class="title" tabindex="0">New Shama Rogan Beer Bahuti (25ml)</a>											
+                                    </div>
+                                    <a href="#" class="btn btn-block btn-primary" tabindex="0">Buy Now </a>	
+                                </figcaption>
+                            </figure>
+                        </div> -->
+                    </div>
+                    <div class="card mt-4">
+                        <!-- <div class="card-body rate-review">
+                            <h2 class="text-center mb-4">Ratings & Reviews</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="side">
+                                          <div>5 star</div>
+                                        </div>
+                                        <div class="middle">
+                                          <div class="bar-container">
+                                            <div class="bar-5"></div>
+                                          </div>
+                                        </div>
+                                        <div class="side right">
+                                          <div>77%</div>
+                                        </div>
+                                        <div class="side">
+                                          <div>4 star</div>
+                                        </div>
+                                        <div class="middle">
+                                          <div class="bar-container">
+                                            <div class="bar-4"></div>
+                                          </div>
+                                        </div>
+                                        <div class="side right">
+                                          <div>63%</div>
+                                        </div>
+                                        <div class="side">
+                                          <div>3 star</div>
+                                        </div>
+                                        <div class="middle">
+                                          <div class="bar-container">
+                                            <div class="bar-3"></div>
+                                          </div>
+                                        </div>
+                                        <div class="side right">
+                                          <div>15%</div>
+                                        </div>
+                                        <div class="side">
+                                          <div>2 star</div>
+                                        </div>
+                                        <div class="middle">
+                                          <div class="bar-container">
+                                            <div class="bar-2"></div>
+                                          </div>
+                                        </div>
+                                        <div class="side right">
+                                          <div>6%</div>
+                                        </div>
+                                        <div class="side">
+                                          <div>1 star</div>
+                                        </div>
+                                        <div class="middle">
+                                          <div class="bar-container">
+                                            <div class="bar-1"></div>
+                                          </div>
+                                        </div>
+                                        <div class="side right">
+                                          <div>20%</div>
+                                        </div>
+                                      </div>
+                                </div>
+                                    <div class="col-md-3 text-center align-self-center">
+                                        <h1>4.1</h1>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                        <p>13 star rating</p>
+                                    </div>
+                                <div class="col-md-3 align-self-center">
+                                    <div class="text-center">
+                                        <p>Rate this product</p>
+                                        <a href="#" class="btn btn-primary" tabindex="0">Write a review</a>
+                                        
+                                    </div>
+                                </div>
+                                </div>
+                        </div> -->
+                    </div>
+                </div>					
+            </article>
+            <!-- <article class="p-4">
+                <div class="row">
+                <div class="form-group col-lg-3 col-md-4 col-sm-4">
+                    <select id="inputState" class="form-control">
+                      <option>sort by most recent</option>
+                        <option>sort by recent</option>
+                        <option>sort by old</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-lg-3 col-md-4 col-sm-4">
+                    <select id="inputState" class="form-control">
+                      <option>filter by all rating</option>
+                        <option>filter by 5 rating</option>
+                        <option>filter by 4 rating</option>
+                        <option>filter by 3 rating</option>
+                        <option>filter by 2 rating</option>
+                        <option>filter by 1 rating</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body review-msg">									
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="title">Wonderful Product</div>
+                                <ul>
+                                    <li class="rate-review"><span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </li>
+                                        <li>|</li>
+                                    <li>Mohan Thakur</li>
+                                    <li>2days ago</li>
+                                </ul>
+                                <p>Ekyure Herbals Testro Plus really wonderful product. Go for it.</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                
+                                <div class="text-center" style="display: inline-block;">
+                                    <p>Did you find this review helpful?</p>
+                                    <a class="btn btn-light d-none d-lg-inline-block" href="#"> Helpful </a> <a class="btn btn-light d-none d-lg-inline-block" href="#">Not Helpful </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body review-msg">									
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="title">Wonderful Product</div>
+                                <ul>
+                                    <li class="rate-review"><span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </li>
+                                        <li>|</li>
+                                    <li>Mohan Thakur</li>
+                                    <li>2days ago</li>
+                                </ul>
+                                <p>Ekyure Herbals Testro Plus really wonderful product. Go for it.</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                
+                                <div class="text-center" style="display: inline-block;">
+                                    <p>Did you find this review helpful?</p>
+                                    <a class="btn btn-light d-none d-lg-inline-block" href="#"> Helpful </a> <a class="btn btn-light d-none d-lg-inline-block" href="#">Not Helpful </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body review-msg">									
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="title">Wonderful Product</div>
+                                <ul>
+                                    <li class="rate-review"><span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star"></span>
+                                    </li>
+                                        <li>|</li>
+                                    <li>Mohan Thakur</li>
+                                    <li>2days ago</li>
+                                </ul>
+                                <p>Ekyure Herbals Testro Plus really wonderful product. Go for it.</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                
+                                <div class="text-center" style="display: inline-block;">
+                                    <p>Did you find this review helpful?</p>
+                                    <a class="btn btn-light d-none d-lg-inline-block" href="#"> Helpful </a> <a class="btn btn-light d-none d-lg-inline-block" href="#">Not Helpful </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3"><a href="#" class="text-blue bolder">Show more</a></div>
+            </article> -->
+        </main> <!-- card.// -->
+
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+    <!-- =============== SECTION REGION =============== -->
+    <!-- =============== SECTION REGION .//END =============== -->		
+</div>
+<!-- container end.// -->
+<article class="">
+    <img src="{% static 'img/new-info.png' %}" class="w-100">
+</article>
+<!-- ========================= SECTION SUBSCRIBE  ========================= -->
+
+<!-- ========================= SECTION SUBSCRIBE END// ========================= -->
+
+<script>
+    $(document).ready(function(){
+        //Show thumbnail image on click
+        $('.thumb-image').click(function(){
+            $('.large-image').attr('src', $(this).attr('src'));
+            return false;
+        });
+
+        //set quantity and validate available quantity
+        $('.qty-select').change(function(){
+            var val = $(this).val();
+            $('.qty-input').val(val);
+
+        });
+
+        //Zipcode check and display information
+        $('.zipbtn').click(function(){
+            var zipcode = $('input[name="zipcode"]').val();
+            var csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').val();
+            $('.msg').remove();
+            $.ajax({
+                url: "{% url 'ecommerce:check_delivery_by_zipcode' %}",
+                type: "POST",
+                data: {zipcode:zipcode, csrfmiddlewaretoken:csrfmiddlewaretoken},
+                //async: false,
+                success: function(data, textStatus, jqXHR) {
+                    console.log(data.obj);
+                    $('.delivery_info').slideDown();
+                    if(data.message != 'Success')
+                    {
+                        $('.delivery_info').append('<p class="msg" style="font-size: 16px;color:red;">'+data.message+'</p>')
+                    }else{
+                        var obj = JSON.parse(data.obj);
+                        obj = obj[0].fields;
+                        
+                        if(obj.cod){
+                            $('.delivery_info').append('<p class="icontext msg"><i class="icon text-success fa fa-truck"></i> Cash on Delivery is Available.</p>')
+                        }else{
+                            $('.delivery_info').append('<p class="icontext msg"><i class="icon text-success fa fa-truck"></i> Cash on Delivery is Not Available.</p>')
+                        }
+                        if(obj.delivery_charge){
+                            $('.delivery_info').append('<p class="icontext msg"><i class="icon text-success fa fa-truck"></i> Shipping Charge is Applicable.</p>')
+                        }else{
+                            $('.delivery_info').append('<p class="icontext msg"><i class="icon text-success fa fa-truck"></i> Free Delivery is Available.</p>')
+                        }
+                        $('.delivery_info').append('<p class="icontext msg"><i class="icon text-success fa fa-truck"></i>' +obj.days+'</p>')
+                        
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error occurred!');
+                }
+            });
+        });
+
+    });
+</script>
+
+{% endblock %}

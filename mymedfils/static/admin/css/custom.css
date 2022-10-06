@@ -1,0 +1,44 @@
+.c_error{color: red;}
+.help-block{color: red;}
+.dropdown-menu-custom > a {
+    padding: 8px 15px;
+    outline: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dropdown-menu-custom > a {
+    display: block;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.5384616;
+    color: #333333;
+    white-space: nowrap;
+}
+.dropdown-menu-custom > a > i{
+    margin-right: 12px;
+    float: left;
+    margin-top: 2px;
+    top: 0;
+}
+.dropdown-menu-custom > a:hover, .dropdown-menu-custom > a:focus {
+    text-decoration: none;
+    color: #333333;
+    background-color: #f5f5f5;
+}
+
+.myfile{float: left;}
+
+.navbar-brand > img{
+    height: 31px;
+}
+
+p.form-control, .border_none{
+    border: none;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.messages .success{ color: green; list-style: none;}
+.messages .error{ color: red; list-style: none;}

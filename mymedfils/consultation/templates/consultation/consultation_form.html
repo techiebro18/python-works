@@ -1,0 +1,166 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load helpers_tag %}
+{% block content %}
+<div class="bgded">
+    <div id="slider" class="clear"> 
+        <img src="{% static 'front-images/medfils-form-banner.jpg' %}" alt="" >
+        <!-- ################################################################################################ -->
+    </div>
+  </div>
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main" style="padding-bottom: 10px;">
+        <div class="wrapper">
+            <section class="hoc clear"> 
+              <!-- ################################################################################################ -->
+            <div class="yr-contForm">
+              <img src="{% static 'front-images/medfils-form-image-box.jpg' %}" alt="">
+            </div>
+            </section>
+          </div>
+          <form class="jotform-form" action="{% url 'consultation:index' %}" method="POST" enctype="multipart/form-data" name="form_202734202737450" accept-charset="utf-8" autocomplete="on">
+            {% csrf_token %}
+            <div role="main" class="form-all">
+    
+                <div class="form-header-group  header-default">
+                    <div class="header-text httac htvam">
+                        <h2>Doctor Consultation Form</h2>
+                        <div>For consultation, please fill out the information below.</div>
+                    </div>
+                </div>
+                
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+                <ul class="yr-ul-2">
+                    <li>
+                        <h2>Contact Information</h2>
+                    </li>
+    
+                    <li class="jf-required" data-type="control_textbox" id="id_t" style="display: none;">
+                        <label>
+                            Treatment Type
+                            <span class="form-required">
+                                *
+                            </span>
+                        </label>
+                        
+                        {{form.treatment_type}}
+                    </li>
+                    
+                    <li class="jf-required" data-type="control_textbox" id="id_4">
+                        {{ form.name.errors }}
+                        <label>Name<span class="form-required">*</span></label>
+                        {{ form.name }}
+                    </li>
+                    
+                    <li class="jf-required">
+                        {{ form.mobile.errors }}
+                        <label>Phone number<span class="form-required">*</span></label>
+                        {{form.mobile}}
+                    </li>
+                    <li class="jf-required" data-type="control_email" id="id_7">
+                        {{ form.email.errors }}
+                        <label>Email address<span class="form-required">* </span></label>
+                        {{form.email}}
+                    </li>
+                </ul>
+                <ul class="yr-ul-3">
+                    <li>
+                        <h2>Personal Details</h2>
+                    </li>
+                    <li class="jf-required">
+                        {{ form.age.errors }}
+                        <label>
+                            Age
+                            <span class="form-required">
+                                *
+                            </span>
+                        </label>
+                        {{form.age}}
+                    </li>
+                    <li>
+                        {{ form.weight.errors }}
+                        <label>Weight <span class="form-required">*</span>
+                        </label>
+                        {{form.weight}}
+                    </li>
+                    <li>
+                        {{ form.height.errors }}
+                        <label> Height </label>
+                        {{form.height}}
+                    </li>
+                    <li>
+                        {{ form.gender.errors }}
+                        <label>
+                            Gender
+                            <span class="form-required">
+                                *
+                            </span>
+                        </label>
+                        
+                        {{form.gender}}
+                    </li>
+                    <li>
+                        <label> Marital Status </label>
+                        {{form.marital_status}}
+                    </li>
+                </ul>
+                <ul class="yr-ul-1">
+                    <li>
+                        <h2>Consultation Details</h2>
+                    </li>
+                    <li>
+                        {{ form.problem.errors }}
+                        <label> Write/Describe your problem?
+                            <span class="form-required">*</span>
+                        </label>
+                        {{form.problem}}
+                    </li>
+                    <li>
+                        {{ form.problem_time.errors }}
+                        <label>How long is your problem
+                            <span class="form-required">*</span>
+                        </label>
+                        {{form.problem_time}}
+                    </li>
+                </ul>
+                <ul class="yr-ul-2">
+                    <li>
+                        <label> Past history (if any) </label>
+                        {{form.history}}
+                    </li>
+                    <li>
+                        <label> Allergic problem (if any) </label>
+                        {{form.allergic_problem}}
+                    </li>
+                    <li>
+                        <label> Current treatment (if any) </label>
+                        {{form.current_treatment}}
+                    </li>
+                    <li>
+                        <label> Upload Reports/Images (if any) </label>
+                        <div id="" class="form-input">
+                            {{image_form.file}}
+                        </div>
+                    </li>
+                </ul>
+                <div class="form-buttons-wrapper">
+                    <button type="submit" class="yrbtn">Submit</button>
+                </div>
+    
+            </div>
+    
+    
+    
+    
+        </form>
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+
+{% endblock %}

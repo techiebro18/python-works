@@ -1,0 +1,145 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% load helpers_tag %}
+{% block content %}
+	<div class="bgded">
+		<div id="slider" class="clear"> 
+		  <img src="{% static 'front-images/banner-1.jpg' %}" alt="" >
+		</div>
+	  </div>
+		<!-- ========================= SECTION MAIN  ========================= -->
+		<section class="section-main">
+			<div class="wrapper row2 shd services">
+				<section class="hoc clear"> 
+				  <!-- ################################################################################################ -->
+				  <ul class="nospace group overview ">
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon01.png' %}"></a>
+						<h6 class="heading"><a href="#">Best<br><strong>treatment</strong></a></h6>
+						<p>Experincethe power of natural remidies</p>
+					  </article>
+					</li>
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon02.png' %}"></a>
+						<h6 class="heading"><a href="#">Qualified<br><strong>Doctors</strong></a></h6>
+						<p>Take advice from our experienced doctor's team</p>
+					  </article>
+					</li>
+					<li class="one_third">
+					  <article><a href="#"><img src="{% static 'front-images/icon03.png' %}"></a>
+						<h6 class="heading"><a href="#">Free<br><strong>Consultation</strong></a></h6>
+						<p>For anyone, anywhere and anytime</p>
+					  </article>
+					</li>
+				  </ul>
+				  <!-- <footer class="center"><a class="btn" href="#">Vestibulum molestie</a></footer> -->
+				  <!-- ################################################################################################ -->
+				</section>
+			  </div>
+			  <!-- ################################################################################################ -->
+			  <div class="wrapper row3 shd yr-service">
+				<main class="clear"> 
+				  <!-- main body -->
+				  <!-- ################################################################################################ -->
+				  <!-- <div class="sectiontitle">
+					<h6 class="heading">Donec tortor eget mauris sagittis</h6>
+					<p>Convallis morbi eget leo elit praesent at libero et arcu</p>
+				  </div> -->
+				  <div class="group">
+					<div class="one_quarter first bg_green">
+					  <div class="sectiontitle ">
+						<h6 class="heading">Our Services</h6>
+						<p>Medfils offers free online consultation and best medicine to make you fit & healthy</p>
+					  </div>
+					</div>
+					<div class="three_quarter yr-our-services mgl">
+					  <ul class="nospace group inspace-15">
+						<li class="">
+						  <img src="{% static 'front-images/service-icon01.png' %}" alt="">
+						  <div>
+							<h5>Ayurveda</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'ayurvedic' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon02.png' %}" alt="">
+						  <div>
+							<h5>Unani</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'unani' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon03.png' %}" alt="">
+						  <div>
+							<h5>Homeopathy</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'homeopathic' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+						</li>
+						<li class="">
+						  <img src="{% static 'front-images/service-icon04.png' %}" alt="">
+						  <div>
+							<h5>Diet & Nutritions</h5>
+							<a href="{% url 'consultation:index' %}?type={% encode_tag 'diet_nutritions' %}"><img src="{% static 'front-images/consult-now-btn.png' %}" alt=""></a>
+						  </div>
+					  </ul>
+					</div>
+				  </div>
+				  <!-- ################################################################################################ -->
+				  <!-- / main body -->
+				  <div class="clear"></div>
+				</main>
+			  </div>
+			  <!-- ################################################################################################ -->
+			  <div class="wrapper row4">
+				<section class="clear yr-specialist"> 
+				  <!-- ################################################################################################ -->
+				  <div class="sectiontitle">
+					<h2 class="heading">OUR SPECIALIST</h2>
+				  </div>
+				  <div class="group">
+					<article class="one_half shd first"><a href="#"><img src="{% static 'front-images/pic2.png' %}" alt="Dr.Asim Akhtar"></a>
+					  <div class="excerpt">
+						<h6 class="heading">Dr.Asim Akhtar (B.U.M.S & M.B.A in Healthcare)
+						  <span>More than 10 years of experience</span></h6>
+						<p>Dr.Asim Akhatar, B.U.M.S & M.B.A in Healthcare, well qualified 
+						  scientifically updated, having 10 years of experience in Unani 
+						  medicine and research field. He was associated with Hamdard 
+						  Majeedia Unani Hospital. He has good experience to handle 
+						  online patients and was associated many e-medicines companies. 
+						  He is having expertise in Unani medicine for treating chronic 
+						  diseases especially skin diseases, respiratory diseases, gastric 
+						  diseases and infertility cases. While associated with Cipla medical 
+						  team, he organized several camps for the general awareness 
+						  regarding infectious diseases, bronchial Asthma and COPD.</p>
+					  </div>
+					</article>
+					<article class="one_half shd"><a href="#"><img src="{% static 'front-images/pic1.png' %}" alt="Dr.Abida Parveen"></a>
+					  <div class="excerpt">
+						<h6 class="heading">Dr.Abida Parveen (B.U.M.S, M.sc Clinical Research, 
+						  Ph.D in clinical Research)<span>More than 10 years of experience</span></h6>
+						<p>Dr. Abida Parveen, having expertise in treating Gynae and skin 
+						  patients. She has 10 years of rich medical experience and worked 
+						  in many hospitals and treated thousands of patients. She has 
+						  Clinical Research Experience while working as Clinical Research 
+						  Coordinator in many international clinical trials at Fortis Escorts 
+						  Heart Institute & Research Centre, New Delhi, India. She completed 
+						  BUMS (Bachelor of Unani Medicine and Surgery), M.Sc (Clinical 
+						  Research) and Ph.D (Translational & Clinical Research) from 
+						  Hamdard University University, New Delhi, India. She is a Senior 
+						  Rsearch Fellow of Council of Scientific & Industrial Research since 
+						  April 2019. She has worked as senior research fellow at Bioactive 
+						  natural product Laboratory, Hamdard University, in CCRUM (Central 
+						  Council of Research in Unani Medicine) funded project. She is 
+						  recipient of Gold Medal for being University Topper in BUMS 
+						  Programme. She has to her credit over 25 Publications in 
+						  International and National Journals and presented more than 
+						  19 papers in International & National Conferences..</p>
+					  </div>
+					</article>
+				  </div>
+					</section>    
+				</div>     
+				  <!-- ################################################################################################ -->
+			</section>		
+		<!-- ========================= SECTION MAIN END// ========================= -->
+{% endblock %}

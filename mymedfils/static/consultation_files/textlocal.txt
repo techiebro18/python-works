@@ -1,0 +1,150 @@
+Textlocal is one of the very famous Indian SMS gateway provider which provides feature of bulk sms anybody can use in website to enhance feature of his business and customer interaction using sms. We can use these messages for transactional or promotional purposes like OTP and invitation of registration link of the website. 
+
+There are following features which Textlocal provides:
+
+- Easily send powerful bulk SMS campaigns
+
+- 5 minutes SMS API integration
+
+- Convey more with SMS attachments ( like images, PDF and videos etc. )
+
+- Receive SMS online 
+
+- Access real-time delivery and click reports
+
+- Get enterprise ready
+
+- Increase engagement with mobile solutions 
+
+- Missed call numbers and dual VMNs
+
+- Connect with your customers via WhatsApp ( Customer will get messages in WhatsApp )
+
+To integrate get request API in JavaScript refer below:
+
+var url = 'https://api.textlocal.in/send/?apikey=########&numbers=########&sender=TXTLCL​​​​​​​&message='+encodeURIComponent('#####');
+
+
+
+        // Make a request for a user with a given ID
+
+        axios.get(url)
+
+        .then(function (response) {
+
+        // handle success
+
+        console.log("------ SMS Gateway Response ------");
+
+        console.log(response.data);
+
+        })
+
+        .catch(function (error) {
+
+        // handle error
+
+        console.log(error);
+
+        })
+
+        .finally(function () {
+
+        // always executed
+
+        });   
+
+
+
+Here we have used axios to make http requests. So, you need to install this package.
+
+To integrate get request API in PHP refer below:
+
+// Account details
+
+$apiKey = urlencode(‘Your apiKey’);
+
+// Message details
+
+$numbers = urlencode(‘918123456789,918987654321’);
+
+$sender = urlencode(‘TXTLCL’);
+
+$message = rawurlencode(‘This is your message’);
+
+
+
+// Prepare data for POST request
+
+$data = ‘apikey=’ . $apiKey . ‘&numbers=’ . $numbers . “&sender=” . $sender . “&message=” . $message;
+
+// Send the GET request with cURL
+
+$ch = curl_init(‘https://api.textlocal.in/send/?’ . $data);
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+
+curl_close($ch);
+
+// Process your response here
+
+echo $response;
+
+To integrate post request API in PHP refer below:
+
+// Account details
+
+$apiKey = urlencode(‘Your apiKey’);
+
+// Message details
+
+$numbers = array(918123456789, 918987654321);
+
+$sender = urlencode(‘TXTLCL’);
+
+$message = rawurlencode(‘This is your message’);
+
+
+
+$numbers = implode(‘,’, $numbers);
+
+
+
+// Prepare data for POST request
+
+$data = array(‘apikey’ => $apiKey, ‘numbers’ => $numbers, “sender” => $sender, “message” => $message);
+
+// Send the POST request with cURL
+
+$ch = curl_init(‘https://api.textlocal.in/send/’);
+
+curl_setopt($ch, CURLOPT_POST, true);
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+
+curl_close($ch);
+
+// Process your response here
+
+echo $response;
+
+
+
+To proceed with Textlocal click here  or copy URL https://www.textlocal.in/
+
+For further guidance about API integration click here or copy URL  https://www.textlocal.in/free-developer-sms-api/
+
+And URL http://api.textlocal.in/docs/sendsms
+
+For pricing:  https://www.textlocal.in/bulk-sms-pricing-india/
+
+
+
+
+

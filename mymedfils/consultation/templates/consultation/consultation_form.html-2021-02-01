@@ -1,0 +1,307 @@
+{% extends 'base_front.html' %}
+{% load static %}
+{% block content %}
+<link href="https://cdn.jotfor.ms/static/formCss.css?3.3.20643" rel="stylesheet" type="text/css" />
+<link type="text/css" media="print" rel="stylesheet" href="https://cdn.jotfor.ms/css/printForm.css?3.3.20643" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jotfor.ms/css/styles/nova.css?3.3.20643" />
+<link type="text/css" rel="stylesheet"
+    href="https://cdn.jotfor.ms/themes/CSS/548b1325700cc48d318b4567.css?themeRevisionID=5d9dde6d01344c57607dbf31" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jotfor.ms/css/styles/payment/payment_feature.css?3.3.20643" />
+<style type="text/css">
+    .jotform-form {
+        background: url('{% static "front-images/medfils-form-bg.png" %}') no-repeat;
+        background-size: 300px;
+        background-attachment: fixed;
+        background-position: center right;
+    }
+
+    .form-all {
+        max-width: 770px;
+        color: #555 !important;
+        font-family: 'Muli';
+        font-size: 16px;
+        margin: auto;
+        width: 100%;
+    }
+
+    .form-radio-item label,
+    .form-checkbox-item label,
+    .form-grading-label,
+    .form-header {
+        color: #555;
+    }
+
+    .yr-contForm {
+        text-align: center;
+        margin-top: -140px;
+        padding-bottom: 20px;
+    }
+
+    div#slider img {
+        width: 100%;
+    }
+
+    ul.yr-ul-2,
+    ul.yr-ul-3,
+    ul.yr-ul-1 {
+        list-style: none;
+        padding: 20px;
+        margin: 20px 0px 0;
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    ul.yr-ul-1 li label,
+    ul.yr-ul-2 li label,
+    ul.yr-ul-3 li label {
+        margin-top: 10px;
+    }
+
+    ul h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    ul.yr-ul-1 input,
+    ul.yr-ul-2 input,
+    ul.yr-ul-3 input,
+    ul.yr-ul-3 li select,
+    ul.yr-ul-1 textarea,
+    ul.yr-ul-2 textarea {
+        width: 100%;
+        border: 1px solid #81b53e;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    ul.yr-ul-2 li {
+        width: 48%;
+        margin-right: 2%;
+    }
+
+    ul.yr-ul-1 li:first-child,
+    ul.yr-ul-2 li:first-child,
+    ul.yr-ul-3 li:first-child {
+        width: 100%;
+    }
+
+    ul.yr-ul-3 li {
+        width: 33.33%;
+        padding-right: 10px;
+    }
+
+    ul.yr-ul-1 li {
+        width: 100%;
+    }
+
+    button.yrbtn {
+        background: #94be5a;
+        border: 1px solid #78a53b;
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 5px;
+        width: 150px;
+        margin: 20px auto;
+    }
+
+    ul.yr-ul-2 li input[type="file"] {
+        border: 0px;
+    }
+
+    .form-header-group.header-default {
+        background: #088bc1;
+        color: #ffff;
+        padding: 30px;
+    }
+
+    .form-header-group.header-default h2 {
+        text-transform: uppercase;
+        color: #fff;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    @media (max-width:678px) {
+
+        ul.yr-ul-1 li,
+        ul.yr-ul-2 li,
+        ul.yr-ul-3 li {
+            width: 100%;
+            margin-right: 0px;
+        }
+
+        .yr-contForm {
+            margin-top: 0px;
+        }
+    }
+</style>
+
+<link type="text/css" rel="stylesheet"
+    href="https://cdn.jotfor.ms/css/styles/buttons/form-submit-button-simple_grey.css?3.3.20643" />
+<div class="bgded">
+    <div id="slider" class="clear">
+        <img src="{% static 'front-images/medfils-form-banner.jpg' %}" alt="medfils-form-banner">
+        <!-- ################################################################################################ -->
+        <!-- <article>
+        <h3 class="heading">Vestibulum vehicula egestas</h3>
+        <p>Rhoncus a odio fusce eu lorem vehicula euismod mauris eget sodales mi duis habitant morbi tristique senectus et netus et malesuada fames.</p>
+        <footer><a class="btn" href="#">Turpis egestas</a></footer>
+      </article> -->
+        <!-- ################################################################################################ -->
+    </div>
+
+    <div class="wrapper">
+        <section class="hoc clear">
+            <!-- ################################################################################################ -->
+            <div class="yr-contForm">
+                <img src="{% static 'front-images/medfils-form-image-box.jpg' %}" alt="medfils-form-image-box">
+            </div>
+    </div>
+    
+    <form class="jotform-form" action="{% url 'consultation:index' %}" method="POST" enctype="multipart/form-data" name="form_202734202737450" accept-charset="utf-8" autocomplete="on">
+        {% csrf_token %}
+        <div role="main" class="form-all">
+
+            <div class="form-header-group  header-default">
+                <div class="header-text httac htvam">
+                    <h2>Doctor Consultation Form</h2>
+                    <div>For consultation, please fill out the information below.</div>
+                </div>
+            </div>
+            
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{message.tags}}" {% endif %} >{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            <ul class="yr-ul-2">
+                <li>
+                    <h2>Contact Information</h2>
+                </li>
+
+                <li class="jf-required" data-type="control_textbox" id="id_t" style="display: none;">
+                    <label>
+                        Treatment Type
+                        <span class="form-required">
+                            *
+                        </span>
+                    </label>
+                    
+                    {{form.treatment_type}}
+                </li>
+                
+                <li class="jf-required" data-type="control_textbox" id="id_4">
+                    {{ form.name.errors }}
+                    <label>Name<span class="form-required">*</span></label>
+                    {{ form.name }}
+                </li>
+                
+                <li class="jf-required">
+                    {{ form.mobile.errors }}
+                    <label>Phone number<span class="form-required">*</span></label>
+                    {{form.mobile}}
+                </li>
+                <li class="jf-required" data-type="control_email" id="id_7">
+                    {{ form.email.errors }}
+                    <label>Email address<span class="form-required">* </span></label>
+                    {{form.email}}
+                </li>
+            </ul>
+            <ul class="yr-ul-3">
+                <li>
+                    <h2>Personal Details</h2>
+                </li>
+                <li class="jf-required">
+                    {{ form.age.errors }}
+                    <label>
+                        Age
+                        <span class="form-required">
+                            *
+                        </span>
+                    </label>
+                    {{form.age}}
+                </li>
+                <li>
+                    {{ form.weight.errors }}
+                    <label>Weight <span class="form-required">*</span>
+                    </label>
+                    {{form.weight}}
+                </li>
+                <li>
+                    {{ form.height.errors }}
+                    <label> Height </label>
+                    {{form.height}}
+                </li>
+                <li>
+                    {{ form.gender.errors }}
+                    <label>
+                        Gender
+                        <span class="form-required">
+                            *
+                        </span>
+                    </label>
+                    
+                    {{form.gender}}
+                </li>
+                <li>
+                    <label> Marital Status </label>
+                    {{form.marital_status}}
+                </li>
+            </ul>
+            <ul class="yr-ul-1">
+                <li>
+                    <h2>Consultation Details</h2>
+                </li>
+                <li>
+                    {{ form.problem.errors }}
+                    <label> Write/Describe your problem?
+                        <span class="form-required">*</span>
+                    </label>
+                    {{form.problem}}
+                </li>
+                <li>
+                    {{ form.problem_time.errors }}
+                    <label>How long is your problem
+                        <span class="form-required">*</span>
+                    </label>
+                    {{form.problem_time}}
+                </li>
+            </ul>
+            <ul class="yr-ul-2">
+                <li>
+                    <label> Past history (if any) </label>
+                    {{form.history}}
+                </li>
+                <li>
+                    <label> Allergic problem (if any) </label>
+                    {{form.allergic_problem}}
+                </li>
+                <li>
+                    <label> Current treatment (if any) </label>
+                    {{form.current_treatment}}
+                </li>
+                <li>
+                    <label> Upload Reports/Images (if any) </label>
+                    <div id="" class="form-input">
+                        {{image_form.file}}
+                    </div>
+                </li>
+            </ul>
+            <div class="form-buttons-wrapper">
+                <button type="submit" class="yrbtn">Submit</button>
+            </div>
+
+        </div>
+
+
+
+
+    </form> <!-- ################################################################################################ -->
+    </article>
+</div>
+{% endblock %}
